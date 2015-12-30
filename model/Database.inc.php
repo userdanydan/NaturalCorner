@@ -30,7 +30,7 @@ class Database
 		} else {
 			// Connect from a development environment.
 			try{
-				 $this->connection= new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER', 'root', '');
+				 $this->connection= new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '');
 			}catch(PDOException $ex){
 				echo '<p>'.$ex->getMessage().'</p>';
 				$this->createDataBase();
@@ -85,7 +85,7 @@ class Database
 		$test= $this->connection->exec("USE NATURAL_CORNER_TEST");
 		try
 		{
-			$this->connection->query("CREATE TABLE IF NOT EXISTS CREATE TABLE UTILISATEURS(
+			$this->connection->query("CREATE TABLE IF NOT EXISTS UTILISATEURS(
 									        ID_UTILISATEUR   int (11) Auto_increment  NOT NULL ,
 									        PRENOM           Varchar (128) ,
 									        NOM              Varchar (128) ,
@@ -96,13 +96,13 @@ class Database
 									        CODE_POSTAL      Varchar (5) ,
 									        LOCALITE         Varchar (128) ,
 									        DATE_INSCRIPTION Datetime ,
-									        ID_CONNEXION     Int NOT NULL ,
+									        ID_CONNEXION     int NOT NULL ,
 									        PRIMARY KEY (ID_UTILISATEUR )
 										)ENGINE=InnoDB;");
 		}
 		catch(PDOException $pdoe)
 		{
-			echo '<p>'.$pdoe->getMessage().'</p>';
+			print '<p>'.$pdoe->getMessage().'</p>';
 		}
 	}
 	

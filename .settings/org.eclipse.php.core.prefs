@@ -1,4 +1,4 @@
 eclipse.preferences.version=1
-include_path=0;/NaturalCorner
+include_path=0;/NaturalCorner\u00050;/NaturalCorner/stylesheets\u00050;/NaturalCorner/.settings\u00050;/NaturalCorner/actions\u00050;/NaturalCorner/tests\u00050;/NaturalCorner/model\u00050;/NaturalCorner/views\u00050;/NaturalCorner/exceptions\u00050;/NaturalCorner/.project
 phpVersion=php5.6
 use_asp_tags_as_php=false

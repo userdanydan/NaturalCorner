@@ -1,5 +1,6 @@
 <?php
 
+require_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/exceptions/UtilisateurException.class.php';
 require_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/model/Utilisateur.class.php';
 
 /**
@@ -20,7 +21,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
     	$this->object = new Utilisateur("Daniel", "Dan", "DanyDan", "caca", "truc@troc.tr", "rue des petites fleurs 5",
-    			"1070", "Anderlecht", new DateTime(), "192.168.0.1");       
+    			"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");       
     }
 
     /**
@@ -38,7 +39,10 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testSetId()
     {
-    	    	 
+    	// Remove the following lines when you implement this test.
+    	$this->markTestIncomplete(
+    			'This test has not been implemented yet.'
+    			);
     }
 
     /**
@@ -47,9 +51,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetId()
     {
-    	$this->markTestIncomplete(
-    			'This test has not been implemented yet.'
-    			);
+    	$this->assertEquals($this->object->getId(), 0, "devrait afficher 0");
     	
     }
 
@@ -93,10 +95,8 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetNom()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("Dan", $this->object->getNom(), "devrait afficher Dan");
+    
     }
 
     /**
@@ -117,10 +117,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetPseudo()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("DanyDan", $this->object->getPseudo(), "devrait afficher DanyDan");
     }
 
     /**
@@ -141,10 +138,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetPass()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("caca", $this->object->getPass(), "devrait afficher caca");
     }
 
     /**
@@ -165,10 +159,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetAdresseMail()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("truc@troc.tr", $this->object->getAdresseMail(), "devrait afficher truc@troc.tr");
     }
 
     /**
@@ -189,10 +180,8 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetAdressePhysique()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("rue des petites fleurs 5", $this->object->getAdressePhysique(), "devrait afficher rue des petites fleurs 5");
+    	
     }
 
     /**
@@ -213,10 +202,8 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetCodePostal()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("1070", $this->object->getCodePostal(), "devrait afficher 1070");
+    	
     }
 
     /**
@@ -237,12 +224,9 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetLocalite()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("Anderlecht", $this->object->getLocalite(), "devrait afficher Anderlecht");
+    	
     }
-
     /**
      * @covers Utilisateur::setDateInscription
      * @todo Implement testSetDateInscription().
@@ -261,12 +245,10 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetDateInscription()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    	
+        $this->assertEquals(new DateTime("2015-01-01T00:00:00"), $this->object->getDateInscription(), "devrait afficher 2015-01-01T00:00:00");
+    	
     }
-
     /**
      * @covers Utilisateur::setIdConnexion
      * @todo Implement testSetIdConnexion().
@@ -285,10 +267,8 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetIdConnexion()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("192.168.0.1", $this->object->getIdConnexion(), "devrait afficher 192.168.0.1");
+    	
     }
 }
 ?>
