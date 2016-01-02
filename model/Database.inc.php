@@ -10,51 +10,7 @@ class Database
 	 */
 	public function __construct() 
 	{
-		if (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'Google App Engine') !== false) 
-		{
-			// Connect from App Engine.
-			try{
-				$dbPass = "";
-				$dbLogin = "root";
-				
-				$url = 'mysql:unix_socket=/cloudsql/naturalcorner:naturalcornerdb;dbname=NATURAL_CORNER';
-				$this->connection = new PDO($url, $dbLogin, $dbPass);
-			}catch(PDOException $ex){
-				echo '<p>'.$ex->getMessage().'</p>';
-				$this->createDataBase();
-				die(json_encode(
-						array('outcome' => false, 'message' => 'Unable to connect to google app engine.1')
-								)
-				);
-			}
-		} else {
-			// Connect from a development environment.
-			try{
-				 $this->connection= new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '');
-			}catch(PDOException $ex){
-				echo '<p>'.$ex->getMessage().'</p>';
-				$this->createDataBase();
-				die(json_encode(
-						array('outcome' => false, 'message' => 'Unable to connect to localhost1')
-				)
-				);
-			}
-		}
-	}
-	/**
-	 * Initialise la base de données ouverte dans la variable $connection.
-	 * Cette méthode crée, si elles n'existent pas, les trois tables :
-	 * - une table users(nickname char(20), password char(50));
-	 * - une table surveys(id integer primary key autoincrement,
-	 *						owner char(20), question char(255));
-	 * - une table responses(id integer primary key autoincrement,
-	 *		id_survey integer,
-	 *		title char(255),
-	 *		count integer);
-	 */
-	private function createDataBase() 
-	{
-		if (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'Google App Engine') !== false) 
+	if (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'Google App Engine') !== false)
 		{
 			// Connect from App Engine.
 			try{
@@ -66,19 +22,53 @@ class Database
 				echo '<p>'.$ex->getMessage().'</p>';
 				die(json_encode(
 						array('outcome' => false, 'message' => 'Unable to connect to google app engine.2')
-								)
-				);
+						)
+						);
 			}
 		} else {
 			// Connect from a development environment.
 			try{
-				$this->connection = new pdo('mysql:host=127.0.0.1:3306;', 'root', '');
+				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+			}catch(PDOException $ex){
+				echo '<p>'.$ex->getMessage().'</p>';
+				$this->createDataBase();
+				die(json_encode(
+						array('outcome' => false, 'message' => 'Unable to connect to localhost2')
+						)
+						);
+			}
+		}
+	}
+	/**
+	 * Initialise la base de données ouverte dans la variable $connection.
+	 */
+	private function createDataBase() 
+	{
+		if (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'Google App Engine') !== false)
+		{
+			// Connect from App Engine.
+			try{
+				$dbPass = "";
+				$dbLogin = "root";
+				$url = 'mysql:unix_socket=/cloudsql/naturalcorner:naturalcornerdb;';
+				$this->connection = new PDO($url, $dbLogin, $dbPass);
+			}catch(PDOException $ex){
+				echo '<p>'.$ex->getMessage().'</p>';
+				die(json_encode(
+						array('outcome' => false, 'message' => 'Unable to connect to google app engine.2')
+						)
+						);
+			}
+		} else {
+			// Connect from a development environment.
+			try{
+				$this->connection = new pdo('mysql:host=127.0.0.1:3306;', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 			}catch(PDOException $ex){
 				echo '<p>'.$ex->getMessage().'</p>';
 				die(json_encode(
 						array('outcome' => false, 'message' => 'Unable to connect to localhost2')
-				)
-				);
+						)
+						);
 			}
 		}
 		$this->connection->exec("CREATE DATABASE IF NOT EXISTS NATURAL_CORNER_TEST CHARACTER SET 'utf8'");
@@ -96,7 +86,7 @@ class Database
 									        CODE_POSTAL      Varchar (5) ,
 									        LOCALITE         Varchar (128) ,
 									        DATE_INSCRIPTION Datetime ,
-									        ID_CONNEXION     int NOT NULL ,
+									        ID_CONNEXION     Varchar(128) NOT NULL ,
 									        PRIMARY KEY (ID_UTILISATEUR )
 										)ENGINE=InnoDB;");
 		}
@@ -104,6 +94,67 @@ class Database
 		{
 			print '<p>'.$pdoe->getMessage().'</p>';
 		}
+	}
+	// copier coller du site Google App Engine PHP
+	private function creerConnexion(){
+		if (isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'Google App Engine') !== false)
+		{
+			// Connect from App Engine.
+			try{
+				$dbPass = "";
+				$dbLogin = "root";
+				$url = 'mysql:unix_socket=/cloudsql/naturalcorner:naturalcornerdb;';
+				$this->connection = new PDO($url, $dbLogin, $dbPass);
+			}catch(PDOException $ex){
+				echo '<p>'.$ex->getMessage().'</p>';
+				die(json_encode(
+						array('outcome' => false, 'message' => 'Unable to connect to google app engine.2')
+						)
+						);
+			}
+		} else {
+			// Connect from a development environment.
+			try{
+				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+			}catch(PDOException $ex){
+				echo '<p>'.$ex->getMessage().'</p>';
+				die(json_encode(
+						array('outcome' => false, 'message' => 'Unable to connect to localhost2')
+						)
+						);
+			}
+		}
+	}
+	public function getUser($prenom, $nom, $pseudo){
+		$this->creerConnexion();		
+		$requete = $this->connection->prepare(" SELECT *
+												FROM UTILISATEURS
+												WHERE NOM=:NOM AND PRENOM=:PRENOM AND PSEUDO=:PSEUDO");
+		$requete->execute(array(':PRENOM'=>$prenom, ':NOM'=>$nom, ':PSEUDO'=>$pseudo));
+		$ligneBDD = $requete->fetch();
+		$utilisateur = new Utilisateur($ligneBDD["PRENOM"], $ligneBDD["NOM"], $ligneBDD["PSEUDO"], $ligneBDD["PASS"], $ligneBDD["ADRESSE_MAIL"],
+				$ligneBDD["ADRESSE_PHYSIQUE"], $ligneBDD["CODE_POSTAL"], $ligneBDD["LOCALITE"], new DateTime($ligneBDD["DATE_INSCRIPTION"]), $ligneBDD["ID_CONNEXION"]);
+		return $utilisateur;
+	}
+	public function addUser($utilisateur){
+		$this->creerConnexion();
+		$requete = $this->connection->prepare(" INSERT INTO UTILISATEURS(PRENOM, NOM, PSEUDO, PASS, ADRESSE_MAIL, ADRESSE_PHYSIQUE,
+													CODE_POSTAL, LOCALITE, DATE_INSCRIPTION, ID_CONNEXION)
+												VALUES(:PRENOM, :NOM, :PSEUDO, :PASS, :ADRESSE_MAIL, :ADRESSE_PHYSIQUE,
+													:CODE_POSTAL, :LOCALITE, :DATE_INSCRIPTION, :ID_CONNEXION)");
+		$insertionReussie = $ligneBDD = $requete->execute(array(
+				':PRENOM'=>$utilisateur->getPrenom(),
+				':NOM'=>$utilisateur->getNom(), 
+				':PSEUDO'=>$utilisateur->getPSeudo(), 
+				':PASS'=>$utilisateur->getPass(), 
+				':ADRESSE_MAIL'=>$utilisateur->getAdresseMail(), 
+				':ADRESSE_PHYSIQUE'=>$utilisateur->getAdressePhysique(),
+				':CODE_POSTAL'=>$utilisateur->getCodePostal(), 
+				':LOCALITE'=>$utilisateur->getLocalite(), 
+				':DATE_INSCRIPTION'=>$utilisateur->getDateInscription()->format('Y-m-d H:i:s'), 
+				':ID_CONNEXION'=>$utilisateur->getIdConnexion()
+		));
+		return $insertionReussie;
 	}
 	
 // 	/**

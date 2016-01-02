@@ -20,7 +20,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-    	$this->object = new Utilisateur("Daniel", "Dan", "DanyDan", "caca", "truc@troc.tr", "rue des petites fleurs 5",
+    	$this->object = new Utilisateur("Daniel", "Dan", "DanyDan", "motdepasse", "truc@troc.tr", "rue des petites fleurs 5",
     			"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");       
     }
 
@@ -138,7 +138,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetPass()
     {
-        $this->assertEquals("caca", $this->object->getPass(), "devrait afficher caca");
+        $this->assertEquals("motdepasse", $this->object->getPass(), "devrait afficher motdepasse");
     }
 
     /**
