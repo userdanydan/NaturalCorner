@@ -10,8 +10,9 @@ require_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/model/Database
  */
 class TestDataBase extends PHPUnit_Framework_TestCase
 {
-	protected $object;
+	protected $bdd;
 	protected $connection;
+	protected $utilisateur;
 	
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -19,7 +20,9 @@ class TestDataBase extends PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
-		
+		$this->bdd = new Database();
+		$this->utilisateur = new Utilisateur("Daniel", "Dan", "DanyDan", md5("motdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
+				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
 	}
 	/**
 	 * Tears down the fixture, for example, closes a network connection.
@@ -27,16 +30,18 @@ class TestDataBase extends PHPUnit_Framework_TestCase
 	 */
 	protected function tearDown()
 	{
-		unset($this->object);
+		unset($this->utilisateur);
+		unset($this->bdd);
 	}
 	
 	/**
-	 * @covers Utilisateur::setId
+	 * @covers Database::__construct
+	 * @covers Database::createDatabase();
 	 * @todo Implement testSetId().
 	 */
 	public function testCreateDatabase()
 	{
-		$this->object = new Database();
+
 		try{
 			$this->connection= new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '');
 		}catch(PDOException $ex){
@@ -62,36 +67,145 @@ class TestDataBase extends PHPUnit_Framework_TestCase
 					);
 		}
 	}
+	/**
+	 * @depends testCreateDatabase
+	 * @covers Database::addUser()
+	 */
 	public function testAddUser(){
-		$this->object = new Database();
-		$utilisateur = new Utilisateur("Daniel", "Dan", "DanyDan", md5("motdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
-				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
-		$insertionReussie = $this->object->addUser($utilisateur);
+		//teste si le booléen "flag" indique que l'insertion s'est réalisée correctement.
+		$insertionReussie = $this->bdd->addUser($this->utilisateur);
 		$this->assertTrue($insertionReussie);
 	}
+	/**
+	 * @depends testAddUser
+	 * @covers Database::getUser()
+	 * @covers Database::addUser()
+	 */
 	public function testGetUser(){
-		$this->object = new Database();
-		$utilisateurRecupere = $this->object->getUser("Daniel", "Dan", "DanyDan");
+		$utilisateurRecupere = $this->bdd->getUser("Daniel", "Dan", "DanyDan");
 		//Il serait bien que l'objet récupéré soit du type utilisateur.
 		$this->assertTrue($utilisateurRecupere instanceOf Utilisateur);
-		//print_r($utilisateurRecupere);
+		//et vérifie par la même occasion que la méthode addUser() fonctionne.
 		$this->assertEquals("Daniel", $utilisateurRecupere->getPrenom(), "aurait dû afficher Daniel");		
 	}
+	/**
+	 * @depends testGetUser
+	 * @depends testAddUser
+	 * @covers Database::getUser()
+	 * @covers Database::addUser()
+	 * @covers Database::removeUser()
+	 */
 	public function testRemoveUser(){
-		$this->object = new Database();
-		$this->object->removeUser(1);
-		$this->assertNull($this->object->getUser("Daniel", "Dan", "DanyDan"));		
+		$utilisateurDeplace = $this->bdd->removeUser("Daniel", "Dan", "DanyDan");
+		//une fois retiré de la base de données, les résultats de getUser->getNom() doivent être null.
+		$this->assertNull($this->bdd->getUser("Daniel", "Dan", "DanyDan")->getNom());
+		$this->assertNull($this->bdd->getUser("Daniel", "Dan", "DanyDan")->getPrenom());
+		$this->assertNull($this->bdd->getUser("Daniel", "Dan", "DanyDan")->getPseudo());
+		//boolée "flag" nous mettant au courant que l'opération "remove" a bien fonctionné. 
+		$this->assertTrue($utilisateurDeplace);
+		
+		
+		// Testons encore les trois méthodes add, remove et get. 
+		//L'ajout des dépendances en commentaire de la méthode nous assure que les tests se déroulent dans le bon ordre.
+		
+		$insertionUtilisateur1 = $this->bdd->addUser(new Utilisateur("prenom1", "nom1", "pseudo1", md5("motdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
+				"1040", "Etterbeek", new DateTime("2015-01-01T00:00:00"), "192.168.0.1"));
+		$insertionUtilisateur2 =$this->bdd->addUser(new Utilisateur("prenom2", "nom2", "pseudo2", md5("motdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
+				"1040", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1"));
+		$insertionUtilisateur3 =$this->bdd->addUser(new Utilisateur("prenom3", "nom3", "pseudo3", md5("motdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
+				"1040", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1"));
+		
+		//utilisateur1
+		
+		$this->assertTrue($insertionUtilisateur1);
+		$utilisateur1 = $this->bdd->getUser("prenom1", "nom1", "pseudo1");
+		$this->assertTrue($utilisateur1 instanceOf Utilisateur);
+		$this->assertEquals("prenom1", $utilisateur1->getPrenom(), "aurait dû afficher prenom1");
+		$this->assertEquals("nom1", $utilisateur1->getNom(), "aurait dû afficher nom1");
+		$this->assertEquals("pseudo1", $utilisateur1->getPseudo(), "aurait dû afficher pseudo1");
+		
+		//utilisateur2
+		
+		$this->assertTrue($insertionUtilisateur2);
+		$utilisateur2 = $this->bdd->getUser("prenom2", "nom2", "pseudo2");
+		$this->assertTrue($utilisateur2 instanceOf Utilisateur);
+		$this->assertEquals("prenom2", $utilisateur2->getPrenom(), "aurait dû afficher prenom2");
+		$this->assertEquals("nom2", $utilisateur2->getNom(), "aurait dû afficher nom2");
+		$this->assertEquals("pseudo2", $utilisateur2->getPseudo(), "aurait dû afficher pseudo2");
+		
+		//utilisateur3
+		
+		$this->assertTrue($insertionUtilisateur3);
+		$utilisateur3 = $this->bdd->getUser("prenom3", "nom3", "pseudo3");
+		$this->assertTrue($utilisateur3 instanceOf Utilisateur);
+		$this->assertEquals("prenom3", $utilisateur3->getPrenom(), "aurait dû afficher prenom3");
+		$this->assertEquals("nom3", $utilisateur3->getNom(), "aurait dû afficher nom3");
+		$this->assertEquals("pseudo3", $utilisateur3->getPseudo(), "aurait dû afficher pseudo3");
+		
+		
+		// test de removeUser()
+		$utilisateurRetire1 = $this->bdd->removeUser("prenom1", "nom1", "pseudo1");
+		$this->assertTrue($utilisateurRetire1);
+		
+		$this->assertNull($this->bdd->getUser("prenom1", "nom1", "pseudo1")->getNom());
+		$this->assertNull($this->bdd->getUser("prenom1", "nom1", "pseudo1")->getPrenom());
+		$this->assertNull($this->bdd->getUser("prenom1", "nom1", "pseudo1")->getPseudo());
+		
+		$utilisateurRetire2 = $this->bdd->removeUser("prenom2", "nom2", "pseudo2");
+		$this->assertTrue($utilisateurRetire2);
+		
+		$this->assertNull($this->bdd->getUser("prenom2", "nom2", "pseudo2")->getNom());
+		$this->assertNull($this->bdd->getUser("prenom2", "nom2", "pseudo2")->getPrenom());
+		$this->assertNull($this->bdd->getUser("prenom2", "nom2", "pseudo2")->getPseudo());
+				
+		$utilisateurRetire3 = $this->bdd->removeUser("prenom3", "nom3", "pseudo3");
+		$this->assertTrue($utilisateurRetire3);
+		
+		$this->assertNull($this->bdd->getUser("prenom3", "nom3", "pseudo3")->getNom());
+		$this->assertNull($this->bdd->getUser("prenom3", "nom3", "pseudo3")->getPrenom());
+		$this->assertNull($this->bdd->getUser("prenom3", "nom3", "pseudo3")->getPseudo());
+		
 	}
+	/**
+	 * @depends testCreateDatabase
+	 * @covers Database::getUser()
+	 * @covers Database::addUser()
+	 */
 	public function testUpdateUser(){
-		$this->object = new Database();
+		//j'ajoute  l'utilisateur standard des tests.
+		$this->bdd->addUser($this->utilisateur);
+		//vérifications
+		$this->assertEquals(
+				$this->utilisateur->getPrenom(), 
+				$this->bdd->getUser(
+						$this->utilisateur->getPrenom(), 
+						$this->utilisateur->getNom(), 
+						$this->utilisateur->getPseudo()
+						           )->getPrenom()
+		);
+		//modification
+		$utilisateurMAJ = new Utilisateur("Daniel", "Dan", "DanyDan", md5("motdepasse"), "COUCOUCOU@troc.tr", "rue des petites fleurs 5",
+				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
+		$this->bdd->updateUser($utilisateurMAJ, "Daniel", "Dan", "DanyDan");
+		
+		$this->assertEquals(
+				"COUCOUCOU@troc.tr",
+				$this->bdd->getUser(
+						$this->utilisateur->getPrenom(),
+						$this->utilisateur->getNom(),
+						$this->utilisateur->getPseudo()
+						)->getAdresseMail(),
+				"Aurait dû afficher COUCOUCOU@troc.tr");
+
+		
 		//je change uniquement le mot de passe.
 		$utilisateur = new Utilisateur("Daniel", "Dan", "DanyDan", md5("nouveaumotdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
 				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
-		$this->object->updateUser("Daniel", "Dan", "DanyDan", $utilisateur);
-		// L'utilisateur de ID 1 reçoit un nouveau mot de passe. 
+		$this->bdd->updateUser($utilisateur, "Daniel", "Dan", "DanyDan");
+		// L'utilisateur reçoit un nouveau mot de passe. 
 		$hashDuMotDePasse = md5("nouveaumotdepasse");
 		//Voyons si le hash correspond à celui de la base de données.
-		$utilisateurUpdate = $this->object->getUser("Daniel", "Dan", "DanyDan");
+		$utilisateurUpdate = $this->bdd->getUser("Daniel", "Dan", "DanyDan");
 		$this->assertEquals($hashDuMotDePasse, $utilisateurUpdate->getPass());
 	}
 

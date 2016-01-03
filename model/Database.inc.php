@@ -132,29 +132,86 @@ class Database
 												WHERE NOM=:NOM AND PRENOM=:PRENOM AND PSEUDO=:PSEUDO");
 		$requete->execute(array(':PRENOM'=>$prenom, ':NOM'=>$nom, ':PSEUDO'=>$pseudo));
 		$ligneBDD = $requete->fetch();
-		$utilisateur = new Utilisateur($ligneBDD["PRENOM"], $ligneBDD["NOM"], $ligneBDD["PSEUDO"], $ligneBDD["PASS"], $ligneBDD["ADRESSE_MAIL"],
-				$ligneBDD["ADRESSE_PHYSIQUE"], $ligneBDD["CODE_POSTAL"], $ligneBDD["LOCALITE"], new DateTime($ligneBDD["DATE_INSCRIPTION"]), $ligneBDD["ID_CONNEXION"]);
+		$utilisateur = new Utilisateur($ligneBDD["PRENOM"], $ligneBDD["NOM"], $ligneBDD["PSEUDO"], 
+										$ligneBDD["PASS"], $ligneBDD["ADRESSE_MAIL"],
+										$ligneBDD["ADRESSE_PHYSIQUE"], $ligneBDD["CODE_POSTAL"], $ligneBDD["LOCALITE"], 
+										new DateTime($ligneBDD["DATE_INSCRIPTION"]), $ligneBDD["ID_CONNEXION"]);
+		$requete->closeCursor();
 		return $utilisateur;
 	}
 	public function addUser($utilisateur){
-		$this->creerConnexion();
-		$requete = $this->connection->prepare(" INSERT INTO UTILISATEURS(PRENOM, NOM, PSEUDO, PASS, ADRESSE_MAIL, ADRESSE_PHYSIQUE,
-													CODE_POSTAL, LOCALITE, DATE_INSCRIPTION, ID_CONNEXION)
-												VALUES(:PRENOM, :NOM, :PSEUDO, :PASS, :ADRESSE_MAIL, :ADRESSE_PHYSIQUE,
-													:CODE_POSTAL, :LOCALITE, :DATE_INSCRIPTION, :ID_CONNEXION)");
-		$insertionReussie = $ligneBDD = $requete->execute(array(
-				':PRENOM'=>$utilisateur->getPrenom(),
-				':NOM'=>$utilisateur->getNom(), 
-				':PSEUDO'=>$utilisateur->getPSeudo(), 
-				':PASS'=>$utilisateur->getPass(), 
-				':ADRESSE_MAIL'=>$utilisateur->getAdresseMail(), 
-				':ADRESSE_PHYSIQUE'=>$utilisateur->getAdressePhysique(),
-				':CODE_POSTAL'=>$utilisateur->getCodePostal(), 
-				':LOCALITE'=>$utilisateur->getLocalite(), 
-				':DATE_INSCRIPTION'=>$utilisateur->getDateInscription()->format('Y-m-d H:i:s'), 
-				':ID_CONNEXION'=>$utilisateur->getIdConnexion()
-		));
+		$insertionReussie=false;
+		if($utilisateur instanceof Utilisateur){
+			$this->creerConnexion();
+			$requete = $this->connection->prepare(" INSERT INTO UTILISATEURS(PRENOM, NOM, PSEUDO, PASS, ADRESSE_MAIL, ADRESSE_PHYSIQUE,
+														CODE_POSTAL, LOCALITE, DATE_INSCRIPTION, ID_CONNEXION)
+													VALUES(:PRENOM, :NOM, :PSEUDO, :PASS, :ADRESSE_MAIL, :ADRESSE_PHYSIQUE,
+														:CODE_POSTAL, :LOCALITE, :DATE_INSCRIPTION, :ID_CONNEXION)");
+			$insertionReussie = $requete->execute(array(
+					':PRENOM'=>$utilisateur->getPrenom(),
+					':NOM'=>$utilisateur->getNom(), 
+					':PSEUDO'=>$utilisateur->getPSeudo(), 
+					':PASS'=>$utilisateur->getPass(), 
+					':ADRESSE_MAIL'=>$utilisateur->getAdresseMail(), 
+					':ADRESSE_PHYSIQUE'=>$utilisateur->getAdressePhysique(),
+					':CODE_POSTAL'=>$utilisateur->getCodePostal(), 
+					':LOCALITE'=>$utilisateur->getLocalite(), 
+					':DATE_INSCRIPTION'=>$utilisateur->getDateInscription()->format('Y-m-d H:i:s'), 
+					':ID_CONNEXION'=>$utilisateur->getIdConnexion()
+			));
+			$requete->closeCursor();
+		}
 		return $insertionReussie;
+	}
+	public function removeUser($prenom, $nom, $pseudo){
+		$estDetruit;
+		$this->creerConnexion();
+		$requete = $this->connection->prepare(" DELETE FROM UTILISATEURS
+												WHERE NOM=:NOM AND 
+													  PRENOM=:PRENOM AND 
+													  PSEUDO=:PSEUDO");
+		$estDetruit = $requete->execute(array(
+				':PRENOM'=>$prenom,
+				':NOM'=>$nom,
+				':PSEUDO'=>$pseudo
+		));
+		$requete->closeCursor();
+		return $estDetruit;
+		
+	}
+	
+	public function updateUser($utilisateurMisAJour, $prenom, $nom, $pseudo){
+		$estMisAJour=false;
+		if($utilisateurMisAJour instanceof Utilisateur){
+			$this->creerConnexion();
+			$requete = $this->connection->prepare(" UPDATE UTILISATEURS
+													SET PRENOM=:prenom, NOM=:nom, PSEUDO=:pseudo, 
+														PASS=:pass, ADRESSE_MAIL=:adresse_mail, 
+														ADRESSE_PHYSIQUE=:adresse_physique,
+														CODE_POSTAL=:code_postal, LOCALITE=:localite, 
+														DATE_INSCRIPTION=:date_inscription, 
+														ID_CONNEXION=:id_connexion
+													WHERE NOM=:NOMT AND
+														  PRENOM=:PRENOMT AND
+														  PSEUDO=:PSEUDOT");
+			$estMisAJour = $requete->execute(array(
+					':prenom'=> $utilisateurMisAJour->getPrenom(),
+					':nom'=> $utilisateurMisAJour->getNom(),
+					':pseudo'=> $utilisateurMisAJour->getPseudo(),
+					':pass'=> $utilisateurMisAJour->getPass() ,
+					':adresse_mail' => $utilisateurMisAJour->getAdresseMail(),
+					':adresse_physique' => $utilisateurMisAJour->getAdressePhysique(),
+					':code_postal' => $utilisateurMisAJour->getCodePostal(),
+					':localite' => $utilisateurMisAJour->getLocalite(),
+					':date_inscription' => $utilisateurMisAJour->getDateInscription()->format('Y-m-d H:i:s'),
+					':id_connexion' =>$utilisateurMisAJour->getIdConnexion(),
+					':PRENOMT'=>$prenom,
+					':NOMT'=>$nom,
+					':PSEUDOT'=>$pseudo
+			));
+			$requete->closeCursor();
+		}
+		return $estMisAJour;
 	}
 	
 // 	/**
