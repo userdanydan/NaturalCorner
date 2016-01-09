@@ -1,15 +1,15 @@
 <?php
 include_once("views/View.inc.php");
 
-class DefaultView extends View {
+class LoginView extends View {
 	
 	/**
-	 * Affiche une page avec le header et le footer.
+	 * Affiche une page avec le login.
 	 *
 	 * @see View::displayBody()
 	 */
 	protected function displayBody() {
-			
+		include('views/templates/loginform.inc.php');
 	}
 }
 ?>

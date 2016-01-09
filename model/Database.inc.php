@@ -125,6 +125,13 @@ class Database
 			}
 		}
 	}
+	/**
+	 * Recherche dans la base de donnée un utilisateur selon son prénom, nom et pseudo.
+	 * @param string  le prénom
+	 * @param string  le nom
+	 * @param string  le pseudo
+	 * @return Utilisateur  l'utilisateur recherché. 
+	 */
 	public function getUser($prenom, $nom, $pseudo){
 		$this->creerConnexion();		
 		$requete = $this->connection->prepare(" SELECT *
@@ -139,6 +146,11 @@ class Database
 		$requete->closeCursor();
 		return $utilisateur;
 	}
+	/**
+	 * Ajoute dans la base de donnée un utilisateur.
+	 * @param Utilisateur l'utilisateur à insérer.
+	 * @return boolean indique si l'insertion est réussie.
+	 */
 	public function addUser($utilisateur){
 		$insertionReussie=false;
 		if($utilisateur instanceof Utilisateur){
@@ -163,6 +175,13 @@ class Database
 		}
 		return $insertionReussie;
 	}
+	/**
+	 * Retire de la base de donnée un utilisateur.
+	 * @param string $prenom -> le prénom
+	 * @param string $nom -> le nom
+	 * @param string $pseudo -> le pseudo
+	 * @return boolean indique si le retrait est réussie.
+	 */
 	public function removeUser($prenom, $nom, $pseudo){
 		$estDetruit;
 		$this->creerConnexion();
@@ -179,7 +198,14 @@ class Database
 		return $estDetruit;
 		
 	}
-	
+	/**
+	 * Met à jour dans la base de donnée un utilisateur.
+	 * @param Utilisateur $utilisateurMisAJour -> un utilisateur avec les nouvelles données.
+	 * @param string $prenom -> le prénom
+	 * @param string $nom -> le nom
+	 * @param string $pseudo -> le pseudo
+	 * @return boolean indique si la mise à jour est réussie.
+	 */
 	public function updateUser($utilisateurMisAJour, $prenom, $nom, $pseudo){
 		$estMisAJour=false;
 		if($utilisateurMisAJour instanceof Utilisateur){
@@ -212,6 +238,24 @@ class Database
 			$requete->closeCursor();
 		}
 		return $estMisAJour;
+	}
+	/**
+	 * Vérifie qu'un couple (pseudonyme, mot de passe) est correct.
+	 *
+	 * @param string $nickname Pseudonyme.
+	 * @param string $password Mot de passe.
+	 * @return boolean True si le couple est correct, false sinon.
+	 */
+	public function checkPassword($nickname, $password)
+	{
+		$req = $this->connection->prepare("SELECT PSEUDO, PASS
+										   FROM UTILISATEURS
+										   WHERE PSEUDO=? AND PASS=?");
+		$req->execute(array($nickname, md5($password)));
+		if(count($req->fetchAll())>0)
+			return true;
+		else
+			return false;
 	}
 	
 // 	/**

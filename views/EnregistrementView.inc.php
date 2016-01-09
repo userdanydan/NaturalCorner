@@ -1,7 +1,7 @@
 <?php
 include_once("views/View.inc.php");
 
-class DefaultView extends View {
+class EnregistrementView extends View {
 	
 	/**
 	 * Affiche une page avec le header et le footer.
@@ -9,7 +9,7 @@ class DefaultView extends View {
 	 * @see View::displayBody()
 	 */
 	protected function displayBody() {
-			
+		include('views/templates/enregistrement');
 	}
 }
 ?>

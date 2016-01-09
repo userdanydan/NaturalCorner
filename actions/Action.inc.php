@@ -1,16 +1,20 @@
 <?php
+require_once("vendor/facebook/php-sdk-v4/src/Facebook/autoload.php");
+
+
 include_once("model/Database.inc.php");
+include_once("model/Utilisateur.class.php");
 
 abstract class Action {
 	private $view;
 	protected $database;
-
 	/**
 	 * Construit une instance de la classe Action.
 	 */
 	public function __construct(){
 		$this->view = null;
 		$this->database = new Database();
+		
 	}
 	/**
 	 * Fixe la vue qui doit être affichée par le contrôleur.

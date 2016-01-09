@@ -86,6 +86,7 @@ class Utilisateur{
 	//TODO verifier les paramètres en entrées.
 	/**
 	 * @param id : id->
+	 * @throws UtilisateurExceptions
 	 */
 	public function setId($id){
 		$id=(int)$id;
@@ -98,7 +99,8 @@ class Utilisateur{
 		return $this->_id;
 	}
 	/**
-	 * @param pr : prénom->
+	 * @param pr : prénom
+	 * @throws UtilisateurException 
 	 */
 	public function setPrenom($pr){
 		$pr = trim($pr);
@@ -112,7 +114,8 @@ class Utilisateur{
 		return $this->_prenom;
 	}
 	/**
-	 * @param nom : nom->
+	 * @param nom : nom
+	 * @throws UtilisateurException 
 	 */
 	public function setNom($nom){
 		$nom = trim($nom);
@@ -126,7 +129,8 @@ class Utilisateur{
 		return $this->_nom;
 	}
 	/**
-	 * @param pseudo : pseudo->
+	 * @param pseudo : pseudo
+	 * @throws UtilisateurException 
 	 */
 	public function setPseudo($pseudo){
 		$pseudo = trim($pseudo);
@@ -141,30 +145,54 @@ class Utilisateur{
 	}
 	/**
 	 * @param pass : mot de passe->
+	 * @throws UtilisateurException 
 	 */
 	public function setPass($pass){
 		$pass = trim($pass);
 		if( strlen($pass)!=0 AND preg_match('#^.{6,128}$#', $pass) ){
 			$this->_pass = $pass;
 		}else{
-			throw new UtilisateurException("<strong>Veuillez introduire un pseudo d'au moins 6 caractères.</strong>");
+			throw new UtilisateurException("<strong>Veuillez introduire un mot de passe d'au moins 6 caractères.</strong>");
 		}
 	}
 	public function getPass(){
 		return $this->_pass;
 	}
+	/**
+	 * @param $adr : adresse e-mail
+	 * @throws UtilisateurException 
+	 */
 	public function setAdresseMail($adr){
-		$this->_adresseMail=$adr;
+		$adr = trim($adr);
+		if( strlen($pass)!=0 AND preg_match('#^+.+..+$#', $adr) ){
+			$this->_adresseMail = $adr;
+		}else{
+			throw new UtilisateurException("<strong>Veuillez introduire une adresse e-mail valide</strong>");
+		}
 	}
 	public function getAdresseMail(){
 		return $this->_adresseMail;
 	}
+	/**
+	 * @param $adr : adresse physique
+	 * @throws UtilisateurException
+	 */
+	//TODO API Google map pour checker l'existence de l'adresse. 
 	public function setAdressePhysique($adr){
-		$this->_adressePhysique=$adr;
+		$adr = trim($adr);
+		if( strlen($pass)!=0 AND preg_match('#^+.$#', $adr) ){
+			$this->_adresseMail = $adr;
+		}else{
+			throw new UtilisateurException("<strong>Veuillez introduire une adresse valide</strong>");
+		}
 	}
 	public function getAdressePhysique(){
 		return $this->_adressePhysique;
 	}
+	/**
+	 * @param $adr : code postal
+	 * @throws UtilisateurException
+	 */
 	public function setCodePostal($cod){
 		$this->_codePostal=$cod;
 	}
