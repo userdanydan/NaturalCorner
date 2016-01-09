@@ -168,7 +168,7 @@ class Database
 					':ADRESSE_PHYSIQUE'=>$utilisateur->getAdressePhysique(),
 					':CODE_POSTAL'=>$utilisateur->getCodePostal(), 
 					':LOCALITE'=>$utilisateur->getLocalite(), 
-					':DATE_INSCRIPTION'=>$utilisateur->getDateInscription()->format('Y-m-d H:i:s'), 
+					':DATE_INSCRIPTION'=>$utilisateur->getDateInscription(), 
 					':ID_CONNEXION'=>$utilisateur->getIdConnexion()
 			));
 			$requete->closeCursor();
@@ -229,7 +229,7 @@ class Database
 					':adresse_physique' => $utilisateurMisAJour->getAdressePhysique(),
 					':code_postal' => $utilisateurMisAJour->getCodePostal(),
 					':localite' => $utilisateurMisAJour->getLocalite(),
-					':date_inscription' => $utilisateurMisAJour->getDateInscription()->format('Y-m-d H:i:s'),
+					':date_inscription' => $utilisateurMisAJour->getDateInscription(),
 					':id_connexion' =>$utilisateurMisAJour->getIdConnexion(),
 					':PRENOMT'=>$prenom,
 					':NOMT'=>$nom,
@@ -251,7 +251,7 @@ class Database
 		$req = $this->connection->prepare("SELECT PSEUDO, PASS
 										   FROM UTILISATEURS
 										   WHERE PSEUDO=? AND PASS=?");
-		$req->execute(array($nickname, md5($password)));
+		$req->execute(array($nickname, password_hash($password, PASSWORD_BCRYPT_DEFAULT_COST)));
 		if(count($req->fetchAll())>0)
 			return true;
 		else

@@ -20,7 +20,8 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 	protected function setUp()
 	{
 		$this->bdd = new Database();
-		$this->utilisateur = new Utilisateur("Daniel", "Dan", "DanyDan", md5("motdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
+		$this->utilisateur = new Utilisateur("Daniel", "Dan", "DanyDan", 
+				password_hash("motdepasse", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]), "truc@troc.tr", "rue des petites fleurs 5",
 				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
 	}
 	/**
@@ -108,11 +109,14 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 		// Testons encore les trois méthodes add, remove et get. 
 		//L'ajout des dépendances en commentaire de la méthode nous assure que les tests se déroulent dans le bon ordre.
 		
-		$insertionUtilisateur1 = $this->bdd->addUser(new Utilisateur("prenom1", "nom1", "pseudo1", md5("motdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
+		$insertionUtilisateur1 = $this->bdd->addUser(new Utilisateur("prenom1", "nom1", "pseudo1", 
+				password_hash("motdepasse1", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]), "truc@troc.tr", "rue des petites fleurs 5",
 				"1040", "Etterbeek", new DateTime("2015-01-01T00:00:00"), "192.168.0.1"));
-		$insertionUtilisateur2 =$this->bdd->addUser(new Utilisateur("prenom2", "nom2", "pseudo2", md5("motdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
+		$insertionUtilisateur2 =$this->bdd->addUser(new Utilisateur("prenom2", "nom2", "pseudo2", 
+				password_hash("motdepasse2", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]), "truc@troc.tr", "rue des petites fleurs 5",
 				"1040", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1"));
-		$insertionUtilisateur3 =$this->bdd->addUser(new Utilisateur("prenom3", "nom3", "pseudo3", md5("motdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
+		$insertionUtilisateur3 =$this->bdd->addUser(new Utilisateur("prenom3", "nom3", "pseudo3", 
+				password_hash("motdepasse3", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]), "truc@troc.tr", "rue des petites fleurs 5",
 				"1040", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1"));
 		
 		//utilisateur1
@@ -121,7 +125,7 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 		$utilisateur1 = $this->bdd->getUser("prenom1", "nom1", "pseudo1");
 		$this->assertTrue($utilisateur1 instanceOf Utilisateur);
 		$this->assertEquals("prenom1", $utilisateur1->getPrenom(), "aurait dû afficher prenom1");
-		$this->assertEquals("nom1", $utilisateur1->getNom(), "aurait dû afficher nom1");
+		$this->assertEquals("nom1", $utilisateur1->getNom(), "aurait dû afficher nom1");		
 		$this->assertEquals("pseudo1", $utilisateur1->getPseudo(), "aurait dû afficher pseudo1");
 		
 		//utilisateur2
@@ -184,7 +188,8 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 						           )->getPrenom()
 		);
 		//modification
-		$utilisateurMAJ = new Utilisateur("Daniel", "Dan", "DanyDan", md5("motdepasse"), "COUCOUCOU@troc.tr", "rue des petites fleurs 5",
+		$utilisateurMAJ = new Utilisateur("Daniel", "Dan", "DanyDan", 
+				password_hash("motdepasse", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]), "COUCOUCOU@troc.tr", "rue des petites fleurs 5",
 				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
 		$this->bdd->updateUser($utilisateurMAJ, "Daniel", "Dan", "DanyDan");
 		
@@ -199,13 +204,15 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 
 		
 		//je change uniquement le mot de passe.
-		$utilisateur = new Utilisateur("Daniel", "Dan", "DanyDan", md5("nouveaumotdepasse"), "truc@troc.tr", "rue des petites fleurs 5",
+		$utilisateur = new Utilisateur("Daniel", "Dan", "DanyDan", 
+				password_hash("nouveaumotdepasse", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]), 
+				"truc@troc.tr", "rue des petites fleurs 5",
 				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
 		$this->bdd->updateUser($utilisateur, "Daniel", "Dan", "DanyDan");
 		// L'utilisateur reçoit un nouveau mot de passe. 
-		$hashDuMotDePasse = md5("nouveaumotdepasse");
 		//Voyons si le hash correspond à celui de la base de données.
 		$utilisateurUpdate = $this->bdd->getUser("Daniel", "Dan", "DanyDan");
-		$this->assertEquals($hashDuMotDePasse, $utilisateurUpdate->getPass());
+		$this->assertTrue(password_verify("nouveaumotdepasse", $utilisateurUpdate->getPass()));
+
 	}
 }

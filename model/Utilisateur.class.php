@@ -3,24 +3,24 @@ include_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/exceptions/Uti
 
 class Utilisateur{
 	/**
-	 * id de l'utilisateur. Il s'agit d'un identificateur unique entier supérieur ou égal à zero. 
+	 * id de l'utilisateur.
 	 */
 	private $_id;
 	/**
-	 * Prénom de l'utilisateur. Chaîne de caractères ayant au moins deux lettres et n'excédant pas 128 caractères.
+	 * Prénom de l'utilisateur. 
 	 */
 	private $_prenom;
 	/**
-	 * Nom de l'utilisateur. Chaîne de caractères ayant au moins deux lettres et n'excédant pas 128 caractères.
+	 * Nom de l'utilisateur. 
 	 */
 	private $_nom;
 	/**
-	 * Pseudo de l'utilisateur. Chaîne de caractères ayant au moins deux lettres et n'excédant pas 128 caractères.
+	 * Pseudo de l'utilisateur. 
 	 */
 	private $_pseudo;
 	/**
-	 * Mot de passe de l'utilisateur. Chaîne de caractères ayant au moins 6 caractères et n'excédant pas 128 caractères.
-	 */
+	 * Mot de passe de l'utilisateur. 
+	 * /
 	private $_pass;
 	/**
 	 * Adresse e-mail de l'utilisateur. 
@@ -93,7 +93,7 @@ class Utilisateur{
 		if($id>=0)
 			$this->id=$id;
 		else 
-			throw new UtilisateurException("<strong>id invalide : ".$id."</strong>");
+			throw new exceptions/UtilisateurException("<strong>id invalide : ".$id."</strong>");
 	}
 	/**
 	 * @return int L'id de l'utilisateur.
@@ -106,8 +106,13 @@ class Utilisateur{
 	 * @throws UtilisateurException : le prénom doit contenir au mois trois lettres.
 	 */
 	public function setPrenom($pr){
+		echo("coucou1");
 		$pr = trim($pr);
-		if( strlen($pr)!=0 AND preg_match('#^[^0-9a-zA-Z]{3,128}$#', $pr) ){
+		echo("coucou2");
+		
+		if( strlen($pr)!=0 AND preg_match('#^[0-9a-zA-Z]{3,128}$#', $pr) ){
+			echo("coucou3");
+				
 			$this->_prenom = $pr;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire un prénom d'au moins trois lettres et sans chiffre.</strong>");
@@ -125,7 +130,7 @@ class Utilisateur{
 	 */
 	public function setNom($nom){
 		$nom = trim($nom);
-		if( strlen($nom)!=0 AND preg_match('#^[^0-9a-zA-Z]{3,128}$#', $nom) ){
+		if( strlen($nom)!=0 AND preg_match('#^[0-9a-zA-Z]{3,128}$#', $nom) ){
 			$this->_nom = $nom;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire un prénom d'au moins trois lettres et sans chiffre.</strong>");
@@ -143,7 +148,7 @@ class Utilisateur{
 	 */
 	public function setPseudo($pseudo){
 		$pseudo = trim($pseudo);
-		if( strlen($pseudo)!=0 AND preg_match('#^[^0-9a-zA-Z]{3,128}$#', $pseudo) ){
+		if( strlen($pseudo)!=0 AND preg_match('#^[0-9a-zA-Z]{3,128}$#', $pseudo) ){
 			$this->_pseudo = $pseudo;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire un pseudo d'au moins trois lettres et sans chiffre.</strong>");
@@ -232,27 +237,74 @@ class Utilisateur{
 	public function getCodePostal(){
 		return $this->_codePostal;
 	}
+	/**
+	 * @param string : La localité de l'utilisateur.
+	 * @throws UtilisateurException : la localité doit être une chaîne de caractère non vide.
+	 */
 	public function setLocalite($loc){
-		$this->_localite=$loc;
+		$nom = trim($loc);
+		if( strlen($loc)!=0 ){
+			$this->_localite = $loc;
+		}else{
+			throw new UtilisateurException("<strong>Veuillez introduire une localité valide.</strong>");
+		}
 	}
+	/**
+	 * @return string : La localité de l'utilisateur.
+	 */
 	public function getLocalite(){
 		return $this->_localite;
 	}
-	public function setDateInscription($dat){
-		$this->_dateInscription=$dat;
+	/**
+	 * @param DateTime :  de l'utilisateur.
+	 * @throws UtilisateurException : correspond à une date de type DateTime.
+	 */
+	public function setDateInscription(DateTime $dat){
+		if($dat instanceof DateTime){
+			$this->_dateInscription=$dat;
+		}else {
+			throw new UtilisateurException("<strong>Veuillez introduire un horodatage valide.</strong>");
+		}
 	}
+	/**
+	 * @return string : retourne la date d'inscription au format ->format('Y-m-d H:i:s').
+	 */
 	public function getDateInscription(){
-		return $this->_dateInscription;
+		return $this->_dateInscription->format('Y-m-d H:i:s');
 	}
+	/**
+	 * @param string : ip de l'utilisateur.
+	 */
 	public function setIdConnexion($id){
-		$this->_idConnexion=$id;
+		$ip=trim($ip);
+		if(strlen($ip)!=0)
+			$this->_idConnexion=$id;
 	}
+	/**
+	 * @return string : retourne l'ip.
+	 */
 	public function getIdConnexion(){
 		return $this->_idConnexion;
 	}
+	/**
+	 * @return string : retourne un utilisateur.
+	 */
 	public function __toString(){
 		return "<p>".$_prenom.", ".$_nom.", ".$_pseudo.", ".$_pass.", ".$_adresseMail.
 		", ".$_adressePhysique.", ".$_codePostal.", ".$_localite.", ".$_dateInscription.", ".$_idConnexion."</p>";
+	}
+	public function __destruct(){
+		unset($this->_id);
+		unset($this->_prenom);
+		unset($this->_nom);
+		unset($this->_pseudo);
+		unset($this->_pass);
+		unset($this->_adresseMail);
+		unset($this->_adressePhysique);
+		unset($this->_codePostal);
+		unset($this->_localite);
+		unset($this->_dateInscription);
+		unset($this->_idConnexion);
 	}
 }
 
