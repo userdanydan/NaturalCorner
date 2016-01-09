@@ -151,7 +151,7 @@ class Database
 	 * @param Utilisateur l'utilisateur à insérer.
 	 * @return boolean indique si l'insertion est réussie.
 	 */
-	public function addUser($utilisateur){
+	public function addUser(Utilisateur $utilisateur){
 		$insertionReussie=false;
 		if($utilisateur instanceof Utilisateur){
 			$this->creerConnexion();
@@ -206,7 +206,7 @@ class Database
 	 * @param string $pseudo -> le pseudo
 	 * @return boolean indique si la mise à jour est réussie.
 	 */
-	public function updateUser($utilisateurMisAJour, $prenom, $nom, $pseudo){
+	public function updateUser(Utilisateur $utilisateurMisAJour, $prenom, $nom, $pseudo){
 		$estMisAJour=false;
 		if($utilisateurMisAJour instanceof Utilisateur){
 			$this->creerConnexion();

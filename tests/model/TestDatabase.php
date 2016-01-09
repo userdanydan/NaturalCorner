@@ -40,7 +40,8 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 	 */
 	public function testCreateDatabase()
 	{
-
+		// On va vérifier si la base est bien créée et que la commande "SHOW TABLES" retourne bien le nom de la table UTILISATEUR.
+		//TODO changer le test pour s'adapter à l'agrandissement de la bdd.
 		try{
 			$this->connection= new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '');
 		}catch(PDOException $ex){
@@ -96,11 +97,11 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 	 */
 	public function testRemoveUser(){
 		$utilisateurDeplace = $this->bdd->removeUser("Daniel", "Dan", "DanyDan");
-		//une fois retiré de la base de données, les résultats de getUser->getNom() doivent être null.
+		//une fois retirés de la base de données, les résultats de getUser->getNom() doivent être null.
 		$this->assertNull($this->bdd->getUser("Daniel", "Dan", "DanyDan")->getNom());
 		$this->assertNull($this->bdd->getUser("Daniel", "Dan", "DanyDan")->getPrenom());
 		$this->assertNull($this->bdd->getUser("Daniel", "Dan", "DanyDan")->getPseudo());
-		//boolée "flag" nous mettant au courant que l'opération "remove" a bien fonctionné. 
+		//booléen "flag" nous mettant au courant que l'opération "remove" a bien fonctionné. 
 		$this->assertTrue($utilisateurDeplace);
 		
 		
