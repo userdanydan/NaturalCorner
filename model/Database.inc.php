@@ -75,7 +75,9 @@ class Database
 		$test= $this->connection->exec("USE NATURAL_CORNER_TEST");
 		try
 		{
-			$this->connection->query("CREATE TABLE IF NOT EXISTS UTILISATEURS(
+			
+			$this->connection->beginTransaction(); // pour assurer le caractère ACID de la base de données.
+			$succes = $this->connection->query("CREATE TABLE IF NOT EXISTS UTILISATEURS(
 									        ID_UTILISATEUR   int (11) Auto_increment  NOT NULL ,
 									        PRENOM           Varchar (128) ,
 									        NOM              Varchar (128) ,
@@ -89,6 +91,10 @@ class Database
 									        ID_CONNEXION     Varchar(128) NOT NULL ,
 									        PRIMARY KEY (ID_UTILISATEUR )
 										)ENGINE=InnoDB;");
+			if ($success) 
+				$this->connection->commit();
+			else 
+				$this->connection->rollback();
 		}
 		catch(PDOException $pdoe)
 		{
@@ -127,24 +133,22 @@ class Database
 	}
 	/**
 	 * Recherche dans la base de donnée un utilisateur selon son prénom, nom et pseudo.
-	 * @param string  le prénom
-	 * @param string  le nom
-	 * @param string  le pseudo
+	 * @param string  l'adresse e-mail.
 	 * @return Utilisateur  l'utilisateur recherché. 
 	 */
-	public function getUser($prenom, $nom, $pseudo){
+	public function getUser($email){
 		$this->creerConnexion();		
 		$requete = $this->connection->prepare(" SELECT *
 												FROM UTILISATEURS
-												WHERE NOM=:NOM AND PRENOM=:PRENOM AND PSEUDO=:PSEUDO");
-		$requete->execute(array(':PRENOM'=>$prenom, ':NOM'=>$nom, ':PSEUDO'=>$pseudo));
+												WHERE ADRESSE_MAIL=:EMAIL");
+		$requete->execute(array(':EMAIL'=>$email));
 		$ligneBDD = $requete->fetch();
 		$utilisateur = new Utilisateur($ligneBDD["PRENOM"], $ligneBDD["NOM"], $ligneBDD["PSEUDO"], 
 										$ligneBDD["PASS"], $ligneBDD["ADRESSE_MAIL"],
 										$ligneBDD["ADRESSE_PHYSIQUE"], $ligneBDD["CODE_POSTAL"], $ligneBDD["LOCALITE"], 
 										new DateTime($ligneBDD["DATE_INSCRIPTION"]), $ligneBDD["ID_CONNEXION"]);
 		$requete->closeCursor();
-		return $utilisateur;
+		return clone $utilisateur;
 	}
 	/**
 	 * Ajoute dans la base de donnée un utilisateur.
@@ -182,17 +186,13 @@ class Database
 	 * @param string $pseudo -> le pseudo
 	 * @return boolean indique si le retrait est réussie.
 	 */
-	public function removeUser($prenom, $nom, $pseudo){
+	public function removeUser($email){
 		$estDetruit;
 		$this->creerConnexion();
 		$requete = $this->connection->prepare(" DELETE FROM UTILISATEURS
-												WHERE NOM=:NOM AND 
-													  PRENOM=:PRENOM AND 
-													  PSEUDO=:PSEUDO");
+												WHERE ADRESSE_MAIL=:EMAIL");
 		$estDetruit = $requete->execute(array(
-				':PRENOM'=>$prenom,
-				':NOM'=>$nom,
-				':PSEUDO'=>$pseudo
+				':EMAIL'=>$email
 		));
 		$requete->closeCursor();
 		return $estDetruit;
@@ -206,7 +206,7 @@ class Database
 	 * @param string $pseudo -> le pseudo
 	 * @return boolean indique si la mise à jour est réussie.
 	 */
-	public function updateUser(Utilisateur $utilisateurMisAJour, $prenom, $nom, $pseudo){
+	public function updateUser(Utilisateur $utilisateurMisAJour, $email){
 		$estMisAJour=false;
 		if($utilisateurMisAJour instanceof Utilisateur){
 			$this->creerConnexion();
@@ -217,9 +217,7 @@ class Database
 														CODE_POSTAL=:code_postal, LOCALITE=:localite, 
 														DATE_INSCRIPTION=:date_inscription, 
 														ID_CONNEXION=:id_connexion
-													WHERE NOM=:NOMT AND
-														  PRENOM=:PRENOMT AND
-														  PSEUDO=:PSEUDOT");
+													WHERE ADRESSE_MAIL=:EMAIL");
 			$estMisAJour = $requete->execute(array(
 					':prenom'=> $utilisateurMisAJour->getPrenom(),
 					':nom'=> $utilisateurMisAJour->getNom(),
@@ -231,9 +229,7 @@ class Database
 					':localite' => $utilisateurMisAJour->getLocalite(),
 					':date_inscription' => $utilisateurMisAJour->getDateInscription(),
 					':id_connexion' =>$utilisateurMisAJour->getIdConnexion(),
-					':PRENOMT'=>$prenom,
-					':NOMT'=>$nom,
-					':PSEUDOT'=>$pseudo
+					':EMAIL'=>$email
 			));
 			$requete->closeCursor();
 		}
@@ -246,16 +242,21 @@ class Database
 	 * @param string $password Mot de passe.
 	 * @return boolean True si le couple est correct, false sinon.
 	 */
-	public function checkPassword($nickname, $password)
+	public function checkPassword($email, $password)
 	{
-		$req = $this->connection->prepare("SELECT PSEUDO, PASS
-										   FROM UTILISATEURS
-										   WHERE PSEUDO=? AND PASS=?");
-		$req->execute(array($nickname, password_hash($password, PASSWORD_BCRYPT_DEFAULT_COST)));
-		if(count($req->fetchAll())>0)
-			return true;
-		else
-			return false;
+		try{
+			$req = $this->connection->prepare("SELECT PSEUDO, ADRESSE_MAIL, PASS
+											   FROM UTILISATEURS
+											   WHERE ADRESSE_MAIL=?");
+			$req->execute(array($email));
+			$ligneUtilisateur = $req->fetch();
+			if(password_verify($password, $ligneUtilisateur['PASS']))
+				return true;
+			else
+				return false;
+		}finally{
+			$req->closeCursor();
+		}
 	}
 	
 // 	/**
