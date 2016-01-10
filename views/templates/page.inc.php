@@ -47,7 +47,7 @@
         
         	<header class="row">       		
         		<div class="col-lg-4 col-md-4 col-xs-1"></div>
-        		<a href="<?php echo $_SERVER['PHP_SELF'].'?action=Default';?>"><p class="col-lg-4 col-md-4 col-xs-10"><h1>Natural Corner</h1></p> </a> 
+        		<a href="<?php echo $_SERVER['PHP_SELF'].'?action=Default';?>"><p class="col-lg-4 col-md-4 col-xs-10"><h1 id="natural">Natural</h1><h1 id="corner">Corner</h1></p> </a> 
         		<div class="col-lg-4 col-md-4 col-xs-1"></div>        		    	
         	</header>
         	<section class="row">
