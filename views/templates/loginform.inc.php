@@ -29,6 +29,6 @@
     <input type="password" class="form-control" name="password" id="password">
   </div>
   <button type="submit" class="btn btn-default" href="">Login</button>
-  <button type="button" class="btn btn-primary pull-right" href="<?php echo $loginUrl?>">Se connecter avec Facebook!</button>
+  <button type="button" class="btn btn-primary pull-right" href="<?php echo $loginUrl?>">Login avec Facebook!</button>
 </form>
 <div class="col-xs-1 col-md-4 col-lg-4"></div>
