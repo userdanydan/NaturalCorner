@@ -1,5 +1,5 @@
 <?php
-include_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/exceptions/UtilisateurException.class.php';
+include_once __DIR__.'/../exceptions/UtilisateurException.class.php';
 
 class Utilisateur{
 	/**

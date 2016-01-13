@@ -9,7 +9,8 @@ class DefaultView extends View {
 	 * @see View::displayBody()
 	 */
 	protected function displayBody() {
-			
+		if($this->login===null)
+			include('views/templates/loginform.inc.php');
 	}
 }
 ?>

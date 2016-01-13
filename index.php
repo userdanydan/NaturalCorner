@@ -26,7 +26,7 @@
 			$action = 'Default';
 		else 
 			$action = $_REQUEST['action'];
-		$actions = array('Default',  'Login',  'Logout', 'Inscription', 'Enregistrement');
+		$actions = array('Default',  'Login',  'Logout', 'Inscription', 'Enregistrement', 'Accueil');
 		if (!in_array($action, $actions)) 
 			$action = 'Default';
 		return getActionByName($action);

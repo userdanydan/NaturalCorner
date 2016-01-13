@@ -1,8 +1,8 @@
 <?php
 
-require_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/exceptions/UtilisateurException.class.php';
-require_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/model/Utilisateur.class.php';
-require_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/model/Database.inc.php';
+require_once __DIR__.'/../../exceptions/UtilisateurException.class.php';
+require_once __DIR__.'/../../model/Utilisateur.class.php';
+require_once __DIR__.'/../../model/Database.inc.php';
 
 /**
  * Test class for Utilisateur.

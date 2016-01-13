@@ -2,9 +2,9 @@
 <a class="btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=GetMyElections' ?>">Election en cours</a>
 <a class="btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=UpdateUserForm' ?>">Changer de mot de passe</a>-->
 
-			<section data-role=content>
+			<section>
         		<nav>
-        				<a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=Login';?>"> 
+        				<a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=Compte';?>"> 
 			           		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 			            </a>
 			            <a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=Panier' ?>"> 

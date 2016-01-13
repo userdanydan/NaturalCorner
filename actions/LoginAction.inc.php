@@ -22,19 +22,19 @@ class LoginAction extends Action
 				{
 					$this->setSessionLogin($_POST['nickname']);
 					$this->setView(getViewByName("Accueil"));
-					$this->getView()->setMessage("Login réussi!");
+					//$this->getView()->setMessage("Login réussi!", "alert-success");
 						
 				}
 				else
 				{
 					$this->setView(getViewByName("Message"));
-					$this->getView()->setMessage("Pseudo ou mot de passe incorrect.");
+					$this->getView()->setMessage("Pseudo ou mot de passe incorrect.", "alert-danger");
 				}
 			}
 			else
 			{
 				$this->setView(getViewByName("Message"));
-				$this->getView()->setMessage("Pseudo ou mot de passe incorrect.");
+				$this->getView()->setMessage("Pseudo ou mot de passe incorrect.", "alert-danger");
 			}
 		}
 	}

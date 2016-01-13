@@ -51,18 +51,23 @@
         		<div class="col-lg-4 col-md-4 col-xs-1"></div>        		    	
         	</header>
         	<section class="row">
-        		<?php if($this->login!=null) 
-        					$this->displayCommands();?>
+        		<?php 
+        		$commandesAffiches=false;
+        		if($this->login!=null){ 
+        			$this->displayCommands();
+        			$commandesAffiches=true;
+				}	?>
         	</section>
         	<section class="row">
 	        	<?php
         			if($this->login===null){
-        				$this->displayLoginForm();
+        				echo '<p class="col-lg-12 col-sm-12 col-md-12 col-xs-12"></p>';
         				$this->displayBody();
         				
         			} 
 					else{
 						$this->displayBody();
+						echo '<p class="col-lg-12 col-sm-12 col-md-12 col-xs-12"></p>';
 						$this->displayLogoutForm();
 					} 
 						

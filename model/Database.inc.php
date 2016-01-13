@@ -23,12 +23,13 @@ class Database
 				die(json_encode(
 						array('outcome' => false, 'message' => 'Unable to connect to google app engine.2')
 						)
-						);
+					);
 			}
 		} else {
 			// Connect from a development environment.
 			try{
-				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '', 
+						array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 			}catch(PDOException $ex){
 				echo '<p>'.$ex->getMessage().'</p>';
 				$this->createDataBase();
