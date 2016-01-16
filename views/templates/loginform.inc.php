@@ -1,17 +1,17 @@
 <!-- cop col du site Bootstrap -->
 <?php 
-// 	$fb = new Facebook\Facebook([
-// 			'app_id' => '479325815604386',
-// 			'app_secret' => '222768909de970fe4931805415d01b07',
-// 			'default_graph_version' => 'v2.5',
-// 	]);
-
-// 	$helper = $fb->getRedirectLoginHelper();
+	$fb = new Facebook\Facebook([
+			'app_id' => '479325815604386',
+			'app_secret' => '222768909de970fe4931805415d01b07',
+			'default_graph_version' => 'v2.5',
+	]);
 	
-// 	$permissions = ['email']; // Optional permissions*/
-
+	$helper = $fb->getRedirectLoginHelper();
 	
-// ?>
+	
+	$permissions = ['email']; // Optional permissions*/
+	$loginUrl = $helper->getLoginUrl('https://naturalcorner-1.appspot.com/index.php?action=Login', $permissions);
+?>
 </br>
 </br>
 </br>
@@ -30,7 +30,7 @@
 	    <input type="password" class="form-control" name="password" id="password">
 	  </div>
 	  <button type="submit" class="btn btn-default" href="">Login</button>
-	  <button type="button" class="btn btn-primary pull-right" href="<?php echo $loginUrl?>">Login avec Facebook!</button>
+	  <a type="button" class="btn btn-primary pull-right" href="<?php echo $loginUrl?>">Login avec Facebook!</a>
 	</form>
 	<div class="col-xs-1 col-md-4 col-lg-4"></div>
 </div>

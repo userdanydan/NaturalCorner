@@ -11,6 +11,7 @@
         <meta name="viewport" content="user-scalable=no, width=device-width">
         <meta name="apple-mobile-web-app-capable" content="yes"/>
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<link rel="icon" type="image/png" href="stylesheets/favicon.ico" />
         <link rel="apple-touch-startup-image" href="stylesheets/img/fruits-NC.jpg"/>
         <link rel="apple-touch-icon" href="stylesheets/apple-touch-icon.png">
         <link rel="stylesheet" href="stylesheets/css/bootstrap.min.css">
@@ -60,7 +61,7 @@
         	</section>
         	<section class="row">
 	        	<?php
-        			if($this->login===null){
+        			if($this->login==null){
         				echo '<p class="col-lg-12 col-sm-12 col-md-12 col-xs-12"></p>';
         				$this->displayBody();
         				

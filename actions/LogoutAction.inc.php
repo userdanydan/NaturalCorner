@@ -12,8 +12,8 @@ class LogoutAction extends Action {
 	 * @see Action::run()
 	 */	
 	public function run() {
+		$this->setMessageView("A bientôt!");
 		$this->setSessionLogin(null);
-		$this->setView(getViewByName("Default"));
 	}
 
 }

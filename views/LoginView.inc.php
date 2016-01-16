@@ -9,7 +9,7 @@ class LoginView extends View {
 	 * @see View::displayBody()
 	 */
 	protected function displayBody() {
-		include('views/templates/loginform.inc.php');
+		
 	}
 }
 ?>

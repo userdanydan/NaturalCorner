@@ -89,7 +89,7 @@ class Database
 									        CODE_POSTAL      Varchar (5) ,
 									        LOCALITE         Varchar (128) ,
 									        DATE_INSCRIPTION Datetime ,
-									        ID_CONNEXION     Varchar(128) NOT NULL ,
+									        IP_CONNEXION     Varchar(128) NOT NULL ,
 									        PRIMARY KEY (ID_UTILISATEUR )
 										)ENGINE=InnoDB;");
 			if ($success) 
@@ -155,29 +155,30 @@ class Database
 	 * Ajoute dans la base de donnée un utilisateur.
 	 * @param Utilisateur l'utilisateur à insérer.
 	 * @return boolean indique si l'insertion est réussie.
+	 * @throws EmailAlreadyTakenException si l'email existe déjà dans la base de données.
 	 */
 	public function addUser(Utilisateur $utilisateur){
+		if(!$this->checkEmailAvailability($utilisateur->getAdresseMail()))
+			throw new EmailAlreadyTakenException("Cet email est déjà dans notre base de données.");
 		$insertionReussie=false;
-		if($utilisateur instanceof Utilisateur){
-			$this->creerConnexion();
-			$requete = $this->connection->prepare(" INSERT INTO UTILISATEURS(PRENOM, NOM, PSEUDO, PASS, ADRESSE_MAIL, ADRESSE_PHYSIQUE,
-														CODE_POSTAL, LOCALITE, DATE_INSCRIPTION, ID_CONNEXION)
-													VALUES(:PRENOM, :NOM, :PSEUDO, :PASS, :ADRESSE_MAIL, :ADRESSE_PHYSIQUE,
-														:CODE_POSTAL, :LOCALITE, :DATE_INSCRIPTION, :ID_CONNEXION)");
-			$insertionReussie = $requete->execute(array(
-					':PRENOM'=>$utilisateur->getPrenom(),
-					':NOM'=>$utilisateur->getNom(), 
-					':PSEUDO'=>$utilisateur->getPSeudo(), 
-					':PASS'=>$utilisateur->getPass(), 
-					':ADRESSE_MAIL'=>$utilisateur->getAdresseMail(), 
-					':ADRESSE_PHYSIQUE'=>$utilisateur->getAdressePhysique(),
-					':CODE_POSTAL'=>$utilisateur->getCodePostal(), 
-					':LOCALITE'=>$utilisateur->getLocalite(), 
-					':DATE_INSCRIPTION'=>$utilisateur->getDateInscription(), 
-					':ID_CONNEXION'=>$utilisateur->getIdConnexion()
-			));
-			$requete->closeCursor();
-		}
+		$this->creerConnexion();
+		$requete = $this->connection->prepare(" INSERT INTO UTILISATEURS(PRENOM, NOM, PSEUDO, PASS, ADRESSE_MAIL, ADRESSE_PHYSIQUE,
+													CODE_POSTAL, LOCALITE, DATE_INSCRIPTION, ID_CONNEXION)
+												VALUES(:PRENOM, :NOM, :PSEUDO, :PASS, :ADRESSE_MAIL, :ADRESSE_PHYSIQUE,
+													:CODE_POSTAL, :LOCALITE, :DATE_INSCRIPTION, :ID_CONNEXION)");
+		$insertionReussie = $requete->execute(array(
+				':PRENOM'=>$utilisateur->getPrenom(),
+				':NOM'=>$utilisateur->getNom(), 
+				':PSEUDO'=>$utilisateur->getPSeudo(), 
+				':PASS'=>$utilisateur->getPass(), 
+				':ADRESSE_MAIL'=>$utilisateur->getAdresseMail(), 
+				':ADRESSE_PHYSIQUE'=>$utilisateur->getAdressePhysique(),
+				':CODE_POSTAL'=>$utilisateur->getCodePostal(), 
+				':LOCALITE'=>$utilisateur->getLocalite(), 
+				':DATE_INSCRIPTION'=>$utilisateur->getDateInscription(), 
+				':ID_CONNEXION'=>$utilisateur->getIdConnexion()
+		));
+		$requete->closeCursor();
 		return $insertionReussie;
 	}
 	/**
@@ -209,31 +210,31 @@ class Database
 	 */
 	public function updateUser(Utilisateur $utilisateurMisAJour, $email){
 		$estMisAJour=false;
-		if($utilisateurMisAJour instanceof Utilisateur){
-			$this->creerConnexion();
-			$requete = $this->connection->prepare(" UPDATE UTILISATEURS
-													SET PRENOM=:prenom, NOM=:nom, PSEUDO=:pseudo, 
-														PASS=:pass, ADRESSE_MAIL=:adresse_mail, 
-														ADRESSE_PHYSIQUE=:adresse_physique,
-														CODE_POSTAL=:code_postal, LOCALITE=:localite, 
-														DATE_INSCRIPTION=:date_inscription, 
-														ID_CONNEXION=:id_connexion
-													WHERE ADRESSE_MAIL=:EMAIL");
-			$estMisAJour = $requete->execute(array(
-					':prenom'=> $utilisateurMisAJour->getPrenom(),
-					':nom'=> $utilisateurMisAJour->getNom(),
-					':pseudo'=> $utilisateurMisAJour->getPseudo(),
-					':pass'=> $utilisateurMisAJour->getPass() ,
-					':adresse_mail' => $utilisateurMisAJour->getAdresseMail(),
-					':adresse_physique' => $utilisateurMisAJour->getAdressePhysique(),
-					':code_postal' => $utilisateurMisAJour->getCodePostal(),
-					':localite' => $utilisateurMisAJour->getLocalite(),
-					':date_inscription' => $utilisateurMisAJour->getDateInscription(),
-					':id_connexion' =>$utilisateurMisAJour->getIdConnexion(),
-					':EMAIL'=>$email
-			));
-			$requete->closeCursor();
-		}
+		if(!$this->checkEmailAvailability($utilisateurMisAJour->getAdresseMail()))
+				throw new EmailAlreadyTakenException("Cet email existe déjà dans notre base de données.");
+		$this->creerConnexion();
+		$requete = $this->connection->prepare(" UPDATE UTILISATEURS
+												SET PRENOM=:prenom, NOM=:nom, PSEUDO=:pseudo, 
+													PASS=:pass, ADRESSE_MAIL=:adresse_mail, 
+													ADRESSE_PHYSIQUE=:adresse_physique,
+													CODE_POSTAL=:code_postal, LOCALITE=:localite, 
+													DATE_INSCRIPTION=:date_inscription, 
+													ID_CONNEXION=:id_connexion
+												WHERE ADRESSE_MAIL=:EMAIL");
+		$estMisAJour = $requete->execute(array(
+				':prenom'=> $utilisateurMisAJour->getPrenom(),
+				':nom'=> $utilisateurMisAJour->getNom(),
+				':pseudo'=> $utilisateurMisAJour->getPseudo(),
+				':pass'=> $utilisateurMisAJour->getPass() ,
+				':adresse_mail' => $utilisateurMisAJour->getAdresseMail(),
+				':adresse_physique' => $utilisateurMisAJour->getAdressePhysique(),
+				':code_postal' => $utilisateurMisAJour->getCodePostal(),
+				':localite' => $utilisateurMisAJour->getLocalite(),
+				':date_inscription' => $utilisateurMisAJour->getDateInscription(),
+				':id_connexion' =>$utilisateurMisAJour->getIdConnexion(),
+				':EMAIL'=>$email
+		));
+		$requete->closeCursor();
 		return $estMisAJour;
 	}
 	/**
@@ -259,150 +260,23 @@ class Database
 			$req->closeCursor();
 		}
 	}
-	
-// 	/**
-// 	 * Vérifie si un pseudonyme est valide, c'est-à-dire,
-// 	 * s'il contient entre 3 et 10 caractères et uniquement des lettres.
-// 	 *
-// 	 * @param string $nickname Pseudonyme à vérifier.
-// 	 * @return boolean True si le pseudonyme est valide, false sinon.
-// 	 */
-// 	private function checkNicknameValidity($nickname) 
-// 	{
-// 		return preg_match('#^[a-zA-Z]{3,9}$#', $nickname);
-// 	}
-// 	/**
-// 	 * Vérifie si un mot de passe est valide, c'est-à-dire,
-// 	 * s'il contient entre 3 et 10 caractères.
-// 	 *
-// 	 * @param string $password Mot de passe à vérifier.
-// 	 * @return boolean True si le mot de passe est valide, false sinon.
-// 	 */
-// 	private function checkPasswordValidity($password) 
-// 	{
-// 		return preg_match('#^[a-zA-Z]{3,9}$#', $password);
-// 	}
-// 	/**
-// 	 * Vérifie la disponibilité d'un pseudonyme.
-// 	 *
-// 	 * @param string $nickname Pseudonyme à vérifier.
-// 	 * @return boolean True si le pseudonyme est disponible, false sinon.
-// 	 */
-// 	private function checkNicknameAvailability($nickname) 
-// 	{
-// 		$req = $this->connection->prepare("SELECT NICKNAME 
-// 										   FROM USERS 
-// 										   WHERE NICKNAME=?");
-// 		$req->execute(array($nickname));
-// 		if(count($req->fetchAll())>0)
-// 			return false;
-// 		else
-// 			return true;
-// 	}
-
-// 	/**
-// 	 * Vérifie qu'un couple (pseudonyme, mot de passe) est correct.
-// 	 *
-// 	 * @param string $nickname Pseudonyme.
-// 	 * @param string $password Mot de passe.
-// 	 * @return boolean True si le couple est correct, false sinon.
-// 	 */
-// 	public function checkPassword($nickname, $password) 
-// 	{
-// 		$req = $this->connection->prepare("SELECT NICKNAME 
-// 										   FROM USERS 
-// 										   WHERE NICKNAME=? AND PASSWORD=?");
-// 		$req->execute(array($nickname, md5($password)));
-// 		if(count($req->fetchAll())>0)
-// 			return true;
-// 		else
-// 			return false;
-// 	}
-
-// 	/**
-// 	 * Ajoute un nouveau compte utilisateur si le pseudonyme est valide et disponible et
-// 	 * si le mot de passe est valide. La méthode peut retourner un des messages d'erreur qui suivent :
-// 	 * - "Le pseudo doit contenir entre 3 et 10 lettres.";
-// 	 * - "Le mot de passe doit contenir entre 3 et 10 caractères.";
-// 	 * - "Le pseudo existe déjà.".
-// 	 *
-// 	 * @param string $nickname Pseudonyme.
-// 	 * @param string $password Mot de passe.
-// 	 * @return boolean|string True si le couple a été ajouté avec succès, un message d'erreur sinon.
-// 	 */
-// 	public function addUser($nickname, $password) 
-// 	{
-// 		$erreur='';
-// 		if(!$this->checkNicknameValidity($nickname))
-// 		{
-// 			$erreur.="<p>Pseudonyme incorrect, veuillez introduire entre 3 et 10 caractères et uniquement des lettres.</p>";
-// 		}
-// 		if(!$this->checkPasswordValidity($nickname))
-// 		{
-// 			$erreur.="<p>Mot de passe incorrect, veuillez introduire entre 3 et 10 caractères et uniquement des lettres.</p>";
-// 		}
-// 		if(!$this->checkNicknameAvailability($nickname))
-// 		{
-// 			$erreur.="<p>Pseudonyme déjà utilisé</p>";
-// 		}
-// 		try
-// 		{
-// 			 $req = $this->connection->prepare("INSERT INTO USERS(NICKNAME, PASSWORD) 
-// 												VALUES(:nickname, :password)");
-// 			 $req->execute( array(
-// 						'nickname' => $nickname,
-// 						'password' => md5($password)));
-// 		}
-// 		catch(PDOException $pdoe)
-// 		{
-// 			$erreur.="<p>L'utilisateur n'a pas été ajouté</p>";
-// 		}
-// 		if($erreur)
-// 			return $erreur;
-// 		return true;
-// 	}
-
-// 	/**
-// 	 * Change le mot de passe d'un utilisateur.
-// 	 * La fonction vérifie si le mot de passe est valide. S'il ne l'est pas,
-// 	 * la fonction retourne le texte 'Le mot de passe doit contenir entre 3 et 10 caractères.'.
-// 	 * Sinon, le mot de passe est modifié en base de données et la fonction retourne true.
-// 	 *
-// 	 * @param string $nickname Pseudonyme de l'utilisateur.
-// 	 * @param string $password Nouveau mot de passe.
-// 	 * @return boolean|string True si le mot de passe a été modifié, un message d'erreur sinon.
-// 	 */
-// 	public function updateUser($nickname, $password) 
-// 	{
-// 		$erreur='';
-// 		if(!$this->checkNicknameValidity($nickname))
-// 		{
-// 			$erreur.="<p>Pseudonyme incorrect, veuillez introduire entre 3 et 10 caractères et uniquement des lettres.</p>";
-// 		}
-// 		if(!$this->checkPasswordValidity($nickname))
-// 		{
-// 			$erreur.="<p>Mot de passe incorrect, veuillez introduire entre 3 et 10 caractères et uniquement des lettres.</p>";
-// 		}
-// 		if($this->checkNicknameAvailability($nickname))
-// 		{
-// 			$erreur.="<p>Pseudonyme déjà utilisé</p>";
-// 		}
-// 		try
-// 		{
-// 			 $req = $this->connection->prepare("UPDATE USERS SET PASSWORD=:password 
-// 												WHERE NICKNAME=:nickname");
-// 			 $req->execute( array(
-// 						'password' => md5($password),
-// 						'nickname' => $nickname ));
-// 		}
-// 		catch(PDOException $pdoe)
-// 		{
-// 			$erreur.="<p>L'utilisateur n'a pas été mis à jour</p>";
-// 		}
-// 		if($erreur)
-// 			return $erreur;	
-// 		return true;
-// 	}
+	/**
+	 * Vérifie la disponibilité d'une adresse email.
+	 *
+	 * @param string $email Email à vérifier.
+	 * @return boolean True si l'email est disponible, false sinon.
+	 */
+	public function checkEmailAvailability($email)
+	{
+		$req = $this->connection->prepare("SELECT ADRESSE_MAIL
+										   FROM UTILISATEURS
+										   WHERE ADRESSE_MAIL=?");
+		$req->execute(array($email));
+		if(count($req->fetchAll())>0)
+				return false;
+			else
+				return true;
+		}
 }
 
 ?>

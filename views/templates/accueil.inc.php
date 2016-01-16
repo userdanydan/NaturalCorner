@@ -4,6 +4,9 @@
 	  	<div class="col-xs-10 col-md-4"><h3>Bienvenu sur le site de Natural Corner</h3></div>
 	 	 <div class="col-xs-1 col-md-4"></div>
 	 </div>
+	 <?php 
+
+	 ?>
 </div>
 
 

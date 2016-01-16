@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__.'/../../exceptions/UtilisateurException.class.php';
+require_once __DIR__.'/../../exceptions/EmailAlreadyTakenException.class.php';
 require_once __DIR__.'/../../model/Utilisateur.class.php';
 require_once __DIR__.'/../../model/Database.inc.php';
 
@@ -25,7 +26,7 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 		$this->utilisateur = new Utilisateur("Daniel", "Dan", "DanyDan", 
 				password_hash("motdepasse", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]), 
 				"truc".++self::$test_increment."@troc.tr", "rue des petites fleurs 5",
-				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
+				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "198.168.0.1");
 	}
 	/**
 	 * Tears down the fixture, for example, closes a network connection.
@@ -79,6 +80,47 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 		//teste si le booléen "flag" indique que l'insertion s'est réalisée correctement.
 		$insertionReussie = $this->bdd->addUser($this->utilisateur);
 		$this->assertTrue($insertionReussie);
+		try{
+			$insertionReussie = $this->bdd->addUser($this->utilisateur);
+			$this->fail("Aurait dû lancer une exception."." ->".$ue);
+		}catch(EmailAlreadyTakenException $eate){
+			return;
+		}
+	}
+	/**
+	 * @depends testCreateDatabase
+	 * @covers Database::addUser()
+	 */
+	public function testCheckPassword(){
+		$email = "truc".++self::$test_increment."@troc.tr";
+		$utilisateur1 = new Utilisateur("dada", "dudu", "pseudoTest",
+				password_hash("pwdTest", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]),
+				$email, "rue des petites fleurs 5",
+				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
+				$this->bdd->addUser($utilisateur1);
+				$this->assertFalse($this->bdd->checkPassword("mauvaistest@email.com", "pwdTest"));
+				$this->assertFalse($this->bdd->checkPassword($email, "mauvaisPwdtest"));
+	
+				$this->assertTrue($this->bdd->checkPassword($email, "pwdTest"));
+	
+	}
+	/**
+	 * @depends testCreateDatabase
+	 * @covers Database::addUser()
+	 */
+	public function testCheckEmailAvailability(){
+		$email="test@test.com";
+		$utilisateur1 = new Utilisateur("dada", "dudu", "pseudoTest",
+				password_hash("pwdTest", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]),
+				$email, "rue des petites fleurs 5",
+				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
+			try{
+				$this->bdd->addUser($utilisateur1);
+			}catch (EmailAlreadyTakenException $eate){
+				return;
+			}
+				$this->assertTrue($this->bdd->checkEmailAvailability("contretest@test.com"));
+				$this->assertFalse($this->bdd->checkEmailAvailability("test@test.com"));
 	}
 	/**
 	 * @depends testAddUser
@@ -196,7 +238,11 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 		);
 		//modification du pseudo 
 		$this->utilisateur->setPseudo("nouveauPseudo1");
-		$this->bdd->updateUser($this->utilisateur, $this->utilisateur->getAdresseMail());
+		try{
+			$this->bdd->updateUser($this->utilisateur, $this->utilisateur->getAdresseMail());
+		}catch (EmailAlreadyTakenException $eate){
+			return;
+		}
 		
 		$this->assertEquals(
 				"nouveauPseudo1",
@@ -218,21 +264,5 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 		$this->assertTrue(password_verify("nomduchat", $utilisateurUpdate->getPass()));
 
 	}
-	/**
-	 * @depends testCreateDatabase
-	 * @covers Database::addUser()
-	 */
-	public function testCheckPassword(){
-		$email = "truc".++self::$test_increment."@troc.tr";
-		$utilisateur1 = new Utilisateur("dada", "dudu", "pseudoTest",
-				password_hash("pwdTest", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]),
-				$email, "rue des petites fleurs 5",
-				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
-		$this->bdd->addUser($utilisateur1);
-		$this->assertFalse($this->bdd->checkPassword("mauvaistest@email.com", "pwdTest"));
-		$this->assertFalse($this->bdd->checkPassword($email, "mauvaisPwdtest"));
-		
-		$this->assertTrue($this->bdd->checkPassword($email, "pwdTest"));
-		
-	}
+
 }
