@@ -8,6 +8,7 @@ include_once("model/Utilisateur.class.php");
 abstract class Action {
 	private $view;
 	protected $database;
+	protected $utilisateurSession;
 	/**
 	 * Construit une instance de la classe Action.
 	 */
@@ -26,14 +27,31 @@ abstract class Action {
 	}
 
 	/**
-	 * Retourne la vue qui doit être affichée par le contrôleur.
+	 * Retourne l'utilisateur courant qui doit être affiché par le contrôleur.
 	 * 
+	 * @return Utilisateur utilisateur qui doit être affiché par le contrôleur.
+	 */
+	public function getUser() {
+		return $_SESSION['user'];
+	}	/**
+	 * Fixe l'utilisateur qui doit être affiché par le contrôleur.
+	 *
+	 * @param Utilisateur $utilisateur Utilisateur qui doit être affiché par le contrôleur.
+	 */
+	protected function setUser($user) {
+		$this->utilisateurSession = $user;
+		$_SESSION['user'] = $user;
+	}
+
+	
+	/**
+	 * Retourne la vue qui doit être affichée par le contrôleur.
+	 *
 	 * @return View Vue qui doit être affichée par le contrôleur.
 	 */
 	public function getView() {
 		return $this->view;
 	}
-
 	/**
 	 * Récupére la pseudonyme de l'utilisateur s'il est connecté, ou null sinon.
 	 *

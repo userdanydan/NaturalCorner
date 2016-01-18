@@ -12,25 +12,32 @@
 	$permissions = ['email']; // Optional permissions*/
 	$loginUrl = $helper->getLoginUrl('https://naturalcorner-1.appspot.com/index.php?action=Login', $permissions);
 ?>
-</br>
-</br>
-</br>
-</br>
-</br>
 
+<div class="row">
+	<div class="col-xs-1 col-md-4 col-lg-4"></div>
+	  <div class="col-xs-10 col-md-4 col-lg-4">
+	  	<a type="button" class="btn btn-primary center center-block" href="<?php echo $loginUrl?>"> Login avec Facebook!</a>
+	  </div>
+	  <div class="col-xs-1 col-md-4 col-lg-4"></div>
+</div>
+</br>
+</br>
+<div></div>
+</br>
+</br>
+</br>
 <div class="row">
 	<div class="col-xs-1 col-md-4 col-lg-4"></div>
 	<form role="form" class="col-xs-10 col-md-4 col-lg-4" method="post" action="index.php?action=Login">
 	  <div class="form-group">
-	    <label for="nickname">Email:</label>
-	    <input type="text" class="form-control" name="nickname" id="nickname">
+	    <label for="email">Email:</label>
+	    <input type="text" class="form-control" name="email" id="email">
 	  </div>
 	  <div class="form-group">
 	    <label for="password">Mot de passe:</label>
 	    <input type="password" class="form-control" name="password" id="password">
 	  </div>
 	  <button type="submit" class="btn btn-default" href="">Login</button>
-	  <a type="button" class="btn btn-primary pull-right" href="<?php echo $loginUrl?>">Login avec Facebook!</a>
 	</form>
 	<div class="col-xs-1 col-md-4 col-lg-4"></div>
 </div>

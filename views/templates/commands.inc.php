@@ -1,7 +1,7 @@
 
 			<section>
         		<nav>
-        				<a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=Compte';?>"> 
+        				<a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=VoirCompte';?>"> 
 			           		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 			            </a>
 			            <a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=Panier' ?>"> 

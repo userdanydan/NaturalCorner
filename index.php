@@ -1,4 +1,5 @@
 <?php
+	include __DIR__.'/model/Utilisateur.class.php';
 	session_start();
 	$action = getAction();
 	$action->run();
@@ -26,7 +27,7 @@
 			$action = 'Default';
 		else 
 			$action = $_REQUEST['action'];
-		$actions = array('Default',  'Login',  'Logout', 'Inscription', 'Enregistrement', 'Accueil');
+		$actions = array('Default',  'Login',  'Logout', 'Inscription', 'Enregistrement', 'Accueil', 'UpdateUser', 'VoirCompte');
 		if (!in_array($action, $actions)) 
 			$action = 'Default';
 		return getActionByName($action);

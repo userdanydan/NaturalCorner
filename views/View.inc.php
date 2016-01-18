@@ -5,14 +5,21 @@ abstract class View {
 	protected $message = "";
 	protected $style = "";
 	protected $login = null;
-
+	protected $user=null;
 	/**
 	 * Génère la page à afficher au client.
 	 */
 	public function run() {
 		include("views/templates/page.inc.php");
 	}
-
+	/**
+	 * Fixe l'utilisateur qui doit être affiché par la vue.
+	 *
+	 * @param Utilisateur $user Utilisateur à afficher.
+	 */
+	public function setUser(Utilisateur $user) {
+		$this->user = $user;
+	}
 	/**
 	 * Fixe le message qui doit être affichée par la vue.
 	 *
@@ -54,7 +61,7 @@ abstract class View {
 		include("views/templates/commands.inc.php");
 	}
 
-
+	
 	/**
 	 * Affiche le corps de la page. Cette méthode doit être
 	 * implémentée par les différentes vues.
