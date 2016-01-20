@@ -39,7 +39,12 @@ abstract class View {
 	public function setLogin($login) {
 		$this->login = $login;	
 	}	
-
+	/**
+	 * Génère le header.
+	 */
+	private function displayHeader() {
+		include("views/templates/header.inc.php");
+	}
 	/**
 	 * Génère le formulaire de connexion.
 	 */

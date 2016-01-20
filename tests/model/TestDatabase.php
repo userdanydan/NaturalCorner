@@ -109,18 +109,18 @@ class TestDatabase extends PHPUnit_Framework_TestCase{
 	 * @covers Database::addUser()
 	 */
 	public function testCheckEmailAvailability(){
-		$email="test@test.com";
+		$email = "truc".++self::$test_increment."@troc.tr";
 		$utilisateur1 = new Utilisateur("dada", "dudu", "pseudoTest",
 				password_hash("pwdTest", PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]),
 				$email, "rue des petites fleurs 5",
 				"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");
-			try{
-				$this->bdd->addUser($utilisateur1);
-			}catch (EmailAlreadyTakenException $eate){
-				return;
-			}
-				$this->assertTrue($this->bdd->checkEmailAvailability("contretest@test.com"));
-				$this->assertFalse($this->bdd->checkEmailAvailability("test@test.com"));
+		try{
+			$this->bdd->addUser($utilisateur1);
+		}catch (EmailAlreadyTakenException $eate){
+			return;
+		}
+		$this->assertTrue($this->bdd->checkEmailAvailability("contretest@test.com"));
+		$this->assertFalse($this->bdd->checkEmailAvailability($email));
 	}
 	/**
 	 * @depends testAddUser

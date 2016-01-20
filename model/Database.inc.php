@@ -1,4 +1,6 @@
 <?php
+include_once __DIR__.'/../exceptions/EmailAlreadyTakenException.class.php';
+
 class Database 
 {
 
@@ -83,13 +85,13 @@ class Database
 									        PRENOM           Varchar (128) ,
 									        NOM              Varchar (128) ,
 									        PSEUDO           Varchar (128) ,
-									        PASS             Varchar (1028) ,
+									        PASS             Varchar (1024) ,
 									        ADRESSE_MAIL     Varchar (128) ,
 									        ADRESSE_PHYSIQUE Varchar (128) ,
 									        CODE_POSTAL      Varchar (5) ,
 									        LOCALITE         Varchar (128) ,
 									        DATE_INSCRIPTION Datetime ,
-									        IP_CONNEXION     Varchar(128) NOT NULL ,
+									        IP_CONNEXION     Varchar(128),
 									        PRIMARY KEY (ID_UTILISATEUR )
 										)ENGINE=InnoDB;");
 			if ($success) 
@@ -147,7 +149,7 @@ class Database
 		$utilisateur = new Utilisateur($ligneBDD["PRENOM"], $ligneBDD["NOM"], $ligneBDD["PSEUDO"], 
 										$ligneBDD["PASS"], $ligneBDD["ADRESSE_MAIL"],
 										$ligneBDD["ADRESSE_PHYSIQUE"], $ligneBDD["CODE_POSTAL"], $ligneBDD["LOCALITE"], 
-										new DateTime($ligneBDD["DATE_INSCRIPTION"]), $ligneBDD["ID_CONNEXION"]);
+										new DateTime($ligneBDD["DATE_INSCRIPTION"]), $ligneBDD["IP_CONNEXION"]);
 		$requete->closeCursor();
 		return clone $utilisateur;
 	}
@@ -163,9 +165,9 @@ class Database
 		$insertionReussie=false;
 		$this->creerConnexion();
 		$requete = $this->connection->prepare(" INSERT INTO UTILISATEURS(PRENOM, NOM, PSEUDO, PASS, ADRESSE_MAIL, ADRESSE_PHYSIQUE,
-													CODE_POSTAL, LOCALITE, DATE_INSCRIPTION, ID_CONNEXION)
+													CODE_POSTAL, LOCALITE, DATE_INSCRIPTION, IP_CONNEXION)
 												VALUES(:PRENOM, :NOM, :PSEUDO, :PASS, :ADRESSE_MAIL, :ADRESSE_PHYSIQUE,
-													:CODE_POSTAL, :LOCALITE, :DATE_INSCRIPTION, :ID_CONNEXION)");
+													:CODE_POSTAL, :LOCALITE, :DATE_INSCRIPTION, :IP_CONNEXION)");
 		$insertionReussie = $requete->execute(array(
 				':PRENOM'=>$utilisateur->getPrenom(),
 				':NOM'=>$utilisateur->getNom(), 
@@ -176,7 +178,7 @@ class Database
 				':CODE_POSTAL'=>$utilisateur->getCodePostal(), 
 				':LOCALITE'=>$utilisateur->getLocalite(), 
 				':DATE_INSCRIPTION'=>$utilisateur->getDateInscription(), 
-				':ID_CONNEXION'=>$utilisateur->getIdConnexion()
+				':IP_CONNEXION'=>$utilisateur->getIdConnexion()
 		));
 		$requete->closeCursor();
 		return $insertionReussie;
@@ -203,14 +205,15 @@ class Database
 	/**
 	 * Met à jour dans la base de donnée un utilisateur.
 	 * @param Utilisateur $utilisateurMisAJour -> un utilisateur avec les nouvelles données.
-	 * @param string $prenom -> le prénom
-	 * @param string $nom -> le nom
-	 * @param string $pseudo -> le pseudo
+	 * @param string $email -> l'email de l'utilisateur à modifier.
 	 * @return boolean indique si la mise à jour est réussie.
+	 * @throws EmailAlreadyTakenException si l'email à modifier est déjà pris.
 	 */
 	public function updateUser(Utilisateur $utilisateurMisAJour, $email){
 		$estMisAJour=false;
-		if(!$this->checkEmailAvailability($utilisateurMisAJour->getAdresseMail()))
+		$email=trim($email);
+		if($utilisateurMisAJour->getAdresseMail()!==$email)
+			if(!$this->checkEmailAvailability($utilisateurMisAJour->getAdresseMail()))
 				throw new EmailAlreadyTakenException("Cet email existe déjà dans notre base de données.");
 		$this->creerConnexion();
 		$requete = $this->connection->prepare(" UPDATE UTILISATEURS
@@ -219,7 +222,7 @@ class Database
 													ADRESSE_PHYSIQUE=:adresse_physique,
 													CODE_POSTAL=:code_postal, LOCALITE=:localite, 
 													DATE_INSCRIPTION=:date_inscription, 
-													ID_CONNEXION=:id_connexion
+													IP_CONNEXION=:IP_CONNEXION
 												WHERE ADRESSE_MAIL=:EMAIL");
 		$estMisAJour = $requete->execute(array(
 				':prenom'=> $utilisateurMisAJour->getPrenom(),
@@ -231,7 +234,7 @@ class Database
 				':code_postal' => $utilisateurMisAJour->getCodePostal(),
 				':localite' => $utilisateurMisAJour->getLocalite(),
 				':date_inscription' => $utilisateurMisAJour->getDateInscription(),
-				':id_connexion' =>$utilisateurMisAJour->getIdConnexion(),
+				':IP_CONNEXION' =>$utilisateurMisAJour->getIdConnexion(),
 				':EMAIL'=>$email
 		));
 		$requete->closeCursor();

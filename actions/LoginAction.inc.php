@@ -28,7 +28,7 @@ class LoginAction extends Action
 						$this->setSessionLogin($this->getUser()->getAdresseMail());
 					}
 					$this->setView(getViewByName("Accueil"));
-					//$this->getView()->setMessage("Login réussi!", "alert-success");
+					$this->getView()->setMessage($this->getUser()->__toString(), "alert-success");
 						
 				}
 				else

@@ -13,7 +13,7 @@ body {
 }
 
 body::before {
-  background: url(http://medias.lemonde.fr/mmpub/edt/ill/2009/06/01/h_4_ill_1056616_legume.jpg) repeat fixed;
+  background: url(/stylesheets/legumes_fruits.jpg) repeat fixed;
   content: '';
   z-index: -1;
   width: 100%;

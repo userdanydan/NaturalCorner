@@ -45,30 +45,35 @@
 		</script>
         <div class="container-fluid">
         	 
-        
-        	<header class="row">       		
-        		<div class="col-lg-4 col-md-4 col-xs-1"></div>
-        		<a href="<?php echo $_SERVER['PHP_SELF'].'?action=Default';?>"><p class="col-lg-4 col-md-4 col-xs-10"><h1 id="natural">Natural</h1><h1 id="corner">Corner</h1></p> </a> 
-        		<div class="col-lg-4 col-md-4 col-xs-1"></div>        		    	
-        	</header>
+        	
+        	<?php 
+        		if($this->login==null){
+        			$this->displayHeader();
+        		}
+        	?>
         	<section class="row">
         		<?php 
         		$commandesAffiches=false;
         		if($this->login!=null){ 
         			$this->displayCommands();
         			$commandesAffiches=true;
-				}	?>
+				}	
+				?>
         	</section>
         	<section class="row">
 	        	<?php
         			if($this->login==null){
+        				echo '<div class="row">';
         				echo '<p class="col-lg-12 col-sm-12 col-md-12 col-xs-12"></p>';
+  						echo '</div>';
         				$this->displayBody();
         				
         			} 
 					else{
 						$this->displayBody();
+						echo '<div class="row">';
 						echo '<p class="col-lg-12 col-sm-12 col-md-12 col-xs-12"></p>';
+						echo '</div>';
 						$this->displayLogoutForm();
 					} 
 						

@@ -66,6 +66,14 @@ class EnregistrementAction extends Action
 			}
 			if($estInsere){
 				$this->setSessionLogin($utilisateur->getPseudo());
+				$this->setUser($this->database->getUser($_POST['email']));
+				if($this->utilisateurSession->getPseudo()!=null){
+					$this->setSessionLogin($this->getUser()->getPseudo());
+				}elseif($this->getUser()->getNom()!=null && $this->getUser()->getPrenom()!=null){
+					$this->setSessionLogin($this->getUser()->getPrenom()." ".$this->getUser()->getNom());
+				}else{
+					$this->setSessionLogin($this->getUser()->getAdresseMail());
+				}
 				$this->setView(getViewByName('Accueil'));				
 				$this->setMessageView("L'inscription est réussie.", "alert-success");				
 

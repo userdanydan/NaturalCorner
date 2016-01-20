@@ -32,7 +32,10 @@ abstract class Action {
 	 * @return Utilisateur utilisateur qui doit être affiché par le contrôleur.
 	 */
 	public function getUser() {
-		return $_SESSION['user'];
+		if (isset($_SESSION['user'])) {
+			$user = $_SESSION['user'];
+		} else $user = null;
+		return $user;
 	}	/**
 	 * Fixe l'utilisateur qui doit être affiché par le contrôleur.
 	 *

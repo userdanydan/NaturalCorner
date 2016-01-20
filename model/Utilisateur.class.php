@@ -20,7 +20,7 @@ class Utilisateur{
 	private $_pseudo;
 	/**
 	 * Mot de passe de l'utilisateur. 
-	 * /
+	 */
 	private $_pass;
 	/**
 	 * Adresse e-mail de l'utilisateur. 
@@ -45,7 +45,7 @@ class Utilisateur{
 	/**
 	 * IP de l'utilisateur lors de son inscription.
 	 */
-	private $_idConnexion;
+	private $_ipConnexion;
 	/**
 	 * @param prenom : Prénom->
 	 * @param nom : nom->
@@ -60,28 +60,25 @@ class Utilisateur{
 	 */
 	public function __construct($prenom, $nom, $pseudo, $pass, $adresseMail, 
 			$adressePhysique, $codePostal, $localite, $dateInscription, $idConnexion){
-		/*$this->setId(0);
-		$this->setPrenom($prenom);
-		$this->setNom($nom);
-		$this->setPseudo($pseudo);
-		$this->setPass($pass);
-		$this->setAdresseMail($adresseMail);
-		$this->setAdressePhysique($adressePhysique);
-		$this->setCodePostal($codePostal);
-		$this->setLocalite($localite);
-		$this->setDateInscription($dateInscription);
-		$this->setIdConnexion($idConnexion);*/
 		$this->_id=0;
 		$this->_prenom=$prenom;
 		$this->_nom=$nom;
 		$this->_pseudo=$pseudo;
-		$this->_pass=$pass;
-		$this->_adresseMail=$adresseMail;
 		$this->_adressePhysique=$adressePhysique;
 		$this->_codePostal=$codePostal;
 		$this->_localite=$localite;
 		$this->_dateInscription=$dateInscription;
-		$this->_idConnexion=$idConnexion;
+		$this->_ipConnexion=$idConnexion;
+		try{
+			$this->setPass($pass);
+		}catch(UtilisateurException $e){
+			echo '<p>'. $e->getMessage().'</p>';
+		}
+		try{
+			$this->setAdresseMail($adresseMail);
+		}catch(UtilisateurException $e){
+			echo '<p>'. $e->getMessage().'</p>';
+		}
 	}
 	//TODO verifier les paramètres en entrées.
 	/**
@@ -91,9 +88,9 @@ class Utilisateur{
 	public function setId($id){
 		$id=(int)$id;
 		if($id>=0)
-			$this->id=$id;
+			$this->_id=$id;
 		else 
-			throw new exceptions/UtilisateurException("<strong>id invalide : ".$id."</strong>");
+			throw new UtilisateurException("<strong>id invalide : ".$id."</strong>");
 	}
 	/**
 	 * @return int L'id de l'utilisateur.
@@ -106,13 +103,9 @@ class Utilisateur{
 	 * @throws UtilisateurException : le prénom doit contenir au mois trois lettres.
 	 */
 	public function setPrenom($pr){
-		echo("coucou1");
 		$pr = trim($pr);
-		echo("coucou2");
 		
-		if( strlen($pr)!=0 AND preg_match('#^[0-9a-zA-Z]{3,128}$#', $pr) ){
-			echo("coucou3");
-				
+		if( strlen($pr)!=0 AND preg_match('#^[0-9a-zA-Z]{3,128}$#', $pr) ){				
 			$this->_prenom = $pr;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire un prénom d'au moins trois lettres et sans chiffre.</strong>");
@@ -170,7 +163,8 @@ class Utilisateur{
 		$minuscule = preg_match('@[a-z]@', $pass);
 		$nombre    = preg_match('@[0-9]@', $pass);
 		if(!$majuscule || !$minuscule || !$nombre || strlen($pass) < 6) {
-			throw new UtilisateurException("<strong>Veuillez introduire un mot de passe d'au moins 6 caractères.</strong>");
+			throw new UtilisateurException("<strong>Veuillez introduire un mot de passe d'au moins 6 caractères contenant 
+					au moins une majuscule, une minuscule et un chiffre.</strong>");
 		}else{
 			$this->_pass=$pass;
 		}
@@ -207,7 +201,7 @@ class Utilisateur{
 	public function setAdressePhysique($adr){
 		$adr = trim($adr);
 		if( strlen($adr)!=0 ){
-			$this->_adresseMail = $adr;
+			$this->_adressePhysique = $adr;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire une adresse valide</strong>");
 		}
@@ -256,7 +250,7 @@ class Utilisateur{
 		return $this->_localite;
 	}
 	/**
-	 * @param DateTime :  de l'utilisateur.
+	 * @param DateTime :  Date d'inscription de l'utilisateur.
 	 * @throws UtilisateurException : correspond à une date de type DateTime.
 	 */
 	public function setDateInscription(DateTime $dat){
@@ -275,23 +269,23 @@ class Utilisateur{
 	/**
 	 * @param string : ip de l'utilisateur.
 	 */
-	public function setIdConnexion($id){
+	public function setIdConnexion($ip){
 		$ip=trim($ip);
 		if(strlen($ip)!=0)
-			$this->_idConnexion=$id;
+			$this->_ipConnexion=$ip;
 	}
 	/**
 	 * @return string : retourne l'ip.
 	 */
 	public function getIdConnexion(){
-		return $this->_idConnexion;
+		return $this->_ipConnexion;
 	}
 	/**
 	 * @return string : retourne un utilisateur.
 	 */
 	public function __toString(){
 		return "<p>".$_prenom.", ".$_nom.", ".$_pseudo.", ".$_pass.", ".$_adresseMail.
-		", ".$_adressePhysique.", ".$_codePostal.", ".$_localite.", ".$_dateInscription.", ".$_idConnexion."</p>";
+		", ".$_adressePhysique.", ".$_codePostal.", ".$_localite.", ".$_dateInscription.", ".$_ipConnexion."</p>";
 	}
 	public function __destruct(){
 		unset($this->_id);
@@ -304,7 +298,7 @@ class Utilisateur{
 		unset($this->_codePostal);
 		unset($this->_localite);
 		unset($this->_dateInscription);
-		unset($this->_idConnexion);
+		unset($this->_ipConnexion);
 	}
 }
 

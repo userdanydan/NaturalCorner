@@ -30,11 +30,11 @@
 	<div class="col-xs-1 col-md-4 col-lg-4"></div>
 	<form role="form" class="col-xs-10 col-md-4 col-lg-4" method="post" action="index.php?action=Login">
 	  <div class="form-group">
-	    <label for="email">Email:</label>
+	    <label for="email"><strong>Email:</strong></label>
 	    <input type="text" class="form-control" name="email" id="email">
 	  </div>
 	  <div class="form-group">
-	    <label for="password">Mot de passe:</label>
+	    <label for="password"><strong>Mot de passe:</strong></label>
 	    <input type="password" class="form-control" name="password" id="password">
 	  </div>
 	  <button type="submit" class="btn btn-default" href="">Login</button>
