@@ -23,6 +23,6 @@
 	        <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
 	    </a>
 		<?php if($this->login!=null) 
-			echo"<div class=\"btn btn-warning navbar-btn pull-right\">".$this->login."</div>"?>
+			echo"<div class=\"btn btn-success navbar-btn pull-right\">".$this->login."</div>"?>
 	</nav>	           
 	

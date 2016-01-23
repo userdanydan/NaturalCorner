@@ -73,8 +73,7 @@
 						$this->displayBody();
 						echo '<div class="row">';
 						echo '<p class="col-lg-12 col-sm-12 col-md-12 col-xs-12"></p>';
-						echo '</div>';
-						$this->displayLogoutForm();
+						echo '</div>';						
 					} 
 						
 				?>
