@@ -140,18 +140,20 @@ class Database
 	 * @return Utilisateur  l'utilisateur recherché. 
 	 */
 	public function getUser($email){
+		$userTrouve=false;
 		$this->creerConnexion();		
 		$requete = $this->connection->prepare(" SELECT *
 												FROM UTILISATEURS
 												WHERE ADRESSE_MAIL=:EMAIL");
-		$requete->execute(array(':EMAIL'=>$email));
+		$userTrouve=$requete->execute(array(':EMAIL'=>$email));
 		$ligneBDD = $requete->fetch();
 		$utilisateur = new Utilisateur($ligneBDD["PRENOM"], $ligneBDD["NOM"], $ligneBDD["PSEUDO"], 
 										$ligneBDD["PASS"], $ligneBDD["ADRESSE_MAIL"],
 										$ligneBDD["ADRESSE_PHYSIQUE"], $ligneBDD["CODE_POSTAL"], $ligneBDD["LOCALITE"], 
-										new DateTime($ligneBDD["DATE_INSCRIPTION"]), $ligneBDD["IP_CONNEXION"]);
+										new DateTime("NOW"), $ligneBDD["IP_CONNEXION"]);
 		$requete->closeCursor();
-		return clone $utilisateur;
+		//print_r(clone $utilisateur);
+		return  $utilisateur;
 	}
 	/**
 	 * Ajoute dans la base de donnée un utilisateur.

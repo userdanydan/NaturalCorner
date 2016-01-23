@@ -50,7 +50,22 @@ h1{
 	left: 0.5em;
 	
 }
+#naturalCommands{
+	font-size : 1em;
+	font-family: "impact", Garamond, 'Comic Sans';
+	color:lime;
 
+}
+#cornerCommands{
+	
+	font-size : 1.5em;
+	font-family: "impact", Garamond, 'Comic Sans';
+	color:green;
+	text-align: center;
+	position : relative;
+	left: 0.5em;
+	
+}
 
 
 

@@ -69,16 +69,8 @@ class Utilisateur{
 		$this->_localite=$localite;
 		$this->_dateInscription=$dateInscription;
 		$this->_ipConnexion=$idConnexion;
-		try{
-			$this->setPass($pass);
-		}catch(UtilisateurException $e){
-			echo '<p>'. $e->getMessage().'</p>';
-		}
-		try{
-			$this->setAdresseMail($adresseMail);
-		}catch(UtilisateurException $e){
-			echo '<p>'. $e->getMessage().'</p>';
-		}
+		$this->_pass=$pass;
+		$this->_adresseMail=$adresseMail;
 	}
 	//TODO verifier les paramètres en entrées.
 	/**
@@ -280,13 +272,39 @@ class Utilisateur{
 	public function getIdConnexion(){
 		return $this->_ipConnexion;
 	}
+	public function __clone(){
+	}
+	/**
+	 * @return string : retourne une représentation JSON d'un utilisateur.
+	 */
+	function getJsonData(){
+		$var = get_object_vars($this);
+		foreach($var as &$value){
+			if(is_object($value) && method_exists($value,'getJsonData')){
+				$value = $value->getJsonData();
+			}
+		}
+		return $var;
+	}
 	/**
 	 * @return string : retourne un utilisateur.
 	 */
 	public function __toString(){
-		return "<p>".$_prenom.", ".$_nom.", ".$_pseudo.", ".$_pass.", ".$_adresseMail.
-		", ".$_adressePhysique.", ".$_codePostal.", ".$_localite.", ".$_dateInscription.", ".$_ipConnexion."</p>";
+		return "<p>".$this->_prenom.", ".$this->_nom.", ".$this->_pseudo.", ".$this->_pass.", ".$this->_adresseMail.
+		", ".$this->_adressePhysique.", ".$this->_codePostal.", ".$this->_localite.", ".$this->_dateInscription->format('Y-m-d H:i:s').", "
+				.$this->_ipConnexion."</p>";
+// 		return '{"id"="'.$this->_id.',
+// 				 "prenom"="'.$this->_prenom.',
+// 				 		"nom"="'.$this->_nom.',
+// 				 				"pass"="'.$this->_pass.',
+// 				 						"adresseMail"="'.$this->_adresseMail.',
+// 				 								"codePostal"="'.$this->_codePostal.',
+// 				 										"localite"="'.$this->_localite.',
+// 				 												"dateInscription"="'.$this->_dateInscription.',
+// 				 														"ipConnexion"="'.$this->_ipConnexion.'}';
+		
 	}
+
 	public function __destruct(){
 		unset($this->_id);
 		unset($this->_prenom);

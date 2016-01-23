@@ -19,7 +19,8 @@ class LoginAction extends Action
 			{
 				if($this->database->checkPassword($_POST['email'], $_POST['password']))
 				{
-					$this->setUser($this->database->getUser($_POST['email']));				
+					$this->setUser($this->database->getUser($_POST['email']));
+
 					if($this->utilisateurSession->getPseudo()!=null){
 						$this->setSessionLogin($this->getUser()->getPseudo());
 					}elseif($this->getUser()->getNom()!=null && $this->getUser()->getPrenom()!=null){

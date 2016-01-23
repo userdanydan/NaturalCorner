@@ -81,7 +81,18 @@
 			</section>
         	<footer  class="row">
          		<div class="col-lg-4 col-md-4 col-xs-1"></div>       	
-        		<p class="col-lg-4 col-md-4 col-xs-10"> </p>
+        		<p class="col-lg-4 col-md-4 col-xs-10"> 
+        			<?php if($this->login!=null){
+        				echo '<div class="fb-like" 
+						data-href="http://www.your-domain.com/your-page.html" 
+						data-layout="standard" 
+						data-action="like" 
+						data-show-faces="true"
+						data-width="1000">
+						</div>';
+        			}?>
+			        		
+				</p>
         		<div class="col-lg-4 col-md-4 col-xs-1"></div>
         	</footer>
         	
