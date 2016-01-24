@@ -73,6 +73,9 @@ abstract class Action {
 	 * @param string $login Pseudonyme de l'utilisateur.
 	 */
 	protected function setSessionLogin($login) {
+		if($login===null){
+			session_destroy();
+		}
 		$_SESSION['login'] = $login;
 	}
 

@@ -45,13 +45,14 @@
 		</script>
         <div class="container-fluid">
         	 
-        	
-        	<?php 
-        		if($this->login==null){
-        			$this->displayHeader();
-        		}
-        	?>
-        	<section class="row">
+        	<header class="row">	
+	        	<?php 
+	        		if($this->login==null){
+	        			$this->displayHeader();
+	        		}
+	        	?>
+	        </header>
+        	<section>
         		<?php 
         		$commandesAffiches=false;
         		if($this->login!=null){ 
@@ -60,27 +61,22 @@
 				}	
 				?>
         	</section>
-        	<section class="row">
+        	<section>
 	        	<?php
         			if($this->login==null){
-        				echo '<div class="row">';
-        				echo '<p class="col-lg-12 col-sm-12 col-md-12 col-xs-12"></p>';
-  						echo '</div>';
+
         				$this->displayBody();
         				
         			} 
 					else{
 						$this->displayBody();
-						echo '<div class="row">';
-						echo '<p class="col-lg-12 col-sm-12 col-md-12 col-xs-12"></p>';
-						echo '</div>';						
+						
 					} 
 						
 				?>
 			</section>
-        	<footer  class="row">
-         		<div class="col-lg-4 col-md-4 col-xs-1"></div>       	
-        		<p class="col-lg-4 col-md-4 col-xs-10"> 
+        	<footer  class="row">   	
+        		<div class="col-lg-4 col-md-4 col-xs-10"> 
         			<?php if($this->login!=null){
         				echo '<div class="fb-like" 
 						data-href="http://www.your-domain.com/your-page.html" 
@@ -91,8 +87,7 @@
 						</div>';
         			}?>
 			        		
-				</p>
-        		<div class="col-lg-4 col-md-4 col-xs-1"></div>
+				</div>
         	</footer>
         	
         </div>

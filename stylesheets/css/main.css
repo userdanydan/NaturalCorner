@@ -13,7 +13,7 @@ body {
 }
 
 body::before {
-  background: url(/stylesheets/legumes_fruits.jpg) repeat fixed;
+  background: url(/stylesheets/legumes_fruits.jpg) center;
   content: '';
   z-index: -1;
   width: 100%;
@@ -27,7 +27,7 @@ body::before {
   -moz-filter: blur(5px);
   -o-filter: blur(5px);
   -ms-filter: blur(5px);
-  filter: blur(5px);
+  filter: blur(10px);
 }
 
 h1{
@@ -51,14 +51,14 @@ h1{
 	
 }
 #naturalCommands{
-	font-size : 1em;
+	font-size : 2em;
 	font-family: "impact", Garamond, 'Comic Sans';
 	color:lime;
 
 }
 #cornerCommands{
 	
-	font-size : 1.5em;
+	font-size : 2.5em;
 	font-family: "impact", Garamond, 'Comic Sans';
 	color:green;
 	text-align: center;

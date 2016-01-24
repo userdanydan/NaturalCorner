@@ -1,4 +1,4 @@
-<article class="row">
+<article>
 	<section class="col-lg-offset-3 col-lg-8">
 		<form method="post" action="index.php?action=SignUp" class="form-horizontal col-lg-10" style="border:1px solid silver; border-radius: 10px; box-shadow:6px 6px 6px grey" >	
 			<div class="form-group">

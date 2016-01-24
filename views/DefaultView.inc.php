@@ -11,6 +11,7 @@ class DefaultView extends View {
 	protected function displayBody() {
 		if($this->login==null)
 			include('views/templates/loginform.inc.php');
+		include('views/templates/default.inc.php');
 	}
 }
 ?>
