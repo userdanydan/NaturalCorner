@@ -2,11 +2,11 @@
 
 <article>
 	<section class="col-lg-offset-3 col-lg-8">
-		<form method="post" action="index.php?action=UpdateUser" class="form-horizontal col-lg-10" style="border:1px solid silver; border-radius: 10px; box-shadow:6px 6px 6px grey" >	
+		<form method="post" action="index.php?action=UpdateUser" class="form-horizontal col-lg-10" >	
 			<div class="form-group">
-				<legend>
-					<h3 class="text-center"><span class="label label-success">Modification des informations</span></h3> 
-				</legend>
+
+				<h3 class="text-center"><span class="label label-success">Modification des informations</span></h3> 
+
 			</div>
 			<div class="row">
 				<div class="form-group">
@@ -80,8 +80,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="row panel-footer">
-				<div class="footer" style="margin-top:3em;">
+			<div class="row">
+				<div class="footer">
 					<input class="btn btn-danger pull-right" type="submit" value="Modifier" name="submit"/>
 				</div>
 			</div>

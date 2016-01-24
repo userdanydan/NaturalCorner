@@ -12,7 +12,7 @@ class LogoutAction extends Action {
 	 * @see Action::run()
 	 */	
 	public function run() {
-		$this->setMessageView("A bientôt!");
+		$this->setMessageView("A bientôt!", "alert-success");
 		$this->setSessionLogin(null);
 	}
 

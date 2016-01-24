@@ -1,13 +1,4 @@
-	<div class="row">
-		<nav class="col-xs-4  col-xs-offset-4 col-sm-4  col-sm-offset-4 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 text-center">
-			 	<a href="<?php echo $_SERVER['PHP_SELF'].'?action=Default';?>">
-					<div style="display:inline; text:center; margin:0.5em;">
-						<div id="naturalCommands" style="display:inline;">Natural</div>
-						<div id="cornerCommands" style="display:inline;">Corner</div>
-					</div>
-				</a>
-		</nav>
-	</div>
+
 	<div class="row">	
 		<nav class="col-xs-6  col-sm-6  col-md-6 col-lg-6" style="display:inline;">
 	        <a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=VoirCompte';?>"> 
@@ -39,4 +30,11 @@
 			<?php if($this->login!=null) 
 // 				echo"<div class=\"btn btn-success navbar-btn  pull-right\">".$this->login."</div>"?>
 		</nav>	           
+	</div>
+<div class="row">
+		<nav class="col-lg-6 col-md-6  col-sm-6  col-xs-6 col-sm-offset-3 col-lg-offset-3 col-md-offset-3 col-xs-offset-3">
+			 	<a href="<?php echo $_SERVER['PHP_SELF'].'?action=Default';?>">
+					<img src="/stylesheets/img/natural_corner.jpg" class="img-responsive" alt="Responsive image">
+				</a>
+		</nav>
 	</div>

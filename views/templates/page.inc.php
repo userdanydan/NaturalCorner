@@ -4,20 +4,32 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta name="robot" content="nofollow"/>
         <title>Natural Corner - Votre magasin bio de proximité</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="user-scalable=no, width=device-width">
+        <meta name="description" content=""/>
+        <meta name="viewport" content="user-scalable=no, width=device-width"/>
         <meta name="apple-mobile-web-app-capable" content="yes"/>
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 		<link rel="icon" type="image/png" href="stylesheets/favicon.ico" />
         <link rel="apple-touch-startup-image" href="stylesheets/img/fruits-NC.jpg"/>
-        <link rel="apple-touch-icon" href="stylesheets/apple-touch-icon.png">
+        <link rel="apple-touch-icon" href="stylesheets/apple-touch-icon.jpg">
         <link rel="stylesheet" href="stylesheets/css/bootstrap.min.css">
         <!--  <link rel="stylesheet" href="stylesheets/jquery.mobile/jquery.mobile.css">  -->     
         <link rel="stylesheet" href="stylesheets/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="stylesheets/css/main.css">
+        <!-- Latest compiled and minified CSS -->
+<!-- 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"  -->
+<!-- 		integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"  -->
+<!-- 		crossorigin="anonymous"> -->
+		
+		<!-- Optional theme -->
+<!-- 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"  -->
+<!-- 		integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"  -->
+<!-- 		crossorigin="anonymous"> -->
+		
+		
 		<script src="stylesheets/js/jquery.js"></script>
 		<!--  <script src="stylesheets/jquery.mobile/jquery.mobile.js"></script>--> 
         <script src="stylesheets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
@@ -52,6 +64,7 @@
 	        		}
 	        	?>
 	        </header>
+	        </br>
         	<section>
         		<?php 
         		$commandesAffiches=false;
@@ -92,12 +105,16 @@
         	
         </div>
    
-    <!-- /container -->        <!--  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+    <!-- /container -->        
+<!--     	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
         <script>window.jQuery || document.write('<script src="stylesheets/js/jquery.js"><\/script>')</script>
 		
         <script src="stylesheets/js/bootstrap.min.js"></script>
         <script src="stylesheets/js/main.js"></script>
-
+<!-- Latest compiled and minified JavaScript -->
+<!-- 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"  -->
+<!-- 		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"  -->
+<!-- 		crossorigin="anonymous"></script> -->
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <!--  <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

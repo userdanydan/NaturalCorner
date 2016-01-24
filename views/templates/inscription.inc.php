@@ -2,12 +2,12 @@
 
 <article >
 
-		  <form class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6" role="form" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>?action=Enregistrement"style="border:1px solid silver; border-radius: 10px; box-shadow:6px 6px 6px grey"" >
+		  <form class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6" role="form" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>?action=Enregistrement"" >
 			<div style="margin-left:1em;margin-right:1em;">
 			<div class="form-group">
-				<legend>
+
 					<h3 class="text-center"><span class="label label-success">Inscription</span></h3> 
-				</legend>
+
 			</div>
 		     <div class="form-group" >
 			    <label for="email">Adresse e-mail*:</label>

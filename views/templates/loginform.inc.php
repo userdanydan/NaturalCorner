@@ -12,19 +12,14 @@
 // 	$permissions = ['email']; // Optional permissions*/
 // 	$loginUrl = $helper->getLoginUrl('https://naturalcorner-1.appspot.com/index.php?action=Login', $permissions);
 ?>
-
-<div>
+<div class="row">
 	<div class="col-xs-1 col-md-4 col-lg-4"></div>
 	  <div class="col-xs-10 col-md-4 col-lg-4">
-	  	<a type="button" class="btn btn-primary center center-block" href="<?php echo $loginUrl?>"> Login avec Facebook!</a>
+	  	<a type="button" class="btn btn-primary center center-block" href="<?php echo $loginUrl?>">
+	  		<img class="pull-left" width="20" height="20" src="/stylesheets/img/fb_icon_325x325.png" alt="fb"/> Login avec Facebook</a>
 	  </div>
 	  <div class="col-xs-1 col-md-4 col-lg-4"></div>
 </div>
-</br>
-</br>
-<div></div>
-</br>
-</br>
 </br>
 <div>
 	<div class="col-xs-1 col-md-4 col-lg-4"></div>
@@ -38,16 +33,9 @@
 	    <input type="password" class="form-control" name="password" id="password">
 	  </div>
 	  <button type="submit" class="btn btn-default" href="">Login</button>
+	  <button class="btn btn-success pull-right"><a style='color:white' href="<?php echo $_SERVER['PHP_SELF'].'?action=Inscription';?>">
+				Inscription</button> 
+	  </a> 
 	</form>
 	<div class="col-xs-1 col-md-4 col-lg-4"></div>
-</div>
-<div>
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></br></div>
-</div>
-<div>
-		<div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-4 col-xs-offset-4 ">
-			<a style='color:green' href="<?php echo $_SERVER['PHP_SELF'].'?action=Inscription';?>">
-				<h3><span class="btn btn-success pull-right">Inscription</span></h3> 
-			</a> 
-		</div>
 </div>
