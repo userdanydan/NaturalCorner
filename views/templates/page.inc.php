@@ -16,6 +16,8 @@
         <link rel="apple-touch-startup-image" href="stylesheets/img/fruits-NC.jpg"/>
         <link rel="apple-touch-icon" href="stylesheets/apple-touch-icon.jpg">
         <link rel="stylesheet" href="stylesheets/css/bootstrap.min.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        
         <!--  <link rel="stylesheet" href="stylesheets/jquery.mobile/jquery.mobile.css">  -->     
         <link rel="stylesheet" href="stylesheets/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="stylesheets/css/main.css">
@@ -29,12 +31,14 @@
 <!-- 		integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"  -->
 <!-- 		crossorigin="anonymous"> -->
 		
-		
+
 		<script src="stylesheets/js/jquery.js"></script>
+				        <script src="stylesheets/js/angular.min.js"></script>
+		        <script src="stylesheets/js/bootstrap.min.js"></script>
 		<!--  <script src="stylesheets/jquery.mobile/jquery.mobile.js"></script>--> 
         <script src="stylesheets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
-    <body>
+    <body> 		
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -102,14 +106,24 @@
 			        		
 				</div>
         	</footer>
-        	
         </div>
-   
+  <script>
+   			var val1 = '<?php echo $this->user===null?'': $this->user->getAdresseMail();  ?>';   		
+			var app = angular.module('myApp', []);
+			app.controller('customersCtrl', function($scope, $http) {
+			    	$http.get("<?php echo $_SERVER['PHP_SELF'].'?action=UserJSON'?>", 
+			    			{params:{"email": val1}}).
+			    			then(function(response) {
+			        $scope.myData = response.data.records;
+			    });
+			});
+		</script>
     <!-- /container -->        
 <!--     	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
-        <script>window.jQuery || document.write('<script src="stylesheets/js/jquery.js"><\/script>')</script>
-		
-        <script src="stylesheets/js/bootstrap.min.js"></script>
+
+<!-- 		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> -->
+
+
         <script src="stylesheets/js/main.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <!-- 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"  -->

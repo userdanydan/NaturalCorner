@@ -29,7 +29,7 @@
 		else 
 			$action = $_REQUEST['action'];
 		$actions = array('Default',  'Login', 'Logout', 'Inscription', 
-				'Enregistrement', 'Accueil', 'UpdateUser', 'VoirCompte');
+				'Enregistrement', 'Accueil', 'UpdateUser', 'VoirCompte', 'UserJSON');
 		if (!in_array($action, $actions)) 
 			$action = 'Default';
 		return getActionByName($action);
