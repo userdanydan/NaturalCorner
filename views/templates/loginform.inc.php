@@ -1,16 +1,17 @@
 <!-- cop col du site Bootstrap -->
 <?php 
-// 	$fb = new Facebook\Facebook([
-// 			'app_id' => '479325815604386',
-// 			'app_secret' => '222768909de970fe4931805415d01b07',
-// 			'default_graph_version' => 'v2.5'
-// 	]);
+
+	$fb = new Facebook\Facebook([
+			'app_id' => '479325815604386',
+			'app_secret' => '222768909de970fe4931805415d01b07',
+			'default_graph_version' => 'v2.5'
+	]);
 	
-// 	$helper = $fb->getRedirectLoginHelper();
+	$helper = $fb->getRedirectLoginHelper();
 	
 	
-// 	$permissions = ['email']; // Optional permissions*/
-// 	$loginUrl = $helper->getLoginUrl('https://naturalcorner-1.appspot.com/index.php?action=Login', $permissions);
+	$permissions = ['email']; // Optional permissions*/
+	$loginUrl = $helper->getLoginUrl('https://naturalcorner-1.appspot.com/index.php?action=Login', $permissions);
 ?>
 <div class="row">
 	<div class="col-xs-1 col-md-4 col-lg-4"></div>
