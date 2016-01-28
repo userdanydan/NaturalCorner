@@ -130,7 +130,7 @@ class UpdateUserAction extends Action
 					$updateMessage.=$ue->getMessage().'<br>';
 				}
 			}
-			if($updateMessage==''){
+			if($updateMessage===''){
 				try{
 					$estModifie = $this->database->updateUser($this->getUser(), $emailID);
 				}catch(EmailAlreadyTakenException $e){
@@ -139,7 +139,7 @@ class UpdateUserAction extends Action
 			}
 			if($estModifie){
 				$this->setSessionLogin($this->getUser()->getPseudo());				
-				$this->setMessageView("Modification enregistrée.", "alert-success");
+				$this->setMessageView("Modification(s) enregistrée(s).", "alert-success");
 			}else{ 
 				$this->setMessageView("Modification non enregistrée.<br>".$updateMessage, "alert-danger");
 			}	

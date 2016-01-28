@@ -1,6 +1,6 @@
 
 	<div class="row">	
-		<nav class="col-xs-6  col-sm-6  col-md-6 col-lg-6" style="display:inline;">
+		<nav class="col-xs-6  col-sm-offset-1 col-sm-3  col-md-3 col-lg-3" style="display:inline;">
 	        <a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=VoirCompte';?>"> 
 		        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 		    </a>
@@ -11,10 +11,10 @@
 		        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 		    </a>
 		 </nav>
-		 
-		 <nav class="col-xs-6  col-sm-6  col-md-6 col-lg-6" style="display:inline;">   
+		 <div class="col-xs-4"> </div>	
+		 <nav class="col-xs-1  col-sm-offset-6  col-md-offset-6 col-lg-offset-6 col-md-1 col-lg-1" style="display:inline;">   
 			<div class="dropdown">
-				<a type="button" class="btn btn-default navbar-btn dropdown-toggle pull-right" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+				<a type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
 			        <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
 			    </a>
 			     <ul class="dropdown-menu">
@@ -27,14 +27,15 @@
 		            
 		          </ul>
 			 </div>
-			<?php if($this->login!=null) 
-// 				echo"<div class=\"btn btn-success navbar-btn  pull-right\">".$this->login."</div>"?>
-		</nav>	           
+		</nav>
+		<nav></nav>
+		           
 	</div>
 <div class="row">
-		<nav class="col-lg-6 col-md-6  col-sm-6  col-xs-6 col-sm-offset-3 col-lg-offset-3 col-md-offset-3 col-xs-offset-3">
+		<nav class="col-lg-3 col-lg-offset-4 col-md-4 col-md-offset-4  col-sm-offset-4 col-sm-4  col-xs-offset-3 col-xs-6 ">
 			 	<a href="<?php echo $_SERVER['PHP_SELF'].'?action=Default';?>">
-					<img src="/stylesheets/img/natural_corner.jpg" class="img-responsive" alt="Responsive image">
+					<img src="/stylesheets/img/natural_corner.jpg" class="img-responsive img-circle" alt="Responsive image">
 				</a>
 		</nav>
 	</div>
+	</br>

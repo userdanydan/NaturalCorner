@@ -13,7 +13,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes"/>
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 		<link rel="icon" type="image/png" href="stylesheets/favicon.ico" />
-        <link rel="apple-touch-startup-image" href="stylesheets/img/fruits-NC.jpg"/>
+        <link rel="apple-touch-startup-image" href="stylesheets/img/natural_corner.jpg"/>
         <link rel="apple-touch-icon" href="stylesheets/apple-touch-icon.jpg">
         <link rel="stylesheet" href="stylesheets/css/bootstrap.min.css">
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
@@ -64,13 +64,25 @@
         	<header class="row">	
 	        	<?php 
 	        		if($this->login==null){
-	        			$this->displayHeader();
+	        			if(isset($_GET['action'])){
+	        				if($_GET['action']==='Inscription' OR $_GET['action']==='Login'){
+	        					$this->displayHeader();      					 
+	        				}else{
+	        					$this->displayHeader();
+		        				$this->displayCarousel();
+	        					 
+	        				}
+	        			}else{
+	        				$this->displayHeader();
+	        				$this->displayCarousel();
+	        			}
 	        		}
 	        	?>
 	        </header>
 	        </br>
         	<section>
         		<?php 
+
         		$commandesAffiches=false;
         		if($this->login!=null){ 
         			$this->displayCommands();
@@ -81,7 +93,6 @@
         	<section>
 	        	<?php
         			if($this->login==null){
-
         				$this->displayBody();
         				
         			} 
@@ -92,8 +103,11 @@
 						
 				?>
 			</section>
+			</br>
+			</br>
+			</br>
         	<footer  class="row">   	
-        		<div class="col-lg-4 col-md-4 col-xs-10"> 
+        		<div class="col-lg-4 col-sm-offset-1 col-sm-3 col-md-4 col-xs-10"> 
         			<?php if($this->login!=null){
         				echo '<div class="fb-like" 
 						data-href="http://www.your-domain.com/your-page.html" 

@@ -11,6 +11,7 @@ class DefaultAction extends Action
 	 */
 	public function run() 
 	{
+		
 		$this->setView(getViewByName("Default"));
 	}
 }

@@ -12,7 +12,7 @@
 				<div class="form-group">
 					<label class="control-label col-lg-4" for="pseudo">Pseudo</label>
 					<div class="col-lg-6">
-						<input  type="text" name="pseudo" class="form-control" value="{{x._pseudo}}" pattern="[0-9a-zA-Z]{3,128}" title="alphanumérique ayant au mois trois caractères">
+						<input  type="text" name="pseudo" class="form-control" value="{{x._pseudo}}" placeholder=" " pattern="[0-9a-zA-Z]{3,128}" title="alphanumérique ayant au mois trois caractères" >
 					</div>
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 				<div class="form-group">
 					<label class="control-label col-lg-4" for="email">E-mail</label>
 					<div class="col-lg-6">
-						<input  type="text" name="email" class="form-control" value="{{x._adresseMail}}">
+						<input  type="text" name="email" class="form-control" value="{{x._adresseMail}} " required>
 					</div>
 				</div>
 			</div>
@@ -69,7 +69,7 @@
 					<label class="control-label col-lg-4" for="pwd">Mot de passe</label>
 					<div class="col-lg-6">
 						<input type="password" name="pwd" class="form-control" placeholder="Mot de passe" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$" 
-		    title="le mot de passe possède au moins 6 caractères, une lettre minuscule, une lettre majuscule et un chiffre">
+		    title="le mot de passe possède au moins 6 caractères, une lettre minuscule, une lettre majuscule et un chiffre" >
 					</div>
 				</div>
 			</div>

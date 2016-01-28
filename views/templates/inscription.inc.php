@@ -11,17 +11,17 @@
 			</div>
 		     <div class="form-group" >
 			    <label for="email">Adresse e-mail*:</label>
-			    <input type="email" class="form-control" id="email" name="email">
+			    <input type="email" class="form-control" id="email" name="email" required>
 			  </div>
 		  <div class="form-group">
 		    <label for="pwd">Mot de passe*:</label>
 		    <input type="password" class="form-control" id="pwd" name="pwd" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$" 
-		    title="le mot de passe possède au moins 6 caractères, une lettre minuscule, une lettre majuscule et un chiffre">
+		    title="le mot de passe possède au moins 6 caractères, une lettre minuscule, une lettre majuscule et un chiffre" required>
 		  </div>
 		  <div class="form-group">
 		    <label for="pwd">Confirmer mot de passe*:</label>
 		    <input type="password" class="form-control" id="pwd2" name="pwd2" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$" 
-		    title="le mot de passe possède au moins 6 caractères, une lettre minuscule, une lettre majuscule et un chiffre">
+		    title="le mot de passe possède au moins 6 caractères, une lettre minuscule, une lettre majuscule et un chiffre" required>
 		  </div>
 		 <div class="form-group" >
 		    <label for="prenom">Prénom:</label>

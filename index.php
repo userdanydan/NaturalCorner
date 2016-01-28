@@ -1,11 +1,18 @@
 <?php
+	
 	include __DIR__.'/model/Utilisateur.class.php';
 	date_default_timezone_set('Europe/Brussels');
+	
 	session_start();
+	
+	
 	$action = getAction();
 	$action->run();
+	
+	
 	$view = $action->getView();
 	$view->setLogin($action->getSessionLogin());
+	
 	$view->run();
 	
 	function getActionByName($name) 

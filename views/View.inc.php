@@ -46,6 +46,12 @@ abstract class View {
 		include("views/templates/header.inc.php");
 	}
 	/**
+	 * Génère le carrousel.
+	 */
+	public function displayCarousel() {
+		include("views/templates/carousel.inc.php");
+	}
+	/**
 	 * Génère le formulaire de connexion.
 	 */
 	private function displayLoginForm() {

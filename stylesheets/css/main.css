@@ -8,11 +8,10 @@
 
 
 body {
-
+  background-color:honeydew;
   position: flex;
+
 }
-
-
 
 h1{
 	text-align: center;
