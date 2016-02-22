@@ -245,7 +245,7 @@ class Database
 	/**
 	 * Vérifie qu'un couple (pseudonyme, mot de passe) est correct.
 	 *
-	 * @param string $nickname Pseudonyme.
+	 * @param string $email Email.
 	 * @param string $password Mot de passe.
 	 * @return boolean True si le couple est correct, false sinon.
 	 */
@@ -281,7 +281,7 @@ class Database
 				return false;
 			else
 				return true;
-		}
+	}
 }
 
 ?>

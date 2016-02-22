@@ -16,7 +16,7 @@
         <link rel="apple-touch-startup-image" href="stylesheets/img/natural_corner.jpg"/>
         <link rel="apple-touch-icon" href="stylesheets/apple-touch-icon.jpg">
         <link rel="stylesheet" href="stylesheets/css/bootstrap.min.css">
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<!--         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> -->
         
         <!--  <link rel="stylesheet" href="stylesheets/jquery.mobile/jquery.mobile.css">  -->     
         <link rel="stylesheet" href="stylesheets/css/bootstrap-theme.min.css">
@@ -33,7 +33,6 @@
 		
 
 		<script src="stylesheets/js/jquery.js"></script>
-				        <script src="stylesheets/js/angular.min.js"></script>
 		        <script src="stylesheets/js/bootstrap.min.js"></script>
 		<!--  <script src="stylesheets/jquery.mobile/jquery.mobile.js"></script>--> 
         <script src="stylesheets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
@@ -121,7 +120,7 @@
 				</div>
         	</footer>
         </div>
-  <script>
+ <!--  <script>
    			var val1 = '<?php echo $this->user===null?'': $this->user->getAdresseMail();  ?>';   		
 			var app = angular.module('myApp', []);
 			app.controller('customersCtrl', function($scope, $http) {
@@ -131,7 +130,7 @@
 			        $scope.myData = response.data.records;
 			    });
 			});
-		</script>
+		</script> -->
     <!-- /container -->        
 <!--     	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
 
