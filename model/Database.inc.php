@@ -81,23 +81,36 @@ class Database
 			
 			$this->connection->beginTransaction(); // pour assurer le caractère ACID de la base de données.
 			$succes = $this->connection->query("CREATE TABLE IF NOT EXISTS UTILISATEURS(
-									        ID_UTILISATEUR   int (11) Auto_increment  NOT NULL ,
-									        PRENOM           Varchar (128) ,
-									        NOM              Varchar (128) ,
-									        PSEUDO           Varchar (128) ,
-									        PASS             Varchar (1024) ,
-									        ADRESSE_MAIL     Varchar (128) ,
-									        ADRESSE_PHYSIQUE Varchar (128) ,
-									        CODE_POSTAL      Varchar (5) ,
-									        LOCALITE         Varchar (128) ,
-									        DATE_INSCRIPTION Datetime ,
-									        IP_CONNEXION     Varchar(128),
-									        PRIMARY KEY (ID_UTILISATEUR )
-										)ENGINE=InnoDB;");
+    									        ID_UTILISATEUR   INT (11) AUTO_INCREMENT  NOT NULL ,
+    									        PRENOM           VARCHAR (128) ,
+    									        NOM              VARCHAR (128) ,
+    									        PSEUDO           VARCHAR (128) ,
+    									        PASS             VARCHAR (1024) ,
+    									        ADRESSE_MAIL     VARCHAR (128) ,
+    									        ADRESSE_PHYSIQUE VARCHAR (128) ,
+    									        CODE_POSTAL      VARCHAR (5) ,
+    									        LOCALITE         VARCHAR (128) ,
+    									        DATE_INSCRIPTION DATETIME ,
+    									        IP_CONNEXION     VARCHAR(128),
+    									        PRIMARY KEY (ID_UTILISATEUR )
+    										)ENGINE=InnoDB;");
 			if ($success) 
 				$this->connection->commit();
 			else 
 				$this->connection->rollback();
+				$this->connection->beginTransaction(); 
+				$succes = $this->connection->query("CREATE TABLE IF NOT EXISTS ARTICLES(
+        								            ID_ARTICLE             INT (11) AUTO_INCREMENT  NOT NULL ,
+        									        DENOMINATION           VARCHAR (128) ,
+        									        PRIX_UNITAIRE          SMALLINT,
+        									        COMMENTAIRE            TEXT,
+        									        EN_VENTE               BOOL,
+        									        PRIMARY KEY (ID_ARTICLE)
+        										)ENGINE=InnoDB;");
+				if ($success)
+				    $this->connection->commit();
+				else
+				    $this->connection->rollback();
 		}
 		catch(PDOException $pdoe)
 		{
@@ -124,7 +137,8 @@ class Database
 		} else {
 			// Connect from a development environment.
 			try{
-				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '', 
+				        array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 			}catch(PDOException $ex){
 				echo '<p>'.$ex->getMessage().'</p>';
 				die(json_encode(
@@ -135,7 +149,7 @@ class Database
 		}
 	}
 	/**
-	 * Recherche dans la base de donnée un utilisateur selon son prénom, nom et pseudo.
+	 * Recherche dans la base de donnée un utilisateur selon son email.
 	 * @param string  l'adresse e-mail.
 	 * @return Utilisateur  l'utilisateur recherché. 
 	 */
@@ -152,7 +166,6 @@ class Database
 										$ligneBDD["ADRESSE_PHYSIQUE"], $ligneBDD["CODE_POSTAL"], $ligneBDD["LOCALITE"], 
 										new DateTime("NOW"), $ligneBDD["IP_CONNEXION"]);
 		$requete->closeCursor();
-		//print_r(clone $utilisateur);
 		return  $utilisateur;
 	}
 	/**
@@ -187,9 +200,7 @@ class Database
 	}
 	/**
 	 * Retire de la base de donnée un utilisateur.
-	 * @param string $prenom -> le prénom
-	 * @param string $nom -> le nom
-	 * @param string $pseudo -> le pseudo
+	 * @param string $email -> l'email de l'utilisateur.
 	 * @return boolean indique si le retrait est réussie.
 	 */
 	public function removeUser($email){
@@ -281,6 +292,86 @@ class Database
 				return false;
 			else
 				return true;
+	}
+	
+	
+	/**
+	 * Recherche dans la base de donnée un article selon sa dénomination.
+	 * @param string  la dénomination.
+	 * @return Article  l'article recherché.
+	 */
+	public function getArticle($denom){
+	    $articleTrouve=false;
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare(" SELECT *
+												FROM ARTICLES
+												WHERE DENOMINATION=:DENOM");
+	    $articleTrouve=$requete->execute(array(':DENOM'=>$denom));
+	    $ligneBDD = $requete->fetch();
+	    $article = new Article($ligneBDD["DENOMINATION"], $ligneBDD["PRIX_UNITAIRE"],
+	            $ligneBDD["COMMENTAIRE"],$ligneBDD["EN_VENTE"]);
+	    $requete->closeCursor();
+	    return  $article;
+	}
+	/**
+	 * Ajoute dans la base de donnée un article.
+	 * @param Article l'article à insérer.
+	 * @return bool indique si l'insertion est réussie.
+	 * @throws ArticleException si l'email existe déjà dans la base de données.
+	 */
+	public function addArticle(Article $article){
+        $insertionReussie=false;
+        $this->creerConnexion();
+        $requete = $this->connection->prepare(" INSERT INTO ARTICLES(DENOMINATION, PRIX_UNITAIRE, COMMENTAIRE, EN_VENTE)
+											    VALUES(:DENOMINATION, :PRIX_UNITAIRE, :COMMENTAIRE, :EN_VENTE)");
+        $insertionReussie = $requete->execute(array(
+                ':DENOMINATION'=>$article->getDenomination(),
+                ':PRIX_UNITAIRE'=>$article->getPrixUnitaire(),
+                ':COMMENTAIRE'=>$article->getCommentaire(),
+                ':EN_VENTE'=>$article->isEnVente()      
+        ));
+        $requete->closeCursor();
+        return $insertionReussie;
+	}
+	/**
+	 * Retire de la base de donnée un article.
+	 * @param string $denom La dénomination de l'article.
+	 * @return boolean indique si le retrait est réussie.
+	 */
+	public function removeArticle($denom){
+	    $estDetruit;
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare(" DELETE FROM ARTICLES
+												WHERE DENOMINATION=:DENOMINATION");
+	    $estDetruit = $requete->execute(array(
+	            ':DENOMINATION'=>$denom
+	    ));
+	    $requete->closeCursor();
+	    return $estDetruit;
+	
+	}
+	/**
+	 * Met à jour dans la base de donnée un article.
+	 * @param Article $articleMisAJour -> un article avec les nouvelles données.
+	 * @param string $denom -> La dénomination de l'article à modifier.
+	 * @return boolean indique si la mise à jour est réussie.
+	 */
+	public function updateArticle(Article $articleMisAJour, $denom){
+	    $estMisAJour=false;
+        $this->creerConnexion();
+        $requete = $this->connection->prepare(" UPDATE ARTICLES
+        										SET DENOMINATION=:DENOMINATION, PRIX_UNITAIRE=:PRIX_UNITAIRE, COMMENTAIRE=:COMMENTAIRE,
+        											EN_VENTE=:EN_VENTE
+        										WHERE DENOMINATION=:DENOM");
+        $estMisAJour = $requete->execute(array(
+                ':DENOMINATION'=> $articleMisAJour->getDenomination(),
+                ':PRIX_UNITAIRE'=> $articleMisAJour->getPrixUnitaire(),
+                ':COMMENTAIRE'=> $articleMisAJour->getCommentaire(),
+                ':EN_VENTE'=>$articleMisAJour->isEnVente(),
+                ':DENOM'=> $denom
+        ));
+        $requete->closeCursor();
+        return $estMisAJour;
 	}
 }
 

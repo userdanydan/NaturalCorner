@@ -3,6 +3,8 @@ require_once __DIR__ . '/../../exceptions/UtilisateurException.class.php';
 require_once __DIR__ . '/../../exceptions/EmailAlreadyTakenException.class.php';
 require_once __DIR__ . '/../../model/Utilisateur.class.php';
 require_once __DIR__ . '/../../model/Database.inc.php';
+require_once __DIR__ . '/../../model/Article.class.php';
+
 
 /**
  * Test class for Utilisateur.
@@ -24,7 +26,7 @@ class TestDatabase extends PHPUnit_Framework_TestCase {
         $this->utilisateur = new Utilisateur("Daniel", "Dan", "DanyDan", password_hash("motdepasse", PASSWORD_BCRYPT, [ 
                 "cost" => PASSWORD_BCRYPT_DEFAULT_COST 
         ]), "truc" . ++ self::$test_increment . "@troc.tr", "rue des petites fleurs 5", "1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "198.168.0.1");
-        $this->article = new Article("poire" . self::$test_increment, 1.5, "poire bio de Wallonie", true);
+        $this->article = new Article("poire" . self::$test_increment, 150, "poire bio de Wallonie", 1);
     }
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -56,26 +58,13 @@ class TestDatabase extends PHPUnit_Framework_TestCase {
             )));
         }
         try {
-            $val;
+            $val=array();
             $result = $this->connection->query("SHOW TABLES");
             foreach ( $result as $ligne ) {
-                $val .= '---' . $ligne [0] . '---';
+                array_push($val, $ligne [0]);
             }
-            $this->assertEquals("---UTILISATEURS---", $val, "doit afficher ---UTILISATEURS---");
-        } catch ( PDOException $ex ) {
-            echo '<p>' . $ex->getMessage() . '</p>';
-            die(json_encode(array (
-                    'outcome' => false,
-                    'message' => 'Unable to connect to localhost1' 
-            )));
-        }
-        try {
-            $val;
-            $result = $this->connection->query("DESCRIBE ARTICLES");
-            foreach ( $result as $ligne ) {
-                $val .= '---' . $ligne [0] . '---';
-            }
-            $this->assertEquals("ID_ARTICLE", $val ['Field'], "doit afficher ID_ARTICLE");
+            $this->assertEquals("ARTICLES", $val[0], "doit afficher ARTICLES");
+            $this->assertEquals("UTILISATEURS", $val[1], "doit afficher UTILISATEURS");
         } catch ( PDOException $ex ) {
             echo '<p>' . $ex->getMessage() . '</p>';
             die(json_encode(array (
@@ -107,12 +96,7 @@ class TestDatabase extends PHPUnit_Framework_TestCase {
         // teste si le booléen "flag" indique que l'insertion s'est réalisée correctement.
         $insertionReussie = $this->bdd->addArticle($this->article);
         $this->assertTrue($insertionReussie);
-        try {
-            $insertionReussie = $this->bdd->addArticle($this->article);
-            $this->fail("Aurait dû lancer une exception." . " ->" . $ue);
-        } catch ( ArticleException $ae ) {
-            return;
-        }
+        
     }
     /**
      * @depends testCreateDatabase
@@ -167,6 +151,7 @@ class TestDatabase extends PHPUnit_Framework_TestCase {
     public function testGetArticle() {
         $this->bdd->addArticle($this->article);
         $articleRecupere = $this->bdd->getArticle($this->article->getDenomination());
+        //var_dump($articleRecupere);
         // L'objet récupéré doit être du type article.
         $this->assertTrue($articleRecupere instanceof Article);
         // Est-ce que la méthode addArticle() fonctionne?
@@ -272,63 +257,64 @@ class TestDatabase extends PHPUnit_Framework_TestCase {
         
         // Testons encore les trois méthodes add, remove et get.
         // L'ajout des dépendances en commentaire de la méthode nous assure que les tests se déroulent dans le bon ordre.
-        $article1 = new Article("article1" . ++self::$test_increment, 1.0, "commentaire1", true);
+        $article1 = new Article("article1" . ++self::$test_increment, 100, "commentaire1", 1);
         $insertionArticle1 = $this->bdd->addArticle($article1);
         
-        $article2 = new Article("article2" . ++self::$test_increment, 2.0, "commentaire2", true);
+        $article2 = new Article("article2" . ++self::$test_increment, 200, "commentaire2", 1);
         $insertionArticle2 = $this->bdd->addArticle($article2);
         
-        $article3 = new Article("article3" . ++self::$test_increment, 3.0, "commentaire3", true);
+        $article3 = new Article("article3" . ++self::$test_increment, 300, "commentaire3", 0);
         $insertionArticle3 = $this->bdd->addArticle($article3);
         
-        // Article1
+        // article1
         
         $this->assertTrue($insertionArticle1);
         $articleBDD1 = $this->bdd->getArticle($article1->getDenomination());
-        $this->assertTrue($utilisateurBDD1 instanceof Article);
-        $this->assertEquals($article1->getPrixUnitaire(), $utilisateurBDD1->getPrixUnitaire(), "aurait dû afficher 1.0");
-        $this->assertEquals($article1->getCommentaire(), $utilisateurBDD1->getCommentaire(), "aurait dû afficher commentaire1");
-        $this->assertEquals($article1->getEnVente(), $utilisateurBDD1->getEnVente(), "aurait dû afficher true");
+        $this->assertTrue($articleBDD1 instanceof Article);
+        $this->assertEquals($article1->getPrixUnitaire(), $articleBDD1->getPrixUnitaire(), "aurait dû afficher 100");
+        $this->assertEquals($article1->getCommentaire(), $articleBDD1->getCommentaire(), "aurait dû afficher commentaire1");
+        $this->assertEquals($article1->isEnVente(), $articleBDD1->isEnVente(), "aurait dû afficher true");
         
-        // Article2
+        // article2
         
         $this->assertTrue($insertionArticle2);
-        $articleBBD2 = $this->bdd->getArticle($article2->getDenomination());
-        $this->assertTrue($utilisateurBBD2 instanceof Article);
-        $this->assertEquals($article2->getPrenom(), $utilisateurBDD2->getPrixUnitaire(), "aurait dû afficher prenom2");
-        $this->assertEquals($article2->getNom(), $utilisateurBDD2->getCommentaire(), "aurait dû afficher nom2");
-        $this->assertEquals($article2->getPseudo(), $utilisateurBDD2->getEnVente(), "aurait dû afficher pseudo2");
+        $articleBDD2 = $this->bdd->getArticle($article2->getDenomination());
+        $this->assertTrue($articleBDD2 instanceof Article);
+        $this->assertEquals($article2->getPrixUnitaire(), $articleBDD2->getPrixUnitaire(), "aurait dû afficher 200");
+        $this->assertEquals($article2->getCommentaire(), $articleBDD2->getCommentaire(), "aurait dû afficher commentaire2");
+        $this->assertEquals($article2->isEnVente(), $articleBDD2->isEnVente(), "aurait dû afficher true");
         
-        // utilisateur3
+        // article3
         
-        $this->assertTrue($insertionUtilisateur3);
-        $utilisateurBBD3 = $this->bdd->getArticle($utilisateur3->getDenomination());
-        $this->assertTrue($utilisateurBBD3 instanceof Article);
-        $this->assertEquals($utilisateur3->getPrenom(), $utilisateurBBD3->getPrixUnitaire(), "aurait dû afficher prenom3");
-        $this->assertEquals($utilisateur3->getNom(), $utilisateurBBD3->getCommentaire(), "aurait dû afficher nom3");
-        $this->assertEquals($utilisateur3->getPseudo(), $utilisateurBBD3->getEnVente(), "aurait dû afficher pseudo3");
+        $this->assertTrue($insertionArticle3);
+        $articleBDD3 = $this->bdd->getArticle($article3->getDenomination());
+        $this->assertTrue($articleBDD3 instanceof Article);
+        $this->assertEquals($article3->getPrixUnitaire(), $articleBDD3->getPrixUnitaire(), "aurait dû afficher 300");
+        $this->assertEquals($article3->getCommentaire(), $articleBDD3->getCommentaire(), "aurait dû afficher commentaire3");
+        $this->assertEquals($article3->isEnVente(), $articleBDD3->isEnVente(), "aurait dû afficher false");
+        
         
         // test de removeArticle()
-        $utilisateurRetire1 = $this->bdd->removeArticle($article1->getDenomination());
-        $this->assertTrue($utilisateurRetire1);
+        $articleRetire1 = $this->bdd->removeArticle($article1->getDenomination());
+        $this->assertTrue($articleRetire1);
         
-        $this->assertNull($this->bdd->getArticle($article1->getDenomination())->getNom());
-        $this->assertNull($this->bdd->getArticle($article1->getDenomination())->getPrenom());
-        $this->assertNull($this->bdd->getArticle($article1->getDenomination())->getPseudo());
+        $this->assertNull($this->bdd->getArticle($article1->getDenomination())->getPrixUnitaire());
+        $this->assertNull($this->bdd->getArticle($article1->getDenomination())->getCommentaire());
+        $this->assertNull($this->bdd->getArticle($article1->getDenomination())->isEnVente());
         
-        $utilisateurRetire2 = $this->bdd->removeArticle($utilisateur2->getDenomination());
-        $this->assertTrue($utilisateurRetire2);
+        $articleRetire2 = $this->bdd->removeArticle($article2->getDenomination());
+        $this->assertTrue($articleRetire2);
         
-        $this->assertNull($this->bdd->getArticle($utilisateur2->getDenomination())->getNom());
-        $this->assertNull($this->bdd->getArticle($utilisateur2->getDenomination())->getPrenom());
-        $this->assertNull($this->bdd->getArticle($utilisateur2->getDenomination())->getPseudo());
+        $this->assertNull($this->bdd->getArticle($article2->getDenomination())->getPrixUnitaire());
+        $this->assertNull($this->bdd->getArticle($article2->getDenomination())->getCommentaire());
+        $this->assertNull($this->bdd->getArticle($article2->getDenomination())->isEnVente());
         
-        $utilisateurRetire3 = $this->bdd->removeArticle($utilisateur3->getDenomination());
-        $this->assertTrue($utilisateurRetire3);
+        $articleRetire3 = $this->bdd->removeArticle($article3->getDenomination());
+        $this->assertTrue($articleRetire3);
         
-        $this->assertNull($this->bdd->getArticle($utilisateur3->getDenomination())->getNom());
-        $this->assertNull($this->bdd->getArticle($utilisateur3->getDenomination())->getPrenom());
-        $this->assertNull($this->bdd->getArticle($utilisateur3->getDenomination())->getPseudo());
+        $this->assertNull($this->bdd->getArticle($article3->getDenomination())->getPrixUnitaire());
+        $this->assertNull($this->bdd->getArticle($article3->getDenomination())->getCommentaire());
+        $this->assertNull($this->bdd->getArticle($article3->getDenomination())->isEnVente());
     }
     /**
      * @depends testCreateDatabase
@@ -364,5 +350,27 @@ class TestDatabase extends PHPUnit_Framework_TestCase {
         // Voyons si le hash correspond à celui de la base de données.
         $utilisateurUpdate = $this->bdd->getUser($this->utilisateur->getAdresseMail());
         $this->assertTrue(password_verify("nomduchat", $utilisateurUpdate->getPass()));
+    }
+    /**
+     * @depends testCreateDatabase
+     * @covers Database::getArticle()
+     * @covers Database::addArticle()
+     */
+    public function testUpdateArticle() {
+        // j'ajoute l'article standard des tests.
+        $this->bdd->addArticle($this->article);
+        // vérification.
+        $this->assertEquals($this->article->getCommentaire(), $this->bdd->getArticle($this->article->getDenomination())->getCommentaire());
+        // modification du commentaire.
+        $this->article->setCommentaire("nouveauCommentaire1");
+        try {
+            $this->bdd->updateArticle($this->article, $this->article->getDenomination());
+        } catch ( ArticleException $ae ) {
+            return;
+        }
+    
+        $this->assertEquals("nouveauCommentaire1", 
+                $this->bdd->getArticle($this->article->getDenomination())->getCommentaire(), 
+                    "Aurait dû afficher nouveauCommentaire1");
     }
 }

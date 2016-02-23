@@ -47,16 +47,16 @@ class Utilisateur{
 	 */
 	private $_ipConnexion;
 	/**
-	 * @param prenom : Prénom->
-	 * @param nom : nom->
-	 * @param pseudo : pseudo->
-	 * @param pass : mot de passe->
-	 * @param adresseMail : adresse e-mail->
-	 * @param adressePhysique : adresse physique->
-	 * @param codePostal : code postal>
-	 * @param localite : localité->
-	 * @param dateInscription : date de l'inscription->
-	 * @param idConnexion : ip de l'utilisateur->
+	 * @param string $prenom : Prénom de l'utilisateur
+	 * @param string $nom : nomd e l'utilisateur
+	 * @param string $pseudo : pseudo de l'utilisateur
+	 * @param string $pass : mot de passe de l'utilisateur
+	 * @param string $adresseMail : adresse e-mail de l'utilisateur
+	 * @param string $adressePhysique : adresse physique de l'utilisateur
+	 * @param string $codePostal : code postal de l'utilisateur
+	 * @param string $localite : localité de l'utilisateur
+	 * @param DateTime $dateInscription : date de l'inscription de l'utilisateur
+	 * @param string $idConnexion : ip de l'utilisateur
 	 */
 	public function __construct($prenom, $nom, $pseudo, $pass, $adresseMail, 
 			$adressePhysique, $codePostal, $localite, $dateInscription, $idConnexion){
@@ -272,8 +272,6 @@ class Utilisateur{
 	public function getIdConnexion(){
 		return $this->_ipConnexion;
 	}
-	public function __clone(){
-	}
 	/**
 	 * @return string : retourne une représentation JSON d'un utilisateur.
 	 */
@@ -287,24 +285,15 @@ class Utilisateur{
 		return $var;
 	}
 	/**
-	 * @return string : retourne un utilisateur.
+	 * @return string : retourne l'utilisateur sous forme d'une chaîne de caractères.
 	 */
 	public function __toString(){
-		return "<p>".$this->_prenom.", ".$this->_nom.", ".$this->_pseudo.", ".$this->_pass.", ".$this->_adresseMail.
-		", ".$this->_adressePhysique.", ".$this->_codePostal.", ".$this->_localite.", ".$this->_dateInscription->format('Y-m-d H:i:s').", "
-				.$this->_ipConnexion."</p>";
-// 		return '{"id"="'.$this->_id.',
-// 				 "prenom"="'.$this->_prenom.',
-// 				 		"nom"="'.$this->_nom.',
-// 				 				"pass"="'.$this->_pass.',
-// 				 						"adresseMail"="'.$this->_adresseMail.',
-// 				 								"codePostal"="'.$this->_codePostal.',
-// 				 										"localite"="'.$this->_localite.',
-// 				 												"dateInscription"="'.$this->_dateInscription.',
-// 				 														"ipConnexion"="'.$this->_ipConnexion.'}';
-		
-	}
 
+		return '{"id"="'.$this->_id.'","prenom"="'.$this->_prenom.'","nom"="'.$this->_nom.'","pass"="'.$this->_pass.
+		          '","adresseMail"="'.$this->_adresseMail.'","adressePhysique"="'.$this->_adressePhysique.
+		          '","codePostal"="'.$this->_codePostal.'","localite"="'.$this->_localite.
+		          '","dateInscription"="'.$this->_dateInscription->format('Y-m-d H:i:s').'","ipConnexion"="'.$this->_ipConnexion.'"}';	
+	}
 	public function __destruct(){
 		unset($this->_id);
 		unset($this->_prenom);

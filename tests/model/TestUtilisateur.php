@@ -12,7 +12,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     /**
      * @var Utilisateur
      */
-    protected $utilisateurDummy;
+    protected $utilisateurDuTest;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -20,7 +20,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-    	$this->utilisateurDummy = new Utilisateur("Daniel", "Dan", "DanyDan", "Motdepasse1", 
+    	$this->utilisateurDuTest = new Utilisateur("Daniel", "Dan", "DanyDan", "Motdepasse1", 
     			"truc@troc.tr", "rue des petites fleurs 5",
     			"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");       
     }
@@ -31,7 +31,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-		$this->utilisateurDummy=null;
+		$this->utilisateurDuTest=null;
     }
     /**
      * @covers Utilisateur::getId
@@ -39,7 +39,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetId()
     {
-    	$this->assertEquals($this->utilisateurDummy->getId(), 0, "devrait afficher 0");
+    	$this->assertEquals($this->utilisateurDuTest->getId(), 0, "devrait afficher 0");
     	
     }
     /**
@@ -48,12 +48,12 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testSetId()
     {
-    	$this->utilisateurDummy->setId(1000);
-    	$this->assertEquals($this->utilisateurDummy->getId(), 1000, "devrait aficher 1000");
+    	$this->utilisateurDuTest->setId(1000);
+    	$this->assertEquals($this->utilisateurDuTest->getId(), 1000, "devrait aficher 1000");
     	
     	
     	try{
-    		$this->utilisateurDummy->setId(-1);
+    		$this->utilisateurDuTest->setId(-1);
     	}catch(UtilisateurException $ue){
     		return;
     	}
@@ -68,7 +68,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     public function testGetPrenom()
     {
         
-        $this->assertEquals("Daniel", $this->utilisateurDummy->getPrenom(), "Devrait afficher Daniel");
+        $this->assertEquals("Daniel", $this->utilisateurDuTest->getPrenom(), "Devrait afficher Daniel");
     }
 
     /**
@@ -81,18 +81,18 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     	// test de l'exception 
     	   
     	try{
-    		$this->utilisateurDummy->setPrenom("NouveauPrenom");
+    		$this->utilisateurDuTest->setPrenom("NouveauPrenom");
     	}catch(UtilisateurException $ue){
     		
     		$this->fail( "n'aurait pas dû lancer une exception."." ->".$ue);
     	}
     	
-    	$this->assertEquals($this->utilisateurDummy->getPrenom(), "NouveauPrenom", "devrait afficher NouveauPrenom");
+    	$this->assertEquals($this->utilisateurDuTest->getPrenom(), "NouveauPrenom", "devrait afficher NouveauPrenom");
     	
     	// test de l'exception : n'accepte pas un string n'ayant pas au moins trois caractères.
     	   
     	try{
-    		$this->utilisateurDummy->setPrenom("da");
+    		$this->utilisateurDuTest->setPrenom("da");
     	}catch(UtilisateurException $ue){
     		return;
     	}
@@ -101,7 +101,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     	// pas d'alphanumérique
     	
     	try{
-    		$this->utilisateurDummy->setPrenom("dada3");
+    		$this->utilisateurDuTest->setPrenom("dada3");
     	}catch(UtilisateurException $ue){
     		return;
     	}
@@ -114,7 +114,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetNom()
     {
-        $this->assertEquals("Dan", $this->utilisateurDummy->getNom(), "devrait afficher Dan");
+        $this->assertEquals("Dan", $this->utilisateurDuTest->getNom(), "devrait afficher Dan");
     
     }
 
@@ -128,18 +128,18 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     	// test de l'exception 
     	   
     	try{
-    		$this->utilisateurDummy->setNom("NouveauNom");
+    		$this->utilisateurDuTest->setNom("NouveauNom");
     	}catch(UtilisateurException $ue){
     		
     		$this->fail( "n'aurait pas dû lancer une exception."." ->".$ue);
     	}
     	
-    	$this->assertEquals($this->utilisateurDummy->getNom(), "NouveauNom", "devrait aficher NouveauNom");
+    	$this->assertEquals($this->utilisateurDuTest->getNom(), "NouveauNom", "devrait aficher NouveauNom");
     	
     	// test de l'exception : n'accepte pas un string n'ayant pas au moins trois caractères.
     	   
     	try{
-    		$this->utilisateurDummy->setNom("da");
+    		$this->utilisateurDuTest->setNom("da");
     	}catch(UtilisateurException $ue){
     		return;
     	}
@@ -148,7 +148,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     	// pas d'alphanumérique
     	
     	try{
-    		$this->utilisateurDummy->setNom("dada3");
+    		$this->utilisateurDuTest->setNom("dada3");
     	}catch(UtilisateurException $ue){
     		return;
     	}
@@ -161,7 +161,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetPseudo()
     {
-        $this->assertEquals("DanyDan", $this->utilisateurDummy->getPseudo(), "devrait afficher DanyDan");
+        $this->assertEquals("DanyDan", $this->utilisateurDuTest->getPseudo(), "devrait afficher DanyDan");
     }    
 
     /**
@@ -174,18 +174,18 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     	// test de l'exception 
     	   
     	try{
-    		$this->utilisateurDummy->setPseudo("NouveauPseudo");
+    		$this->utilisateurDuTest->setPseudo("NouveauPseudo");
     	}catch(UtilisateurException $ue){
     		
     		$this->fail( "n'aurait pas dû lancer une exception."." ->".$ue);
     	}
     	
-    	$this->assertEquals($this->utilisateurDummy->getPseudo(), "NouveauPseudo", "devrait aficher NouveauPseudo");
+    	$this->assertEquals($this->utilisateurDuTest->getPseudo(), "NouveauPseudo", "devrait aficher NouveauPseudo");
     	
     	// test de l'exception : n'accepte pas un string n'ayant pas au moins trois caractères.
     	   
     	try{
-    		$this->utilisateurDummy->setPseudo("da");
+    		$this->utilisateurDuTest->setPseudo("da");
     	}catch(UtilisateurException $ue){
     		return;
     	}
@@ -194,7 +194,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     	// pas d'alphanumérique
     	
     	try{
-    		$this->utilisateurDummy->setPseudo("dada3");
+    		$this->utilisateurDuTest->setPseudo("dada3");
     	}catch(UtilisateurException $ue){
     		return;
     	}
@@ -207,7 +207,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     public function testGetPass()
     {
     	
-        $this->assertEquals("Motdepasse1", $this->utilisateurDummy->getPass(), "devrait afficher motdepasse");
+        $this->assertEquals("Motdepasse1", $this->utilisateurDuTest->getPass(), "devrait afficher motdepasse");
     }
 
 
@@ -219,7 +219,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     {
     	//mot de passe avec moins de 6 caractères.
     	try{
-    		$this->utilisateurDummy->setPass("CouC1");
+    		$this->utilisateurDuTest->setPass("CouC1");
     	}catch(UtilisateurException $ue){
     		return;
     	}
@@ -227,7 +227,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     	
     	//mot de passe sans chiffre et sans majuscule.
     	try{
-    		$this->utilisateurDummy->setPass("passtest");
+    		$this->utilisateurDuTest->setPass("passtest");
     	}catch(UtilisateurException $ue){
     		return;
     	}
@@ -235,7 +235,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
         
         // mot de passe uniquement avec des majuscules.
         try{
-        	$this->utilisateurDummy->setPass("PASSTEST");
+        	$this->utilisateurDuTest->setPass("PASSTEST");
         }catch(UtilisateurException $ue){
         	return;
         }
@@ -243,23 +243,23 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
         
         //mot de passe uniquement avec des chiffres.
         try{
-        	$this->utilisateurDummy->setPass("01222324234");
+        	$this->utilisateurDuTest->setPass("01222324234");
         }catch(UtilisateurException $ue){
         	return;
         }
         $this->fail('aurait dû lancer une exception');
         
         //mot de passe avec au moins une majuscule, une minuscule et un chiffre.
-        $this->utilisateurDummy->setPass("coucoucoU1");
-        $this->assetEquals("coucoucoU1", $this->utilisateurDummy->getPass());
+        $this->utilisateurDuTest->setPass("coucoucoU1");
+        $this->assetEquals("coucoucoU1", $this->utilisateurDuTest->getPass());
         
         //mot de passe avec deux majuscules, une minuscule et un chiffre.
-        $this->utilisateurDummy->setPass("coUcoucoU1");
-        $this->assetEquals("coucoucoU1", $this->utilisateurDummy->getPass());
+        $this->utilisateurDuTest->setPass("coUcoucoU1");
+        $this->assetEquals("coucoucoU1", $this->utilisateurDuTest->getPass());
         
         //mot de passe avec deux majuscules, une minuscule et deux chiffres.
-        $this->utilisateurDummy->setPass("coUcoucoU12");
-        $this->assetEquals("coucoucoU1", $this->utilisateurDummy->getPass());
+        $this->utilisateurDuTest->setPass("coUcoucoU12");
+        $this->assetEquals("coucoucoU1", $this->utilisateurDuTest->getPass());
     }
 
 
@@ -269,7 +269,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetAdresseMail()
     {
-        $this->assertEquals("truc@troc.tr", $this->utilisateurDummy->getAdresseMail(), "devrait afficher truc@troc.tr");
+        $this->assertEquals("truc@troc.tr", $this->utilisateurDuTest->getAdresseMail(), "devrait afficher truc@troc.tr");
     }
     /**
      * @covers Utilisateur::setAdresseMail
@@ -277,10 +277,9 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testSetAdresseMail()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->utilisateurDuTest->setAdresseMail("nouvelleAdresse@test.com");
+        
+        $this->assertEquals("nouvelleAdresse@test.com", $this->utilisateurDuTest->getAdresseMail(), "devrait afficher nouvelleAdresse@test.com");
     }
 
 
@@ -290,7 +289,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetAdressePhysique()
     {
-        $this->assertEquals("rue des petites fleurs 5", $this->utilisateurDummy->getAdressePhysique(), 
+        $this->assertEquals("rue des petites fleurs 5", $this->utilisateurDuTest->getAdressePhysique(), 
         		"devrait afficher rue des petites fleurs 5");
     	
     }
@@ -300,10 +299,13 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testSetAdressePhysique()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        try{
+             $this->utilisateurDuTest->setAdresseMail("Rue de l'indépendance 23");
+        }catch(UtilisateurException $ue){
+            return;
+        }
+         $this->assertEquals("Rue de l'indépendance 23", $this->utilisateurDuTest->getAdressePhysique(),
+                 "Rue de l'indépendance 23");
     }
 
      /**
@@ -312,7 +314,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetCodePostal()
     {
-        $this->assertEquals("1070", $this->utilisateurDummy->getCodePostal(), "devrait afficher 1070");
+        $this->assertEquals("1070", $this->utilisateurDuTest->getCodePostal(), "devrait afficher 1070");
     	
     }
 
@@ -322,10 +324,9 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testSetCodePostal()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->utilisateurDuTest->setCodePostal("1030");
+        $this->assertEquals("1030", $this->utilisateurDuTest->getCodePostal(), "devrait afficher 1030");
+        
     }
 
    
@@ -335,7 +336,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetLocalite()
     {
-        $this->assertEquals("Anderlecht", $this->utilisateurDummy->getLocalite(), "devrait afficher Anderlecht");
+        $this->assertEquals("Anderlecht", $this->utilisateurDuTest->getLocalite(), "devrait afficher Anderlecht");
     	
     }
     /**
@@ -344,10 +345,8 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testSetLocalite()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->utilisateurDuTest->setLocalite("Schaerbeek");
+        $this->assertEquals("Schaerbeek", $this->utilisateurDuTest->getLocalite(), "devrait afficher Schaerbeek");
     }
     /**
      * @covers Utilisateur::getDateInscription
@@ -357,7 +356,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     {
     	
         $this->assertEquals((new DateTime("2015-01-01T00:00:00"))->format('Y-m-d H:i:s'), 
-        		$this->utilisateurDummy->getDateInscription(), "devrait afficher 2015-01-01 00:00:00");
+        		$this->utilisateurDuTest->getDateInscription(), "devrait afficher 2015-01-01 00:00:00");
     	
     }
     
@@ -367,10 +366,9 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testSetDateInscription()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->utilisateurDuTest->setDateInscription(new DateTime("2016-01-01T00:00:00"));
+        $this->assertEquals((new DateTime("2016-01-01T00:00:00"))->format('Y-m-d H:i:s'),
+            $this->utilisateurDuTest->getDateInscription(), "devrait afficher 2016-01-01 00:00:00");
     }
     /**
      * @covers Utilisateur::getIdConnexion
@@ -378,7 +376,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetIdConnexion()
     {
-        $this->assertEquals("192.168.0.1", $this->utilisateurDummy->getIdConnexion(), "devrait afficher 192.168.0.1");
+        $this->assertEquals("192.168.0.1", $this->utilisateurDuTest->getIdConnexion(), "devrait afficher 192.168.0.1");
     	
     }
 
@@ -388,18 +386,21 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testSetIdConnexion()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->utilisateurDuTest->setIdConnexion("127.0.0.1");
+        $this->assertEquals("127.0.0.1", $this->utilisateurDuTest->getIdConnexion(), "devrait afficher 127.0.0.1");
+        
     }
     /**
      * @covers Utilisateur::__toString()
      */
     public function testToString()
     {
-    	$stringUtilisateur = $this->utilisateurDummy->__toString();
-    	$this->assertEquals("<p>Daniel, Dan, DanyDan, Motdepasse1, truc@troc.tr, rue des petites fleurs 5, 1070, Anderlecht, 2015-01-01 00:00:00, 192.168.0.1</p>", $stringUtilisateur);
+    	$stringUtilisateur = $this->utilisateurDuTest->__toString();
+    	$this->assertEquals('{"id"="0","prenom"="Daniel","nom"="Dan","pass"="Motdepasse1","adresseMail"="truc@troc.tr","adressePhysique"="rue des petites fleurs 5"'.
+    	        ',"codePostal"="1070","localite"="Anderlecht","dateInscription"="2015-01-01 00:00:00","ipConnexion"="192.168.0.1"}', $stringUtilisateur);
     }
 }
 ?>
+$this->utilisateurDuTest = new Utilisateur("Daniel", "Dan", "DanyDan", "Motdepasse1", 
+    			"truc@troc.tr", "rue des petites fleurs 5",
+    			"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");       
