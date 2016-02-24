@@ -1,6 +1,6 @@
 <?php
 include_once __DIR__.'/../exceptions/EmailAlreadyTakenException.class.php';
-
+include_once  __DIR__.'/../model/Article.class.php';
 class Database 
 {
 
@@ -372,6 +372,28 @@ class Database
         ));
         $requete->closeCursor();
         return $estMisAJour;
+	}
+	/**
+	 * Recherche dans la base de donnée des articles selon un mot-clé.
+	 * @param string  le mot-clé.
+	 * @return array  le ou les article(s) recherché(s).
+	 */
+	public function trouveArticles($denom){
+	    $articles = array();
+	    $articleTrouve=false;
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare(" SELECT *
+												FROM ARTICLES
+												WHERE DENOMINATION LIKE :DENOM");
+	    $articleTrouve=$requete->execute(array(':DENOM'=>'%'.$denom.'%'));
+	    $ligneBDD = $requete->fetchAll();
+	    foreach ($ligneBDD as $ligne){
+	       $article =  new Article($ligne["DENOMINATION"], $ligne["PRIX_UNITAIRE"],
+	                $ligne["COMMENTAIRE"],$ligne["EN_VENTE"]);
+	       array_push($articles, $article);
+	    }	    
+	    $requete->closeCursor();
+	    return  $articles;
 	}
 }
 

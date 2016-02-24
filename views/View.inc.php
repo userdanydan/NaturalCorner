@@ -6,6 +6,7 @@ abstract class View {
 	protected $style = "";
 	protected $login = null;
 	protected $user=null;
+	protected $resultatsRecherche=array();
 	/**
 	 * Génère la page à afficher au client.
 	 */
@@ -50,6 +51,12 @@ abstract class View {
 	 */
 	public function displayCarousel() {
 		include("views/templates/carousel.inc.php");
+	}
+	/**
+	 * Fixe les résultats de la recherche d'article par mot clé.
+	 */
+	public function setRecherche($che) {
+	    $this->$resultatsRecherche=$che;
 	}
 	/**
 	 * Génère le formulaire de connexion.
