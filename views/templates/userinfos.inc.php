@@ -48,6 +48,15 @@
 													   <?php echo $this->user->getCodePostal(); ?> <?php echo $this->user->getLocalite(); ?></adresse></div>
 			</td>
 		</tr>
+		<tr>
+			<td></td>
+			<td><div></br></br></div></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><div><a class="btn btn-default pull-right" href="<?php echo $_SERVER['PHP_SELF'].'?action=UpdateUser';?>">Modifier</a></div>
+			</td>
+		</tr>
 		
 	</table>
 </div>
@@ -55,9 +64,7 @@
 <p class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> </br></br></br></br>
 	</p>
 </div>
-<div class="row">
-		<a class="btn btn-default pull-right" href="<?php echo $_SERVER['PHP_SELF'].'?action=UpdateUser';?>">Modifier</a>
-</div>
+
 <div class="row">
 <p class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> </br></br></br></br>
 	</p>		

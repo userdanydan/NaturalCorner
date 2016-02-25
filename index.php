@@ -2,6 +2,7 @@
 	
 	include __DIR__.'/model/Utilisateur.class.php';
 	date_default_timezone_set('Europe/Brussels');
+    header('Content-Type: text/html; charset=utf-8');
 	
 	session_start();
 	

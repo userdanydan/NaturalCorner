@@ -20,8 +20,8 @@
 			     <ul class="dropdown-menu">
 		            <li><a href="<?php echo $_SERVER['PHP_SELF'].'?action=VoirCompte';?>" class="bg-success">Voir Compte</a></li>
 		            <li role="separator" class="divider"></li>
-		            <li><a href="<?php echo $_SERVER['PHP_SELF'].'?action=Panier' ?>" class="bg-info">Voir Panier</a></li>
-		            <li><a href="#" class="bg-info">Commander</a></li>
+		            <li><a href="" class="bg-info">Voir Panier</a></li>
+		            <li><a href="<?php echo $_SERVER['PHP_SELF'].'?action=Chercher' ?>" class="bg-info">Chercher</a></li>
 		            <li role="separator" class="divider"></li>	            
 		            <li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?action=Logout" class="bg-danger" >Déconnexion</a></li>
 		            
@@ -31,11 +31,3 @@
 		<nav></nav>
 		           
 	</div>
-<div class="row">
-		<nav class="col-lg-3 col-lg-offset-4 col-md-4 col-md-offset-4  col-sm-offset-4 col-sm-4  col-xs-offset-3 col-xs-6 ">
-			 	<a href="<?php echo $_SERVER['PHP_SELF'].'?action=Default';?>">
-					<img src="/stylesheets/img/natural_corner.jpg" class="img-responsive img-circle" alt="Responsive image">
-				</a>
-		</nav>
-	</div>
-	</br>

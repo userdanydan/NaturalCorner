@@ -30,7 +30,7 @@ class Database
 		} else {
 			// Connect from a development environment.
 			try{
-				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '', 
+				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST;charset=utf8', 'root', '', 
 						array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 			}catch(PDOException $ex){
 				echo '<p>'.$ex->getMessage().'</p>';
