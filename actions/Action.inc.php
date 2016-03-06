@@ -1,9 +1,9 @@
 <?php
-require_once("vendor/facebook/php-sdk-v4/src/Facebook/autoload.php");
+require_once(__DIR__."/../vendor/facebook/php-sdk-v4/src/Facebook/autoload.php");
 
 
-include_once("model/Database.inc.php");
-include_once("model/Utilisateur.class.php");
+include_once(__DIR__."/../model/Database.inc.php");
+include_once(__DIR__."/../model/Utilisateur.class.php");
 
 abstract class Action {
 	private $view;

@@ -12,24 +12,24 @@
 	  	<a href="#login">
 	      <img src="stylesheets/img/image3.jpg" class="img-responsive img-rounded center-block" alt="bio">
 	      <div class="carousel-caption">
-	     	<h3>Frais et naturels</h3>
+	     	<h3></h3>
 	     	</br> 
-	      	<p>les meilleurs produits de saison</p>
+	      	<p></p>
 	      </div>
 	       </a> 
 	    </div>
 	    <div class="item  "><a href="#login">
 	      <img src="stylesheets/img/image1.jpg" class="img-responsive img-rounded center-block" alt="bio">
 	      <div class="carousel-caption">
-	      	<h3>Votre boutique bio</h3>
-	      	<p>Des cosmétiques bio vous apportant la beauté au naturel</p>
+	      	<h3></h3>
+	      	<p></p>
 	      </div>
 	    </div></a> 
 	    <div class="item"><a href="#login">
 	      <img src="stylesheets/img/image2.jpg" class="img-responsive img-rounded center-block"  alt="bio">
 	      <div class="carousel-caption">
-	      	<h3>Les choix de saison</h3>
-	      	<p>Choisissez les fruits et légumes de saison dans votre panier bio</p>
+	      	<h3></h3>
+	      	<p></p>
 	      </div></a> 
 	    </div>
 	    

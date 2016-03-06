@@ -27,7 +27,5 @@
 		            
 		          </ul>
 			 </div>
-		</nav>
-		<nav></nav>
-		           
+		</nav>		           
 	</div>

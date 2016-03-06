@@ -125,7 +125,6 @@ class Article {
         return $this->_enVente;
     }
     /**
-     *
      * @return string : retourne une représentation JSON d'un article.
      */
     function getJsonData() {

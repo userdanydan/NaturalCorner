@@ -120,17 +120,6 @@
 				</div>
         	</footer>
         </div>
- <!--  <script>
-   			var val1 = '<?php echo $this->user===null?'': $this->user->getAdresseMail();  ?>';   		
-			var app = angular.module('myApp', []);
-			app.controller('customersCtrl', function($scope, $http) {
-			    	$http.get("<?php echo $_SERVER['PHP_SELF'].'?action=UserJSON'?>", 
-			    			{params:{"email": val1}}).
-			    			then(function(response) {
-			        $scope.myData = response.data.records;
-			    });
-			});
-		</script> -->
     <!-- /container -->        
 <!--     	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
 
