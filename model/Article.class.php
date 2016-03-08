@@ -20,16 +20,12 @@ class Article {
      * Etat de vente de l'article.
      */
     private $_enVente;
+    
     /**
-     *
-     * @param string $denomination
-     *            : Dénomination de l'article.
-     * @param int $prixUnitaire
-     *            : Prix unitaire de l'article.
-     * @param string $commentaire
-     *            : Commentaire sur l'article.
-     * @param bool $enVente
-     *            : Etat de vente de l'article.
+     * @param string $denomination : Dénomination de l'article.
+     * @param int $prixUnitaire : Prix unitaire de l'article.
+     * @param string $commentaire : Commentaire sur l'article.
+     * @param bool $enVente : Etat de vente de l'article.
      */
     public function __construct($denomination, $prixUnitaire, $commentaire, $enVente) {
         $this->_id = 0;
@@ -137,7 +133,6 @@ class Article {
         return $var;
     }
     /**
-     *
      * @return string : retourne l'article sous forme d'une chaîne de caractères.
      */
     public function __toString() {

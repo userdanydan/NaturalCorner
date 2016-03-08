@@ -7,6 +7,7 @@ abstract class View {
 	protected $login = null;
 	protected $user=null;
 	protected $resultatsRecherche=array();
+	protected $panier;
 	/**
 	 * Génère la page à afficher au client.
 	 */
@@ -56,7 +57,13 @@ abstract class View {
 	 * Fixe les résultats de la recherche d'article par mot clé.
 	 */
 	public function setRecherche($che) {
-	    $this->$resultatsRecherche=$che;
+	    $this->resultatsRecherche=$che;
+	}
+	/**
+	 * Fixe le panier.
+	 */
+	public function setPanier($pan) {
+	    $this->panier=$pan;
 	}
 	/**
 	 * Génère le formulaire de connexion.

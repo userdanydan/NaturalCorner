@@ -98,19 +98,19 @@ class Database
 				$this->connection->commit();
 			else 
 				$this->connection->rollback();
-				$this->connection->beginTransaction(); 
-				$succes = $this->connection->query("CREATE TABLE IF NOT EXISTS ARTICLES(
-        								            ID_ARTICLE             INT (11) AUTO_INCREMENT  NOT NULL ,
-        									        DENOMINATION           VARCHAR (128) ,
-        									        PRIX_UNITAIRE          SMALLINT,
-        									        COMMENTAIRE            TEXT,
-        									        EN_VENTE               BOOL,
-        									        PRIMARY KEY (ID_ARTICLE)
-        										)ENGINE=InnoDB;");
-				if ($success)
-				    $this->connection->commit();
-				else
-				    $this->connection->rollback();
+			$this->connection->beginTransaction(); 
+			$succes = $this->connection->query("CREATE TABLE IF NOT EXISTS ARTICLES(
+    								            ID_ARTICLE             INT (11) AUTO_INCREMENT  NOT NULL ,
+    									        DENOMINATION           VARCHAR (128) ,
+    									        PRIX_UNITAIRE          SMALLINT,
+    									        COMMENTAIRE            TEXT,
+    									        EN_VENTE               BOOL,
+    									        PRIMARY KEY (ID_ARTICLE)
+    										)ENGINE=InnoDB;");
+			if ($success)
+			    $this->connection->commit();
+			else
+			    $this->connection->rollback();
 		}
 		catch(PDOException $pdoe)
 		{
