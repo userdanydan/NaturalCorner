@@ -2,7 +2,7 @@
 
 <article >
 
-		  <form class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6" role="form" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>?action=Enregistrement"" >
+		  <form class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6" role="form" method="post" action="/Enregistrement" >
 			<div style="margin-left:1em;margin-right:1em;">
 			<div class="form-group">
 

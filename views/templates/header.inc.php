@@ -2,7 +2,7 @@
 </br>
 <div class="row">
 	<div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4  col-sm-offset-4 col-sm-4 col-xs-offset-4 col-xs-4 ">
-		<a href="<?php echo $_SERVER['PHP_SELF'].'?action=Default';?>">
+		<a href="/Default">
 			<img src="/stylesheets/img/natural_corner.jpg" class="img-responsive img-circle center-block" alt="Responsive image">
 		</a>
 	</div>

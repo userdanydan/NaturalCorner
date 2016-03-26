@@ -25,7 +25,7 @@
 </br>
 <div class="row">
 	<div class="col-xs-1 col-sm-3 col-md-4 col-lg-4"></div>
-	<form role="form" class="col-xs-10 col-sm-6 col-md-4 col-lg-4" method="post" action="index.php?action=Login">
+	<form role="form" class="col-xs-10 col-sm-6 col-md-4 col-lg-4" method="post" action="/Login">
 	  <div class="form-group">
 	    <label for="email"><strong>Email:</strong></label>
 	    <input type="text" class="form-control" name="email" id="email">
@@ -35,7 +35,7 @@
 	    <input type="password" class="form-control" name="password" id="password">
 	  </div>
 	  <button type="submit" class="btn btn-default" href="">Login</button>
-	  <a class="btn btn-success pull-right" type="button" style='color:white' href="<?php echo $_SERVER['PHP_SELF'].'?action=Inscription';?>">
+	  <a class="btn btn-success pull-right" type="button" style='color:white' href="/Inscription">
 				Inscription</button> 
 	  </a> 
 	</form>

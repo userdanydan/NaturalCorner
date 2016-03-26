@@ -73,7 +73,7 @@ class UpdateUserAction extends Action
 			$form_data = filter_input_array(INPUT_POST, $filters);
 			$updateMessage='';
 			$estModifie=false;
-			if($form_data['pwd']!=null){
+			if($form_data['pwd']!==null){
 				if($form_data['pwd']===$form_data['pwd2']){			
 					$this->getUser()->setPass(password_hash($form_data['pwd'], PASSWORD_BCRYPT, ["cost"=>PASSWORD_BCRYPT_DEFAULT_COST]));
 				}else{
@@ -81,49 +81,49 @@ class UpdateUserAction extends Action
 					return;
 				}
 			}
-			if($form_data['nom']!=null){
+			if($form_data['nom']!==null){
 				try{
 					$this->getUser()->setNom($form_data['nom']);
 				}catch(UtilisateurException $ue){
 					$updateMessage.=$ue->getMessage().'<br>';
 				}
 			}
-			if($form_data['prenom']!=null){
+			if($form_data['prenom']!==null){
 				try{
 					$this->getUser()->setPrenom($form_data['prenom']);
 				}catch(UtilisateurException $ue){
 					$updateMessage.=$ue->getMessage().'<br>';
 				}
 			}
-			if($form_data['pseudo']!=null){
+			if($form_data['pseudo']!==null){
 				try{
 					$this->getUser()->setPseudo($form_data['pseudo']);
 				}catch(UtilisateurException $ue){
 					$updateMessage.=$ue->getMessage().'<br>';
 				}
 			}
-			if($form_data['adresse']!=null){
+			if($form_data['adresse']!==null){
 				try{
 					$this->getUser()->setAdressePhysique($form_data['adresse']);
 				}catch(UtilisateurException $ue){
 					$updateMessage.=$ue->getMessage().'<br>';
 				}
 			}
-			if($form_data['localite']!=null){
+			if($form_data['localite']!==null){
 				try{
 					$this->getUser()->setLocalite($form_data['localite']);
 				}catch(UtilisateurException $ue){
 					$updateMessage.=$ue->getMessage().'<br>';
 				}
 			}
-			if($form_data['poste']!=null){
+			if($form_data['poste']!==null){
 				try{
 					$this->getUser()->setCodePostal($form_data['poste']);
 				}catch(UtilisateurException $ue){
 					$updateMessage.=$ue->getMessage().'<br>';
 				}
 			}
-			if($form_data['email']!=null){
+			if($form_data['email']!==null){
 				try{
 					$this->getUser()->setAdresseMail($form_data['email']);
 				}catch(UtilisateurException $ue){

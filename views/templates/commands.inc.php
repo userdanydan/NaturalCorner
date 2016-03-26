@@ -1,13 +1,13 @@
 
 	<div class="row">	
 		<nav class="col-xs-6  col-sm-offset-1 col-sm-3  col-md-3 col-lg-3" style="display:inline;">
-	        <a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=VoirCompte';?>"> 
+	        <a type="button" class="btn btn-default navbar-btn" href="/VoirCompte"> 
 		        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 		    </a>
-		    <a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=Panier' ?>"> 
+		    <a type="button" class="btn btn-default navbar-btn" href="/Panier"> 
 		        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
 		    </a>
-		    <a type="button" class="btn btn-default navbar-btn" href="<?php echo $_SERVER['PHP_SELF'].'?action=Chercher' ?>"> 
+		    <a type="button" class="btn btn-default navbar-btn" href="Chercher"> 
 		        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 		    </a>
 		 </nav>
@@ -18,12 +18,12 @@
 			        <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
 			    </a>
 			     <ul class="dropdown-menu">
-		            <li><a href="<?php echo $_SERVER['PHP_SELF'].'?action=VoirCompte';?>" class="bg-success">Voir Compte</a></li>
+		            <li><a href="/VoirCompte" class="bg-success">Voir Compte</a></li>
 		            <li role="separator" class="divider"></li>
 		            <li><a href="" class="bg-info">Voir Panier</a></li>
-		            <li><a href="<?php echo $_SERVER['PHP_SELF'].'?action=Chercher' ?>" class="bg-info">Chercher</a></li>
+		            <li><a href="/Chercher" class="bg-info">Chercher</a></li>
 		            <li role="separator" class="divider"></li>	            
-		            <li><a href="<?php echo $_SERVER['PHP_SELF']; ?>?action=Logout" class="bg-danger" >Déconnexion</a></li>
+		            <li><a href="/Logout" class="bg-danger" >Déconnexion</a></li>
 		            
 		          </ul>
 			 </div>

@@ -5,8 +5,8 @@
     header('Content-Type: text/html; charset=utf-8');
 	
 	session_start();
-	
-	
+
+
 	$action = getAction();
 	$action->run();
 	
@@ -32,14 +32,17 @@
 	}
 	function getAction() 
 	{ /* Factory */
-		if (!isset($_REQUEST['action'])) 
+	    $actions = array('Default',  'Login', 'Logout', 'Inscription',
+	            'Enregistrement', 'Accueil', 'UpdateUser', 'VoirCompte',
+	            'UserJSON', 'Chercher', 'Panier', 'Catalogue', 'Recherche');
+	    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+	    $path = ltrim($path, '/');
+		if (!in_array($path, $actions)) 
 			$action = 'Default';
 		else 
-			$action = $_REQUEST['action'];
-		$actions = array('Default',  'Login', 'Logout', 'Inscription', 
-				'Enregistrement', 'Accueil', 'UpdateUser', 'VoirCompte', 'UserJSON', 'Chercher', 'Panier');
-		if (!in_array($action, $actions)) 
-			$action = 'Default';
+			$action = $path;
+
+
 		return getActionByName($action);
 	}
 ?>

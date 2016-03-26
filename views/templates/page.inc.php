@@ -65,7 +65,7 @@
 	        		if($this->login==null){
 	        			if(isset($_GET['action'])){
 	        				if($_GET['action']==='Inscription' OR $_GET['action']==='Login'){
-	        					$this->displayHeader();      					 
+	        					//$this->displayHeader();      					 
 	        				}else{
 	        					$this->displayHeader();
 		        				$this->displayCarousel();
@@ -107,7 +107,7 @@
 			</br>
         	<footer  class="row">   	
         		<div class="col-lg-4 col-sm-offset-1 col-sm-3 col-md-4 col-xs-10"> 
-        			<?php if($this->login!=null){
+        			<?php /*if($this->login!=null){
         				echo '<div class="fb-like" 
 						data-href="http://www.your-domain.com/your-page.html" 
 						data-layout="standard" 
@@ -115,7 +115,7 @@
 						data-show-faces="true"
 						data-width="1000">
 						</div>';
-        			}?>
+        			}*/?>
 			        		
 				</div>
         	</footer>

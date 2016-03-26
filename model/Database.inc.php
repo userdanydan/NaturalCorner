@@ -277,6 +277,21 @@ class Database
 		}
 	}
 	/**
+	 * Vérifie qu'un couple (pseudonyme, mot de passe) est correct pour l'administrateur.
+	 *
+	 * @param string $email Email.
+	 * @param string $password Mot de passe.
+	 * @return boolean True si le couple est correct, false sinon.
+	 */
+	public function checkAdminPassword($email, $password)
+	{
+	   
+        if($email==='admin' AND $password==='admin')
+            return true;
+        else
+            return false;
+	}
+	/**
 	 * Vérifie la disponibilité d'une adresse email.
 	 *
 	 * @param string $email Email à vérifier.
@@ -392,6 +407,27 @@ class Database
 	                $ligne["COMMENTAIRE"],$ligne["EN_VENTE"]);
 	       array_push($articles, $article);
 	    }	    
+	    $requete->closeCursor();
+	    return  $articles;
+	}
+	/**
+	 * Recherche tous les articles dont le prix est inférieur ou égal au prix indiqué.
+	 * @param Integer $prix
+	 */
+	public function chercherParPrix($prix){
+	    $articles = array();
+	    $articleTrouve=false;
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare(" SELECT *
+												FROM ARTICLES
+												WHERE PRIX_UNITAIRE<=:PRIX");
+	    $articleTrouve=$requete->execute(array(':PRIX'=>$prix));
+	    $ligneBDD = $requete->fetchAll();
+	    foreach ($ligneBDD as $ligne){
+	       $article =  new Article($ligne["DENOMINATION"], $ligne["PRIX_UNITAIRE"],
+	                $ligne["COMMENTAIRE"],$ligne["EN_VENTE"]);
+	       array_push($articles, $article);
+	    }	   
 	    $requete->closeCursor();
 	    return  $articles;
 	}

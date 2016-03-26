@@ -66,6 +66,14 @@ abstract class View {
 	    $this->panier=$pan;
 	}
 	/**
+	 * Retourne le panier.
+	 */
+	public function getPanier(){
+	    if($this->panier!==null){
+	        return $this->panier;
+	    }
+	}
+	/**
 	 * Génère le formulaire de connexion.
 	 */
 	private function displayLoginForm() {
@@ -85,7 +93,12 @@ abstract class View {
 	private function displayCommands() {
 		include("views/templates/commands.inc.php");
 	}
-
+	/**
+	 * Génère une liste de produits en promo  à un utilisateur authentifié.
+	 */
+	private function displayPromo() {
+	    include("views/templates/promotions.inc.php");
+	}
 	
 	/**
 	 * Affiche le corps de la page. Cette méthode doit être

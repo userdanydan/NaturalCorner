@@ -54,7 +54,7 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td><div><a class="btn btn-default pull-right" href="<?php echo $_SERVER['PHP_SELF'].'?action=UpdateUser';?>">Modifier</a></div>
+			<td><div><a class="btn btn-default pull-right" href="/UpdateUser">Modifier</a></div>
 			</td>
 		</tr>
 		
@@ -71,6 +71,6 @@
 </div>
 <div class="row">
 	<div class="text-center">
-		<a href="<?php echo $_SERVER['PHP_SELF']; ?>?action=Logout" class="btn btn-danger" >Déconnexion</a>
+		<a href="/Logout" class="btn btn-danger" >Déconnexion</a>
 	</div>
 </div>

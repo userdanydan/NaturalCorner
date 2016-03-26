@@ -117,6 +117,15 @@ class TestDatabase extends PHPUnit_Framework_TestCase {
      * @depends testCreateDatabase
      * @covers Database::addUser()
      */
+    public function testCheckAdminPassword() {
+        
+    
+        $this->assertTrue($this->bdd->checkAdminPassword('admin', 'admin'));
+    }
+    /**
+     * @depends testCreateDatabase
+     * @covers Database::addUser()
+     */
     public function testCheckEmailAvailability() {
         $email = "truc" . ++ self::$test_increment . "@troc.tr";
         $utilisateur1 = new Utilisateur("dada", "dudu", "pseudoTest", password_hash("pwdTest", PASSWORD_BCRYPT, [ 
@@ -372,5 +381,34 @@ class TestDatabase extends PHPUnit_Framework_TestCase {
         $this->assertEquals("nouveauCommentaire1", 
                 $this->bdd->getArticle($this->article->getDenomination())->getCommentaire(), 
                     "Aurait dû afficher nouveauCommentaire1");
+    }
+    /**
+     * @depends testCreateDatabase
+     * @covers Database::getArticle()
+     * @covers Database::addArticle()
+     */
+    public function testChercherParPrix(){
+        $articlesTest = array();
+        array_push($articlesTest, new Article("poire", 100, "", true));
+        array_push($articlesTest, new Article("poire", 200, "", true));
+        array_push($articlesTest, new Article("poire", 300, "", true));
+        array_push($articlesTest, new Article("poire", 0, "", true));
+        
+        $this->bdd->addArticle($articlesTest[0]);
+        $this->bdd->addArticle($articlesTest[1]);
+        $this->bdd->addArticle($articlesTest[2]);
+        $this->bdd->addArticle($articlesTest[3]);
+        // On va vérifier si tous les articles retrouvés sont bien dans la fourchette de prix.
+        $resultats = $this->bdd->chercherParPrix(250);
+        foreach ($resultats as $resultat)
+            $this->assertTrue($resultat->getPrixUnitaire()<=250);
+        // La nature de ce test n'étant pas exhaustif, je le recommence avec d'autres valeurs.
+        $resultats2 = $this->bdd->chercherParPrix(100);
+        foreach ($resultats2 as $resultat)
+            $this->assertTrue($resultat->getPrixUnitaire()<=100);
+        
+        $resultats3 = $this->bdd->chercherParPrix(500);
+        foreach ($resultats3 as $resultat)
+            $this->assertTrue($resultat->getPrixUnitaire()<=500);
     }
 }

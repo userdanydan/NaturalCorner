@@ -2,7 +2,7 @@
 
 <article>
 	<section class="col-lg-offset-3 col-lg-8">
-		<form method="post" action="index.php?action=UpdateUser" class="form-horizontal col-lg-10" >	
+		<form method="post" action="/UpdateUser" class="form-horizontal col-lg-10" >	
 			<div class="form-group">
 
 				<h3 class="text-center"><span class="label label-success">Modification des informations</span></h3> 
