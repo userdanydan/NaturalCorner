@@ -34,7 +34,7 @@
 	{ /* Factory */
 	    $actions = array('Default',  'Login', 'Logout', 'Inscription',
 	            'Enregistrement', 'Accueil', 'UpdateUser', 'VoirCompte',
-	            'UserJSON', 'Chercher', 'Panier', 'Catalogue', 'Recherche');
+	            'UserJSON', 'Chercher', 'Panier', 'Catalogue', 'Recherche', 'Gerant', 'ModifierArticle');
 	    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 	    $path = ltrim($path, '/');
 		if (!in_array($path, $actions)) 

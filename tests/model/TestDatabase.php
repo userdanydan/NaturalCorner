@@ -153,6 +153,17 @@ class TestDatabase extends PHPUnit_Framework_TestCase {
         $this->assertEquals($this->utilisateur->getPrenom(), $utilisateurRecupere->getPrenom(), "aurait dû afficher Daniel");
     }
     /**
+     * @depends testAddUser
+     * @covers Database::getAllUsers()
+     * @covers Database::addUser()
+     */
+    public function testGetAllUsers() {
+        $utilisateursRecuperes = array();
+        $utilisateursRecuperes = $this->bdd->getAllUsers();
+        $this->assertEquals("Daniel", $utilisateursRecuperes[0]->getPrenom(), "aurait dû afficher Daniel");
+        $this->assertTrue($utilisateursRecuperes[0] instanceof Utilisateur);
+    }
+    /**
      * @depends testAddArticle
      * @covers Database::getArticle()
      * @covers Database::addArticle()

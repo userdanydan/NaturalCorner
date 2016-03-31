@@ -71,7 +71,9 @@ class LoginAction extends Action {
                 if($this->database->checkAdminPassword($_POST ['email'], $_POST ['password'])){
                     $this->setUser($this->database->getUser($_POST ['email']));
                     $this->setSessionLogin("chef");
-                    $this->setView(getViewByName("Catalogue"));
+                    $this->setView(getViewByName("Gerant"));
+                    $this->setView(getViewByName("ResultatsRecherche"));
+                    $this->getView()->setRecherche($this->database->trouveArticles(""));
                 }elseif ($this->database->checkPassword($_POST ['email'], $_POST ['password'])) {
                     $this->setUser($this->database->getUser($_POST ['email']));                    
                     if ($this->utilisateurSession->getPseudo() != null) {

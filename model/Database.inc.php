@@ -169,6 +169,28 @@ class Database
 		return  $utilisateur;
 	}
 	/**
+	 * Recherche dans la base de donnée tous les utilisateurs.
+	 * @return array Utilisateur  Tous les utilisateurs.
+	 */
+	public function getAllUsers(){
+	    $articlesTrouves=false;
+	    $utilisateurs = array();
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare(" SELECT *
+												FROM UTILISATEURS");
+	    $articlesTrouves=$requete->execute();
+	    $lignesBDD = $requete->fetchAll();
+	    foreach ($lignesBDD as $ligne){
+	        $utilisateur = new Utilisateur($ligne["PRENOM"], $ligne["NOM"], $ligne["PSEUDO"],
+	            $ligne["PASS"], $ligne["ADRESSE_MAIL"],
+	            $ligne["ADRESSE_PHYSIQUE"], $ligne["CODE_POSTAL"], $ligne["LOCALITE"],
+	            new DateTime("NOW"), $ligne["IP_CONNEXION"]);
+	        array_push($utilisateurs, $utilisateur);
+	    }
+	    $requete->closeCursor();
+	    return  $utilisateurs;
+	}
+	/**
 	 * Ajoute dans la base de donnée un utilisateur.
 	 * @param Utilisateur l'utilisateur à insérer.
 	 * @return boolean indique si l'insertion est réussie.
