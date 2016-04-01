@@ -330,7 +330,7 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     }
 
    
-/**
+    /**
      * @covers Utilisateur::getLocalite
      * @todo Implement testGetLocalite().
      */
