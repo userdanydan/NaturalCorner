@@ -19,7 +19,7 @@ class TestArticle extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->article = new Article("poire", 150, "Poire bio de Wallonie", true);
+        $this->article = new Article("poire", 150, "Poire bio de Wallonie", 1, 1);
     }
 
     /**
@@ -151,7 +151,7 @@ class TestArticle extends PHPUnit_Framework_TestCase
     public function testIsEnVente()
     {
     
-        $this->assertTrue($this->article->isEnVente(), "Devrait afficher true");
+        $this->assertEquals(1, $this->article->isEnVente(), "Devrait afficher 1");
     }
     
     /**
@@ -164,13 +164,42 @@ class TestArticle extends PHPUnit_Framework_TestCase
         // test de l'exception
     
         try{
-            $this->article->setEnVente(false);
+            $this->article->setEnVente(0);
         }catch(ArticleException $ue){
     
             $this->fail( "n'aurait pas dû lancer une exception."." ->".$ue);
         }
          
-        $this->assertEquals(false, $this->article->isEnVente(), "Devrait afficher false");
+        $this->assertEquals(0, $this->article->isEnVente(), "Devrait afficher 0");
+         
+    }
+    /**
+     * @covers Article::isEnPromo
+     * @todo Implement testIsEnPromo().
+     */
+    public function testIsEnPromo()
+    {
+    
+        $this->assertEquals(1, $this->article->isEnPromo(), "Devrait afficher 1");
+    }
+    
+    /**
+     * @covers Article::setEnPromo
+     * @todo Implement testSetEnPromo().
+     */
+    public function testSetEnPromo()
+    {
+        // tests du setter
+        // test de l'exception
+    
+        try{
+            $this->article->setEnPromo(0);
+        }catch(ArticleException $ue){
+    
+            $this->fail( "n'aurait pas dû lancer une exception."." ->".$ue);
+        }
+         
+        $this->assertEquals( 0, $this->article->isEnPromo(), "Devrait afficher false");
          
     }
     /**
@@ -180,7 +209,7 @@ class TestArticle extends PHPUnit_Framework_TestCase
     {
         $stringArticle = $this->article->__toString();
         $this->assertEquals(
-                '{"id"="0","denomination"="poire","prixUnitaire"="150","commentaire"="Poire bio de Wallonie","enVente"="1"}'
+                '{"id"="0","denomination"="poire","prixUnitaire"="150","commentaire"="Poire bio de Wallonie","enVente"="1","enPromo"="1"}'
                 , $stringArticle);
     }
 }

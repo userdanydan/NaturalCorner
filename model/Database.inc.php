@@ -30,7 +30,7 @@ class Database
 		} else {
 			// Connect from a development environment.
 			try{
-				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST;charset=utf8', 'root', '', 
+				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER;charset=utf8', 'root', '', 
 						array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 			}catch(PDOException $ex){
 				echo '<p>'.$ex->getMessage().'</p>';
@@ -74,8 +74,8 @@ class Database
 						);
 			}
 		}
-		$this->connection->exec("CREATE DATABASE IF NOT EXISTS NATURAL_CORNER_TEST CHARACTER SET 'utf8'");
-		$test= $this->connection->exec("USE NATURAL_CORNER_TEST");
+		$this->connection->exec("CREATE DATABASE IF NOT EXISTS natural_corner CHARACTER SET 'utf8'");
+		$test= $this->connection->exec("USE natural_corner");
 		try
 		{
 			
@@ -137,7 +137,7 @@ class Database
 		} else {
 			// Connect from a development environment.
 			try{
-				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=NATURAL_CORNER_TEST', 'root', '', 
+				$this->connection = new pdo('mysql:host=127.0.0.1:3306;dbname=natural_corner', 'root', '', 
 				        array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 			}catch(PDOException $ex){
 				echo '<p>'.$ex->getMessage().'</p>';
@@ -160,13 +160,22 @@ class Database
 												FROM UTILISATEURS
 												WHERE ADRESSE_MAIL=:EMAIL");
 		$userTrouve=$requete->execute(array(':EMAIL'=>$email));
-		$ligneBDD = $requete->fetch();
-		$utilisateur = new Utilisateur($ligneBDD["PRENOM"], $ligneBDD["NOM"], $ligneBDD["PSEUDO"], 
-										$ligneBDD["PASS"], $ligneBDD["ADRESSE_MAIL"],
-										$ligneBDD["ADRESSE_PHYSIQUE"], $ligneBDD["CODE_POSTAL"], $ligneBDD["LOCALITE"], 
-										new DateTime("NOW"), $ligneBDD["IP_CONNEXION"]);
-		$requete->closeCursor();
-		return  $utilisateur;
+		if($userTrouve){
+    		$nbColonnes = $requete->rowCount();
+    		if($nbColonnes>0){
+        		$ligneBDD = $requete->fetch();
+        		$utilisateur = new Utilisateur($ligneBDD["PRENOM"], $ligneBDD["NOM"], $ligneBDD["PSEUDO"], 
+        										$ligneBDD["PASS"], $ligneBDD["ADRESSE_MAIL"],
+        										$ligneBDD["ADRESSE_PHYSIQUE"], $ligneBDD["CODE_POSTAL"], $ligneBDD["LOCALITE"], 
+        										new DateTime("NOW"), $ligneBDD["IP_CONNEXION"]);
+        		$requete->closeCursor();
+        		return  $utilisateur;
+    		}else{
+    		    return NULL;
+    		}
+		}else{
+		    return NULL;
+		}
 	}
 	/**
 	 * Recherche dans la base de donnée tous les utilisateurs.
@@ -179,16 +188,26 @@ class Database
 	    $requete = $this->connection->prepare(" SELECT *
 												FROM UTILISATEURS");
 	    $articlesTrouves=$requete->execute();
-	    $lignesBDD = $requete->fetchAll();
-	    foreach ($lignesBDD as $ligne){
-	        $utilisateur = new Utilisateur($ligne["PRENOM"], $ligne["NOM"], $ligne["PSEUDO"],
-	            $ligne["PASS"], $ligne["ADRESSE_MAIL"],
-	            $ligne["ADRESSE_PHYSIQUE"], $ligne["CODE_POSTAL"], $ligne["LOCALITE"],
-	            new DateTime("NOW"), $ligne["IP_CONNEXION"]);
-	        array_push($utilisateurs, $utilisateur);
+	    if($articlesTrouves){
+	        $nbColonnes = $requete->rowCount();
+	        if($nbColonnes>0){
+        	    $lignesBDD = $requete->fetchAll();
+        	    foreach ($lignesBDD as $ligne){
+        	        $utilisateur = new Utilisateur($ligne["PRENOM"], $ligne["NOM"], $ligne["PSEUDO"],
+        	            $ligne["PASS"], $ligne["ADRESSE_MAIL"],
+        	            $ligne["ADRESSE_PHYSIQUE"], $ligne["CODE_POSTAL"], $ligne["LOCALITE"],
+        	            new DateTime("NOW"), $ligne["IP_CONNEXION"]);
+        	        array_push($utilisateurs, $utilisateur);
+        	    }
+        	    $requete->closeCursor();
+        	    return  $utilisateurs;
+	        }else{
+	            return NULL;
+	        }
+	    }else{
+	       return NULL;
 	    }
-	    $requete->closeCursor();
-	    return  $utilisateurs;
+	  
 	}
 	/**
 	 * Ajoute dans la base de donnée un utilisateur.
@@ -208,7 +227,7 @@ class Database
 		$insertionReussie = $requete->execute(array(
 				':PRENOM'=>$utilisateur->getPrenom(),
 				':NOM'=>$utilisateur->getNom(), 
-				':PSEUDO'=>$utilisateur->getPSeudo(), 
+				':PSEUDO'=>$utilisateur->getPseudo(), 
 				':PASS'=>$utilisateur->getPass(), 
 				':ADRESSE_MAIL'=>$utilisateur->getAdresseMail(), 
 				':ADRESSE_PHYSIQUE'=>$utilisateur->getAdressePhysique(),
@@ -217,6 +236,11 @@ class Database
 				':DATE_INSCRIPTION'=>$utilisateur->getDateInscription(), 
 				':IP_CONNEXION'=>$utilisateur->getIdConnexion()
 		));
+		try{
+		  $utilisateur->setId($this->connection->lastInsertId());
+		}catch(UtilisateurException $ue){
+		    echo $ue->getMessage();
+		}
 		$requete->closeCursor();
 		return $insertionReussie;
 	}
@@ -330,8 +354,83 @@ class Database
 			else
 				return true;
 	}
-	
-	
+	/**
+	 * Recherche dans la base de donnée un rayon selon son emplacement.
+	 * @param string  l'emplacement.
+	 * @return Rayon  le rayon recherché.
+	 */
+	public function getRayonParEmplacement($emplacement){
+	    $rayonTrouve=false;
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare(" SELECT *
+												FROM RAYONS
+												WHERE EMPLACEMENT=:EMPLACEMENT");
+	    $rayonTrouve=$requete->execute(array(':EMPLACEMENT'=>$emplacement));
+	    if($rayonTrouve){
+	        $nbColonnes = $requete->rowCount();
+	        if($nbColonnes>0){
+        	    $ligneBDD = $requete->fetch();
+        	    $rayon = new Rayon($ligneBDD["EMPLACEMENT"]);
+        	    $rayon->setId($ligneBDD["ID_RAYON"]);
+        	    $requete->closeCursor();
+        	    return  $rayon;
+	        }else{
+	            return NULL;
+	        }
+	    }else{
+	        return NULL;
+	    }
+	}
+	/**
+	 * Recherche dans la base de donnée un rayon selon son id.
+	 * @param int  id.
+	 * @return Rayon  le rayon recherché.
+	 */
+	public function getRayon($id){
+	    $id = (int) $id;
+	    $rayonTrouve=false;
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare(" SELECT *
+												FROM RAYONS
+												WHERE ID_RAYON=:ID_RAYON");
+	    $rayonTrouve=$requete->execute(array(':ID_RAYON'=>$id));
+	    if($rayonTrouve){
+	        $nbColonnes = $requete->rowCount();
+	        if($nbColonnes>0){
+        	    $ligneBDD = $requete->fetch();
+        	    $rayon = new Rayon($ligneBDD["EMPLACEMENT"]);
+        	    $rayon->setId($id);
+        	    $requete->closeCursor();
+        	    return  $rayon;
+    	    }else{
+    	        return NULL;
+    	    }
+	    }else{
+	        return NULL;
+	    }
+	}
+	/**
+	 * Ajoute dans la base de donnée un rayon.
+	 * @param Rayon le rayon à insérer.
+	 * @return bool indique si l'insertion est réussie.
+	 * @throws RayonException si l'email existe déjà dans la base de données.
+	 */
+	public function addRayon(Rayon $rayon){
+	    $insertionReussie=false;
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare(" INSERT INTO RAYONS(EMPLACEMENT)
+											    VALUES(:EMPLACEMENT)");
+	    $insertionReussie = $requete->execute(array(
+	            ':EMPLACEMENT'=>$rayon->getEmplacement()
+	    ));
+	    try{
+	        $rayon->setId($this->connection->lastInsertId());
+	    }catch(UtilisateurException $ue){
+	        echo $ue->getMessage();
+	    }
+	    $requete->closeCursor();
+	    return $insertionReussie;
+	}
 	/**
 	 * Recherche dans la base de donnée un article selon sa dénomination.
 	 * @param string  la dénomination.
@@ -344,11 +443,21 @@ class Database
 												FROM ARTICLES
 												WHERE DENOMINATION=:DENOM");
 	    $articleTrouve=$requete->execute(array(':DENOM'=>$denom));
-	    $ligneBDD = $requete->fetch();
-	    $article = new Article($ligneBDD["DENOMINATION"], $ligneBDD["PRIX_UNITAIRE"],
-	            $ligneBDD["COMMENTAIRE"],$ligneBDD["EN_VENTE"]);
-	    $requete->closeCursor();
-	    return  $article;
+	    if($articleTrouve){
+	        $nbColonnes = $requete->rowCount();
+	        if($nbColonnes>0){
+        	    $ligneBDD = $requete->fetch();
+        	    $rayon = $this->getRayon($ligneBDD["ID_RAYON"]);
+        	    $article = new Article($ligneBDD["DENOMINATION"], $ligneBDD["PRIX_UNITAIRE"],
+        	            $ligneBDD["COMMENTAIRE"],$ligneBDD["EN_VENTE"], $ligneBDD["EN_PROMO"], $rayon);
+        	    $requete->closeCursor();
+        	    return  $article;
+	        }else{
+	            return NULL;
+	        }
+	    }else{
+	        return NULL;
+	    }
 	}
 	/**
 	 * Ajoute dans la base de donnée un article.
@@ -359,14 +468,26 @@ class Database
 	public function addArticle(Article $article){
         $insertionReussie=false;
         $this->creerConnexion();
-        $requete = $this->connection->prepare(" INSERT INTO ARTICLES(DENOMINATION, PRIX_UNITAIRE, COMMENTAIRE, EN_VENTE)
-											    VALUES(:DENOMINATION, :PRIX_UNITAIRE, :COMMENTAIRE, :EN_VENTE)");
+        $this->connection->beginTransaction();
+        $requete = $this->connection->prepare(" INSERT INTO ARTICLES(DENOMINATION, PRIX_UNITAIRE, COMMENTAIRE, EN_VENTE, EN_PROMO, ID_RAYON)
+											    VALUES(:DENOMINATION, :PRIX_UNITAIRE, :COMMENTAIRE, :EN_VENTE, :EN_PROMO, :ID_RAYON)");
         $insertionReussie = $requete->execute(array(
                 ':DENOMINATION'=>$article->getDenomination(),
                 ':PRIX_UNITAIRE'=>$article->getPrixUnitaire(),
                 ':COMMENTAIRE'=>$article->getCommentaire(),
-                ':EN_VENTE'=>$article->isEnVente()      
+                ':EN_VENTE'=>$article->isEnVente(),
+                ':EN_PROMO'=>$article->isEnPromo(),
+                ':ID_RAYON'=>$article->getRayon()->getId()
         ));
+        try{
+            $article->setId($this->connection->lastInsertId());
+        }catch(UtilisateurException $ue){
+            echo $ue->getMessage();
+        }
+        if($insertionReussie)
+            $this->connection->commit();
+        else 
+            $this->connection->rollBack();
         $requete->closeCursor();
         return $insertionReussie;
 	}
@@ -398,13 +519,15 @@ class Database
         $this->creerConnexion();
         $requete = $this->connection->prepare(" UPDATE ARTICLES
         										SET DENOMINATION=:DENOMINATION, PRIX_UNITAIRE=:PRIX_UNITAIRE, COMMENTAIRE=:COMMENTAIRE,
-        											EN_VENTE=:EN_VENTE
+        											EN_VENTE=:EN_VENTE, EN_PROMO=:EN_PROMO, ID_RAYON=:ID_RAYON
         										WHERE DENOMINATION=:DENOM");
         $estMisAJour = $requete->execute(array(
                 ':DENOMINATION'=> $articleMisAJour->getDenomination(),
                 ':PRIX_UNITAIRE'=> $articleMisAJour->getPrixUnitaire(),
                 ':COMMENTAIRE'=> $articleMisAJour->getCommentaire(),
                 ':EN_VENTE'=>$articleMisAJour->isEnVente(),
+                ':EN_PROMO'=>$articleMisAJour->isEnVente(),
+                ':ID_RAYON'=>$articleMisAJour->getRayon()->getId(),
                 ':DENOM'=> $denom
         ));
         $requete->closeCursor();
@@ -426,7 +549,7 @@ class Database
 	    $ligneBDD = $requete->fetchAll();
 	    foreach ($ligneBDD as $ligne){
 	       $article =  new Article($ligne["DENOMINATION"], $ligne["PRIX_UNITAIRE"],
-	                $ligne["COMMENTAIRE"],$ligne["EN_VENTE"]);
+	                $ligne["COMMENTAIRE"],$ligne["EN_VENTE"], $ligne["EN_PROMO"]);
 	       array_push($articles, $article);
 	    }	    
 	    $requete->closeCursor();
@@ -444,14 +567,26 @@ class Database
 												FROM ARTICLES
 												WHERE PRIX_UNITAIRE<=:PRIX");
 	    $articleTrouve=$requete->execute(array(':PRIX'=>$prix));
-	    $ligneBDD = $requete->fetchAll();
-	    foreach ($ligneBDD as $ligne){
-	       $article =  new Article($ligne["DENOMINATION"], $ligne["PRIX_UNITAIRE"],
-	                $ligne["COMMENTAIRE"],$ligne["EN_VENTE"]);
-	       array_push($articles, $article);
-	    }	   
-	    $requete->closeCursor();
-	    return  $articles;
+	    if($articleTrouve){
+	        $nbColonnes = $requete->rowCount();
+	        if($nbColonnes>0){
+	            $ligneBDD = $requete->fetchAll();
+	            foreach ($ligneBDD as $ligne){
+	                $rayon = $this->getRayon($ligne["ID_RAYON"]);
+	                $article =  new Article($ligne["DENOMINATION"], $ligne["PRIX_UNITAIRE"],
+	                        $ligne["COMMENTAIRE"],$ligne["EN_VENTE"], $ligne["EN_PROMO"], $rayon);
+	                array_push($articles, $article);
+	            }
+	            $requete->closeCursor();
+	            return  $articles;
+	        }else{
+	            $requete->closeCursor();
+	            return NULL;
+	        }
+	    }else{
+	        $requete->closeCursor();
+	        return NULL;
+	    }
 	}
 }
 

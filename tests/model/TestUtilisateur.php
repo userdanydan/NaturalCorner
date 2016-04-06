@@ -2,6 +2,7 @@
 
 require_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/exceptions/UtilisateurException.class.php';
 require_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/model/Utilisateur.class.php';
+require_once '/Users/ivymike/Documents/workspacePHP/NaturalCorner/model/Adresse.class.php';
 
 /**
  * Test class for Utilisateur.
@@ -21,8 +22,8 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
     	$this->utilisateurDuTest = new Utilisateur("Daniel", "Dan", "DanyDan", "Motdepasse1", 
-    			"truc@troc.tr", "rue des petites fleurs 5",
-    			"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");       
+    			"truc@troc.tr", new Adresse("rue des petites fleurs", "5", "", "1070", "Anderlecht", "Belgique"),
+    			new DateTime("2015-01-01T00:00:00"), "192.168.0.1");       
     }
 
     /**
@@ -289,8 +290,13 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
      */
     public function testGetAdressePhysique()
     {
-        $this->assertEquals("rue des petites fleurs 5", $this->utilisateurDuTest->getAdressePhysique(), 
-        		"devrait afficher rue des petites fleurs 5");
+        $this->assertEquals("rue des petites fleurs 5 1070 Anderlecht Belgique", 
+                $this->utilisateurDuTest->getAdressePhysique()->getRue().' '.
+                $this->utilisateurDuTest->getAdressePhysique()->getNumero().' '.
+                $this->utilisateurDuTest->getAdressePhysique()->getCodePostal().' '.
+                $this->utilisateurDuTest->getAdressePhysique()->getLocalite().' '.
+                $this->utilisateurDuTest->getAdressePhysique()->getPays(),
+        		"rue des petites fleurs 5 1070 Anderlecht Belgique");
     	
     }
     /**
@@ -308,50 +314,6 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
                  "Rue de l'indépendance 23");
     }
 
-     /**
-     * @covers Utilisateur::getCodePostal
-     * @todo Implement testGetCodePostal().
-     */
-    public function testGetCodePostal()
-    {
-        $this->assertEquals("1070", $this->utilisateurDuTest->getCodePostal(), "devrait afficher 1070");
-    	
-    }
-
-    /**
-     * @covers Utilisateur::setCodePostal
-     * @todo Implement testSetCodePostal().
-     */
-    public function testSetCodePostal()
-    {
-        $this->utilisateurDuTest->setCodePostal("1030");
-        $this->assertEquals("1030", $this->utilisateurDuTest->getCodePostal(), "devrait afficher 1030");
-        
-    }
-
-   
-    /**
-     * @covers Utilisateur::getLocalite
-     * @todo Implement testGetLocalite().
-     */
-    public function testGetLocalite()
-    {
-        $this->assertEquals("Anderlecht", $this->utilisateurDuTest->getLocalite(), "devrait afficher Anderlecht");
-    	
-    }
-    /**
-     * @covers Utilisateur::setLocalite
-     * @todo Implement testSetLocalite().
-     */
-    public function testSetLocalite()
-    {
-        $this->utilisateurDuTest->setLocalite("Schaerbeek");
-        $this->assertEquals("Schaerbeek", $this->utilisateurDuTest->getLocalite(), "devrait afficher Schaerbeek");
-    }
-    /**
-     * @covers Utilisateur::getDateInscription
-     * @todo Implement testGetDateInscription().
-     */
     public function testGetDateInscription()
     {
     	
@@ -396,11 +358,9 @@ class UtilisateurTest extends PHPUnit_Framework_TestCase
     public function testToString()
     {
     	$stringUtilisateur = $this->utilisateurDuTest->__toString();
-    	$this->assertEquals('{"id"="0","prenom"="Daniel","nom"="Dan","pass"="Motdepasse1","adresseMail"="truc@troc.tr","adressePhysique"="rue des petites fleurs 5"'.
-    	        ',"codePostal"="1070","localite"="Anderlecht","dateInscription"="2015-01-01 00:00:00","ipConnexion"="192.168.0.1"}', $stringUtilisateur);
+    	$this->assertEquals('{"id"="0","prenom"="Daniel","nom"="Dan","pass"="Motdepasse1","adresseMail"="truc@troc.tr","adressePhysique"="{"id"="0","rue"="rue des petites fleurs","numero"="5","numeroBoite"="","codePostal"="1070","localite"="Anderlecht","pays"="Belgique"}"'.
+    	        ',"dateInscription"="2015-01-01 00:00:00","ipConnexion"="192.168.0.1"}', $stringUtilisateur);
     }
 }
 ?>
-$this->utilisateurDuTest = new Utilisateur("Daniel", "Dan", "DanyDan", "Motdepasse1", 
-    			"truc@troc.tr", "rue des petites fleurs 5",
-    			"1070", "Anderlecht", new DateTime("2015-01-01T00:00:00"), "192.168.0.1");       
+      

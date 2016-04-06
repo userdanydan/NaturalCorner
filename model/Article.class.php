@@ -20,29 +20,41 @@ class Article {
      * Etat de vente de l'article.
      */
     private $_enVente;
+    /**
+     * Etat de promotion de l'article.
+     */
+    private $_enPromo;
+    /**
+     * 
+     * @var string : le rayon où se trouve l'article.
+     */
+    private $_rayon;
     
     /**
      * @param string $denomination : Dénomination de l'article.
      * @param int $prixUnitaire : Prix unitaire de l'article.
      * @param string $commentaire : Commentaire sur l'article.
      * @param bool $enVente : Etat de vente de l'article.
+     * @param bool $enPromo : Etat de promotion de l'article.
+     * @param Rayon $rayon : rayon de de'article.
      */
-    public function __construct($denomination, $prixUnitaire, $commentaire, $enVente) {
+    public function __construct($denomination, $prixUnitaire, $commentaire, $enVente, $enPromo, Rayon $rayon) {
         $this->_id = 0;
         $this->_denomination = $denomination;
         $this->_prixUnitaire = $prixUnitaire;
         $this->_commentaire = $commentaire;
-        $this->_enVente = $enVente;
+        $this->_enVente = (int)$enVente;
+        $this->_enPromo= (int)$enPromo;
+        $this->_rayon=$rayon;
     }
     
     /**
      *
-     * @param int $id
-     *            : id de l'article.
+     * @param int $id : id de l'article.
      * @throws ArticleException : si l'id n'est pas un nombre entier positif
      */
     public function setId($id) {
-        $id = ( int ) $id;
+        $id = (int) $id;
         if ($id >= 0)
             $this->_id = $id;
         else
@@ -58,8 +70,23 @@ class Article {
     }
     /**
      *
-     * @param string $denom
-     *            : La dénomination de l'article.
+     * @param Rayon $rayon : Le rayon de l'article.
+     */
+    public function setRayon(Rayon $rayon) {
+        if($rayon!==NULL){
+            $this->_rayon = $rayon;
+        }
+    }
+    /**
+     *
+     * @return Rayon $rayon : Le rayon de l'article.
+     */
+    public function getRayon() {
+        return $this->_rayon;
+    }
+    /**
+     *
+     * @param string $denom : La dénomination de l'article.
      */
     public function setDenomination($denom) {
         $denom = trim($denom);
@@ -105,9 +132,7 @@ class Article {
         return $this->_commentaire;
     }
     /**
-     *
-     * @param bool $enV
-     *            : Le prix unitaire de l'article.
+     * @param bool $enV : Vente de l'article.
      */
     public function setEnVente($enV) {
         $enV = ( int ) $enV;
@@ -115,10 +140,25 @@ class Article {
     }
     /**
      *
-     * @return string : Le prix unitaire de l'article.
+     * @return bool : si l'article est en vente.
      */
     public function isEnVente() {
         return $this->_enVente;
+    }
+    /**
+     *
+     * @param bool $enP : Promotion de l'article.
+     */
+    public function setEnPromo($enP) {
+        $enP = ( int ) $enP;
+        $this->_enPromo = $enP;
+    }
+    /**
+     *
+     * @return bool : si l'article est en promotion.
+     */
+    public function isEnPromo() {
+        return $this->_enPromo;
     }
     /**
      * @return string : retourne une représentation JSON d'un article.
@@ -137,7 +177,8 @@ class Article {
      */
     public function __toString() {
         return '{"id"="' . $this->_id . '","denomination"="' . $this->_denomination . '","prixUnitaire"="' . 
-        $this->_prixUnitaire . '","commentaire"="' . $this->_commentaire . '","enVente"="' . $this->_enVente . '"}';
+        $this->_prixUnitaire . '","commentaire"="' . $this->_commentaire . 
+        '","enVente"="' .$this->_enVente . '","enPromo"="' . $this->_enPromo . '"}';
     }
     public function __destruct(){
         unset($this->_id);
@@ -145,5 +186,6 @@ class Article {
         unset($this->_prixUnitaire);
         unset($this->_commentaire);
         unset($this->_enVente);
+        unset($this->_enPromo);
     }
 }

@@ -97,7 +97,7 @@ class Utilisateur{
 	public function setPrenom($pr){
 		$pr = trim($pr);
 		
-		if( strlen($pr)!=0 AND preg_match('#^[0-9a-zA-Z]{3,128}$#', $pr) ){				
+		if( preg_match('#^[0-9a-zA-Z]{3,128}$#', $pr) ){				
 			$this->_prenom = $pr;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire un prénom d'au moins trois lettres et sans chiffre.</strong>");
@@ -115,7 +115,7 @@ class Utilisateur{
 	 */
 	public function setNom($nom){
 		$nom = trim($nom);
-		if( strlen($nom)!=0 AND preg_match('#^[0-9a-zA-Z]{3,128}$#', $nom) ){
+		if( preg_match('#^[0-9a-zA-Z]{3,128}$#', $nom) ){
 			$this->_nom = $nom;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire un prénom d'au moins trois lettres et sans chiffre.</strong>");
@@ -133,7 +133,7 @@ class Utilisateur{
 	 */
 	public function setPseudo($pseudo){
 		$pseudo = trim($pseudo);
-		if( strlen($pseudo)!=0 AND preg_match('#^[0-9a-zA-Z]{3,128}$#', $pseudo) ){
+		if( preg_match('#^[0-9a-zA-Z]{3,128}$#', $pseudo) ){
 			$this->_pseudo = $pseudo;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire un pseudo d'au moins trois lettres et sans chiffre.</strong>");
@@ -173,7 +173,7 @@ class Utilisateur{
 	 */
 	public function setAdresseMail($adr){
 		$adr = trim($adr);
-		if( strlen($adr)!=0 AND preg_match('#^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$#', $adr) ){
+		if( preg_match('#^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$#', $adr) ){
 			$this->_adresseMail = $adr;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire une adresse e-mail valide</strong>");
@@ -189,10 +189,9 @@ class Utilisateur{
 	 * @param string : l'adresse de l'utilisateur.
 	 * @throws UtilisateurException : L'adresse doit être existante.
 	 */
-	//TODO API Google map pour checker l'existence de l'adresse. 
 	public function setAdressePhysique($adr){
-		$adr = trim($adr);
-		if( strlen($adr)!=0 ){
+	    if(is_string($adr)){
+		    $adr = trim($adr);
 			$this->_adressePhysique = $adr;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire une adresse valide</strong>");
@@ -211,7 +210,7 @@ class Utilisateur{
 	public function setCodePostal($cod){
 		$cod = trim($cod);
 		$lg = strlen($cod);
-		if( $lg!=0 AND ($lg == 4 OR $lg == 5)){
+		if( $lg<=5){
 			$this->_codePostal = $cod;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire un code postal ayant 4 ou 5 caractères.</strong>");
@@ -228,8 +227,9 @@ class Utilisateur{
 	 * @throws UtilisateurException : la localité doit être une chaîne de caractère non vide.
 	 */
 	public function setLocalite($loc){
-		$nom = trim($loc);
-		if( strlen($loc)!=0 ){
+		
+		if( is_string($loc) ){
+		    $nom = trim($loc);
 			$this->_localite = $loc;
 		}else{
 			throw new UtilisateurException("<strong>Veuillez introduire une localité valide.</strong>");
@@ -265,6 +265,8 @@ class Utilisateur{
 		$ip=trim($ip);
 		if(strlen($ip)!=0)
 			$this->_ipConnexion=$ip;
+		else 
+		    $this->_ipConnexion='0.0.0.0';
 	}
 	/**
 	 * @return string : retourne l'ip.

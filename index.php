@@ -32,7 +32,7 @@
 	}
 	function getAction() 
 	{ /* Factory */
-	    $actions = array('Default',  'Login', 'Logout', 'Inscription',
+	    $actions = array('CtrlCompte', 'CtrlCatalogue','Default',  'Login', 'Logout', 'Inscription',
 	            'Enregistrement', 'Accueil', 'UpdateUser', 'VoirCompte',
 	            'UserJSON', 'Chercher', 'Panier', 'Catalogue', 'Recherche', 'Gerant', 'ModifierArticle');
 	    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
