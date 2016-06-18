@@ -1,5 +1,6 @@
 <?php
 include_once ("actions/Action.inc.php");
+include_once  __DIR__.'/../model/Panier.class.php';
 class LoginAction extends Action {
     
     /**
@@ -71,6 +72,7 @@ class LoginAction extends Action {
                 if($this->database->checkAdminPassword($_POST ['email'], $_POST ['password'])){
                     $this->setUser($this->database->getUser($_POST ['email']));
                     $this->setSessionLogin("chef");
+                    $this->setPanier(new Panier());
                     $this->setView(getViewByName("Gerant"));
                     $this->setView(getViewByName("ResultatsRecherche"));
                     $this->getView()->setRecherche($this->database->trouveArticles(""));
@@ -78,10 +80,13 @@ class LoginAction extends Action {
                     $this->setUser($this->database->getUser($_POST ['email']));                    
                     if ($this->utilisateurSession->getPseudo() != null) {
                         $this->setSessionLogin($this->getUser()->getPseudo());
+                        $this->setPanier(new Panier());
                     } elseif ($this->getUser()->getNom() != null && $this->getUser()->getPrenom() != null) {
                         $this->setSessionLogin($this->getUser()->getPrenom() . " " . $this->getUser()->getNom());
+                        $this->setPanier(new Panier());
                     } else {
                         $this->setSessionLogin($this->getUser()->getAdresseMail());
+                        $this->setPanier(new Panier());
                     }
                     $this->setView(getViewByName("ResultatsRecherche"));
                     $this->getView()->setRecherche($this->database->trouveArticles(""));

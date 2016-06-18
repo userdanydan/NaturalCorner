@@ -7,7 +7,7 @@
 		    <a type="button" class="btn btn-default navbar-btn" href="/Panier" data-toggle="tooltip" title="Voir Panier" data-placement="bottom"> 
 		        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
 		    </a>
-		    <a type="button" class="btn btn-default navbar-btn" href="Chercher" data-toggle="tooltip" title="Chercher un article" data-placement="bottom"> 
+		    <a type="button" class="btn btn-default navbar-btn" href="/RechercheRapide" data-toggle="tooltip" title="Chercher un article" data-placement="bottom"> 
 		        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 		    </a>
 		    <?php 

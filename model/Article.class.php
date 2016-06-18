@@ -29,6 +29,11 @@ class Article {
      * @var string : le rayon où se trouve l'article.
      */
     private $_rayon;
+    /**
+     * 
+     * @var String : la catégorie de l'article.
+     */
+    private $_categorie;
     
     /**
      * @param string $denomination : Dénomination de l'article.
@@ -83,6 +88,22 @@ class Article {
      */
     public function getRayon() {
         return $this->_rayon;
+    }
+    /**
+     *
+     * @param Categorie $categorie : Le categorie de l'article.
+     */
+    public function setCategorie(Categorie $categorie) {
+        if($categorie!==NULL){
+            $this->_categorie = $categorie;
+        }
+    }
+    /**
+     *
+     * @return Categorie $categorie : Le categorie de l'article.
+     */
+    public function getCategorie() {
+        return $this->_categorie;
     }
     /**
      *

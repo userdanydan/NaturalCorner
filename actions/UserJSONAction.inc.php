@@ -12,7 +12,7 @@ class UserJSONAction extends Action {
 		$this->setView(getViewByName("UserJSON"));
 		if(isset($_GET['email'])){
 			$user = $this->database->getUser($_GET['email']);
-			$record['records'] = array($user->getJsonData());
+			$record['users'] = array($user->getJsonData());
 			echo json_encode($record);
 		}else{
 			echo '0';

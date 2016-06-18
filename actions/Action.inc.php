@@ -9,6 +9,7 @@ abstract class Action {
 	private $view;
 	protected $database;
 	protected $utilisateurSession;
+	protected $panier;
 	/**
 	 * Construit une instance de la classe Action.
 	 */
@@ -36,7 +37,8 @@ abstract class Action {
 			$user = $_SESSION['user'];
 		} else $user = null;
 		return $user;
-	}	/**
+	}	
+	/**
 	 * Fixe l'utilisateur qui doit être affiché par le contrôleur.
 	 *
 	 * @param Utilisateur $utilisateur Utilisateur qui doit être affiché par le contrôleur.
@@ -45,7 +47,23 @@ abstract class Action {
 		$this->utilisateurSession = $user;
 		$_SESSION['user'] = $user;
 	}
-
+	/**
+	 * Retourne le panier courant qui doit être affiché par le contrôleur.
+	 *
+	 * @return Panier panier qui doit être affiché par le contrôleur.
+	 */
+	public function getPanier() {
+	    return $panier;
+	}	
+	/**
+	* Fixe le panier qui doit être affiché par le contrôleur.
+	*
+	* @param Panier $panier Panier qui doit être affiché par le contrôleur.
+	*/
+	protected function setPanier($panier) {
+	    $this->panier = $panier;
+	    $_SESSION['panier'] = $panier;
+	}
 	
 	/**
 	 * Retourne la vue qui doit être affichée par le contrôleur.

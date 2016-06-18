@@ -1,6 +1,8 @@
 <?php
 include_once __DIR__.'/../exceptions/EmailAlreadyTakenException.class.php';
 include_once  __DIR__.'/../model/Article.class.php';
+include_once  __DIR__.'/../model/Rayon.class.php';
+
 class Database 
 {
 
@@ -469,8 +471,12 @@ class Database
         $insertionReussie=false;
         $this->creerConnexion();
         $this->connection->beginTransaction();
-        $requete = $this->connection->prepare(" INSERT INTO ARTICLES(DENOMINATION, PRIX_UNITAIRE, COMMENTAIRE, EN_VENTE, EN_PROMO, ID_RAYON)
-											    VALUES(:DENOMINATION, :PRIX_UNITAIRE, :COMMENTAIRE, :EN_VENTE, :EN_PROMO, :ID_RAYON)");
+        $requete = $this->connection->prepare(" INSERT INTO ARTICLES(
+                                                    DENOMINATION, PRIX_UNITAIRE, 
+                                                    COMMENTAIRE, EN_VENTE, EN_PROMO, ID_RAYON)
+											    VALUES(
+                                                    :DENOMINATION, :PRIX_UNITAIRE, 
+                                                    :COMMENTAIRE, :EN_VENTE, :EN_PROMO, :ID_RAYON)");
         $insertionReussie = $requete->execute(array(
                 ':DENOMINATION'=>$article->getDenomination(),
                 ':PRIX_UNITAIRE'=>$article->getPrixUnitaire(),
@@ -518,8 +524,10 @@ class Database
 	    $estMisAJour=false;
         $this->creerConnexion();
         $requete = $this->connection->prepare(" UPDATE ARTICLES
-        										SET DENOMINATION=:DENOMINATION, PRIX_UNITAIRE=:PRIX_UNITAIRE, COMMENTAIRE=:COMMENTAIRE,
-        											EN_VENTE=:EN_VENTE, EN_PROMO=:EN_PROMO, ID_RAYON=:ID_RAYON
+        										SET DENOMINATION=:DENOMINATION, PRIX_UNITAIRE=:PRIX_UNITAIRE, 
+                                                    COMMENTAIRE=:COMMENTAIRE,
+        											EN_VENTE=:EN_VENTE, EN_PROMO=:EN_PROMO, 
+                                                    ID_RAYON=:ID_RAYON
         										WHERE DENOMINATION=:DENOM");
         $estMisAJour = $requete->execute(array(
                 ':DENOMINATION'=> $articleMisAJour->getDenomination(),
@@ -548,12 +556,14 @@ class Database
 	    $articleTrouve=$requete->execute(array(':DENOM'=>'%'.$denom.'%'));
 	    $ligneBDD = $requete->fetchAll();
 	    foreach ($ligneBDD as $ligne){
+	       $rayon = $this->getRayon($ligne["ID_RAYON"]);
 	       $article =  new Article($ligne["DENOMINATION"], $ligne["PRIX_UNITAIRE"],
-	                $ligne["COMMENTAIRE"],$ligne["EN_VENTE"], $ligne["EN_PROMO"]);
+	                $ligne["COMMENTAIRE"],$ligne["EN_VENTE"], $ligne["EN_PROMO"], $rayon);
 	       array_push($articles, $article);
 	    }	    
 	    $requete->closeCursor();
 	    return  $articles;
+	    
 	}
 	/**
 	 * Recherche tous les articles dont le prix est inférieur ou égal au prix indiqué.
@@ -587,6 +597,16 @@ class Database
 	        $requete->closeCursor();
 	        return NULL;
 	    }
+	}
+	/**
+	 * Enregistre le panier courant pour la session de l'utilisateur.
+	 * @param Panier $panier
+	 * @param int $id
+	 */
+	public function setPanierCourant(Panier $panier, $id){
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare("INSERT INTO PANIERS ");
+	    $articleTrouve=$requete->execute(array(':PRIX'=>$prix));
 	}
 }
 
