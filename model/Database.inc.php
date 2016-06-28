@@ -81,34 +81,105 @@ class Database
 		try
 		{
 			
-			$this->connection->beginTransaction(); // pour assurer le caractère ACID de la base de données.
-			$succes = $this->connection->query("CREATE TABLE IF NOT EXISTS UTILISATEURS(
-    									        ID_UTILISATEUR   INT (11) AUTO_INCREMENT  NOT NULL ,
-    									        PRENOM           VARCHAR (128) ,
-    									        NOM              VARCHAR (128) ,
-    									        PSEUDO           VARCHAR (128) ,
-    									        PASS             VARCHAR (1024) ,
-    									        ADRESSE_MAIL     VARCHAR (128) ,
-    									        ADRESSE_PHYSIQUE VARCHAR (128) ,
-    									        CODE_POSTAL      VARCHAR (5) ,
-    									        LOCALITE         VARCHAR (128) ,
-    									        DATE_INSCRIPTION DATETIME ,
-    									        IP_CONNEXION     VARCHAR(128),
-    									        PRIMARY KEY (ID_UTILISATEUR )
-    										)ENGINE=InnoDB;");
-			if ($success) 
-				$this->connection->commit();
-			else 
-				$this->connection->rollback();
-			$this->connection->beginTransaction(); 
-			$succes = $this->connection->query("CREATE TABLE IF NOT EXISTS ARTICLES(
-    								            ID_ARTICLE             INT (11) AUTO_INCREMENT  NOT NULL ,
-    									        DENOMINATION           VARCHAR (128) ,
-    									        PRIX_UNITAIRE          SMALLINT,
-    									        COMMENTAIRE            TEXT,
-    									        EN_VENTE               BOOL,
-    									        PRIMARY KEY (ID_ARTICLE)
-    										)ENGINE=InnoDB;");
+			$this->connection->beginTransaction();
+			$succes = $this->connection->query("CREATE TABLE UTILISATEURS(
+                                                        ID_UTILISATEUR   int (11) Auto_increment  NOT NULL ,
+                                                        PRENOM           Varchar (128) ,
+                                                        NOM              Varchar (128) ,
+                                                        PSEUDO           Varchar (128) ,
+                                                        PASS             Varchar (1028) ,
+                                                        ADRESSE_MAIL     Varchar (128) ,
+                                                        ADRESSE_PHYSIQUE Varchar (128) ,
+                                                        CODE_POSTAL      Varchar (5) ,
+                                                        LOCALITE         Varchar (128) ,
+                                                        DATE_INSCRIPTION Datetime ,
+                                                        IP_CONNEXION     Varchar (128) ,
+                                                        PRIMARY KEY (ID_UTILISATEUR ) ,
+                                                        UNIQUE (ADRESSE_MAIL )
+                                                )ENGINE=InnoDB;");
+			$succes = $this->connection->query("CREATE TABLE COMMANDES(
+                                                        ID_COMMANDE    int (11) Auto_increment  NOT NULL ,
+                                                        DATE_COMMANDE  Datetime ,
+                                                        ID_UTILISATEUR Int NOT NULL ,
+                                                        ID_PANIER      Int NOT NULL ,
+                                                        PRIMARY KEY (ID_COMMANDE )
+                                                )ENGINE=InnoDB;");
+			$succes = $this->connection->query("CREATE TABLE ARTICLES(
+                                                        ID_ARTICLE    int (11) Auto_increment  NOT NULL ,
+                                                        DENOMINATION  Varchar (128) ,
+                                                        PRIX_UNITAIRE int  ,
+                                                        COMMENTAIRE   Longtext ,
+                                                        EN_VENTE      Bool ,
+                                                        EN_PROMO      Bool ,
+                                                        ID_RAYON      Int NOT NULL ,
+                                                        PRIMARY KEY (ID_ARTICLE ) ,
+                                                        UNIQUE (DENOMINATION )
+                                                )ENGINE=InnoDB;");
+			$succes = $this->connection->query("CREATE TABLE VENDEURS(
+                                                        ID_VENDEUR     int (11) Auto_increment  NOT NULL ,
+                                                        ID_UTILISATEUR Int NOT NULL ,
+                                                        PRIMARY KEY (ID_VENDEUR ,ID_UTILISATEUR )
+                                                )ENGINE=InnoDB;");
+			$succes = $this->connection->query("CREATE TABLE GERANTS(
+                                                        ID_GERANT      int (11) Auto_increment  NOT NULL ,
+                                                        ID_VENDEUR     Int NOT NULL ,
+                                                        ID_UTILISATEUR Int NOT NULL ,
+                                                        PRIMARY KEY (ID_GERANT ,ID_VENDEUR ,ID_UTILISATEUR )
+                                                )ENGINE=InnoDB;");
+			$succes = $this->connection->query("CREATE TABLE IMAGES(
+                                                        ID_IMAGE    int (11) Auto_increment  NOT NULL ,
+                                                        TITRE       Varchar (128) ,
+                                                        TAILLE      Varchar (50) ,
+                                                        TYPE        Varchar (25) ,
+                                                        DESCRIPTION Varchar (128) ,
+                                                        IMAGE_BLOB  Blob ,
+                                                        ID_ARTICLE  Int NOT NULL ,
+                                                        PRIMARY KEY (ID_IMAGE ) ,
+                                                        UNIQUE (TITRE )
+                                                )ENGINE=InnoDB;");
+			$succes = $this->connection->query("CREATE TABLE PANIERS(
+                                                        ID_PANIER   int (11) Auto_increment  NOT NULL ,
+                                                        PRIMARY KEY (ID_PANIER )
+                                                )ENGINE=InnoDB;");
+			$succes = $this->connection->query("CREATE TABLE LIGNES_PANIER(
+                                                        ID_LIGNE_PANIER int (11) Auto_increment  NOT NULL ,
+                                                        QUANTITE        Int ,
+                                                        ID_PANIER       Int NOT NULL ,
+                                                        ID_ARTICLE      Int NOT NULL ,
+                                                        PRIMARY KEY (ID_LIGNE_PANIER )
+                                                )ENGINE=InnoDB; ");
+			$succes = $this->connection->query("CREATE TABLE RAYONS(
+                                                        ID_RAYON    int (11) Auto_increment  NOT NULL ,
+                                                        EMPLACEMENT Varchar (128) ,
+                                                        PRIMARY KEY (ID_RAYON ) ,
+                                                        UNIQUE (EMPLACEMENT )
+                                                )ENGINE=InnoDB;");
+			$succes = $this->connection->query("CREATE TABLE CATEGORIES(
+                                                        ID_CATEGORIE   int (11) Auto_increment  NOT NULL ,
+                                                        CATEGORIE      Varchar (128) ,
+                                                        ID_CATEGORIE_1 Int NOT NULL ,
+                                                        PRIMARY KEY (ID_CATEGORIE ) ,
+                                                        UNIQUE (CATEGORIE )
+                                                )ENGINE=InnoDB;");
+			$succes = $this->connection->query("CREATE TABLE CARACTERISER(
+                                                        ID_ARTICLE   Int NOT NULL ,
+                                                        ID_CATEGORIE Int NOT NULL ,
+                                                        PRIMARY KEY (ID_ARTICLE ,ID_CATEGORIE )
+                                                )ENGINE=InnoDB;");
+			$succes = $this->connection->query("ALTER TABLE COMMANDES ADD CONSTRAINT FK_COMMANDES_ID_UTILISATEUR FOREIGN KEY (ID_UTILISATEUR) REFERENCES UTILISATEURS(ID_UTILISATEUR);
+                                                ALTER TABLE COMMANDES ADD CONSTRAINT FK_COMMANDES_ID_PANIER FOREIGN KEY (ID_PANIER) REFERENCES PANIERS(ID_PANIER);
+                                                ALTER TABLE ARTICLES ADD CONSTRAINT FK_ARTICLES_ID_RAYON FOREIGN KEY (ID_RAYON) REFERENCES RAYONS(ID_RAYON);
+                                                ALTER TABLE VENDEURS ADD CONSTRAINT FK_VENDEURS_ID_UTILISATEUR FOREIGN KEY (ID_UTILISATEUR) REFERENCES UTILISATEURS(ID_UTILISATEUR);
+                                                ALTER TABLE GERANTS ADD CONSTRAINT FK_GERANTS_ID_VENDEUR FOREIGN KEY (ID_VENDEUR) REFERENCES VENDEURS(ID_VENDEUR);
+                                                ALTER TABLE GERANTS ADD CONSTRAINT FK_GERANTS_ID_UTILISATEUR FOREIGN KEY (ID_UTILISATEUR) REFERENCES UTILISATEURS(ID_UTILISATEUR);
+                                                ALTER TABLE IMAGES ADD CONSTRAINT FK_IMAGES_ID_ARTICLE FOREIGN KEY (ID_ARTICLE) REFERENCES ARTICLES(ID_ARTICLE);
+                                                ALTER TABLE PANIERS ADD CONSTRAINT FK_PANIERS_ID_COMMANDE FOREIGN KEY (ID_COMMANDE) REFERENCES COMMANDES(ID_COMMANDE);
+                                                ALTER TABLE LIGNES_PANIER ADD CONSTRAINT FK_LIGNES_PANIER_ID_PANIER FOREIGN KEY (ID_PANIER) REFERENCES PANIERS(ID_PANIER);
+                                                ALTER TABLE LIGNES_PANIER ADD CONSTRAINT FK_LIGNES_PANIER_ID_ARTICLE FOREIGN KEY (ID_ARTICLE) REFERENCES ARTICLES(ID_ARTICLE);
+                                                ALTER TABLE CATEGORIES ADD CONSTRAINT FK_CATEGORIES_ID_CATEGORIE_1 FOREIGN KEY (ID_CATEGORIE_1) REFERENCES CATEGORIES(ID_CATEGORIE);
+                                                ALTER TABLE CARACTERISER ADD CONSTRAINT FK_CARACTERISER_ID_ARTICLE FOREIGN KEY (ID_ARTICLE) REFERENCES ARTICLES(ID_ARTICLE);
+                                                ALTER TABLE CARACTERISER ADD CONSTRAINT FK_CARACTERISER_ID_CATEGORIE FOREIGN KEY (ID_CATEGORIE) REFERENCES CATEGORIES(ID_");
+			$succes = $this->connection->query("insert into rayons values(1, 'porte 1');");
 			if ($success)
 			    $this->connection->commit();
 			else
@@ -170,6 +241,7 @@ class Database
         										$ligneBDD["PASS"], $ligneBDD["ADRESSE_MAIL"],
         										$ligneBDD["ADRESSE_PHYSIQUE"], $ligneBDD["CODE_POSTAL"], $ligneBDD["LOCALITE"], 
         										new DateTime("NOW"), $ligneBDD["IP_CONNEXION"]);
+        		$utilisateur->setId($ligneBDD["ID_UTILISATEUR"]);
         		$requete->closeCursor();
         		return  $utilisateur;
     		}else{
@@ -199,6 +271,7 @@ class Database
         	            $ligne["PASS"], $ligne["ADRESSE_MAIL"],
         	            $ligne["ADRESSE_PHYSIQUE"], $ligne["CODE_POSTAL"], $ligne["LOCALITE"],
         	            new DateTime("NOW"), $ligne["IP_CONNEXION"]);
+        	        $utilisateur->setId($ligneBDD["ID_UTILISATEUR"]);
         	        array_push($utilisateurs, $utilisateur);
         	    }
         	    $requete->closeCursor();
@@ -238,6 +311,7 @@ class Database
 				':DATE_INSCRIPTION'=>$utilisateur->getDateInscription(), 
 				':IP_CONNEXION'=>$utilisateur->getIdConnexion()
 		));
+		//TODO Changer lastInsertID()
 		try{
 		  $utilisateur->setId($this->connection->lastInsertId());
 		}catch(UtilisateurException $ue){
@@ -452,6 +526,7 @@ class Database
         	    $rayon = $this->getRayon($ligneBDD["ID_RAYON"]);
         	    $article = new Article($ligneBDD["DENOMINATION"], $ligneBDD["PRIX_UNITAIRE"],
         	            $ligneBDD["COMMENTAIRE"],$ligneBDD["EN_VENTE"], $ligneBDD["EN_PROMO"], $rayon);
+        	    $article->setId($ligneBDD["ID_ARTICLE"]);
         	    $requete->closeCursor();
         	    return  $article;
 	        }else{
@@ -461,6 +536,7 @@ class Database
 	        return NULL;
 	    }
 	}
+	
 	/**
 	 * Ajoute dans la base de donnée un article.
 	 * @param Article l'article à insérer.
@@ -559,6 +635,8 @@ class Database
 	       $rayon = $this->getRayon($ligne["ID_RAYON"]);
 	       $article =  new Article($ligne["DENOMINATION"], $ligne["PRIX_UNITAIRE"],
 	                $ligne["COMMENTAIRE"],$ligne["EN_VENTE"], $ligne["EN_PROMO"], $rayon);
+	       $article->setId($ligneBDD["ID_ARTICLE"]);
+	       
 	       array_push($articles, $article);
 	    }	    
 	    $requete->closeCursor();
@@ -585,6 +663,7 @@ class Database
 	                $rayon = $this->getRayon($ligne["ID_RAYON"]);
 	                $article =  new Article($ligne["DENOMINATION"], $ligne["PRIX_UNITAIRE"],
 	                        $ligne["COMMENTAIRE"],$ligne["EN_VENTE"], $ligne["EN_PROMO"], $rayon);
+	                $article->setId($ligneBDD["ID_ARTICLE"]);
 	                array_push($articles, $article);
 	            }
 	            $requete->closeCursor();
@@ -599,14 +678,93 @@ class Database
 	    }
 	}
 	/**
-	 * Enregistre le panier courant pour la session de l'utilisateur.
+	 * Enregistre le panier courant pour la commande de l'utilisateur.
 	 * @param Panier $panier
 	 * @param int $id
+	 * @return bool $insertionOK si l'insertion du panier en BDD est réussie.
 	 */
-	public function setPanierCourant(Panier $panier, $id){
+	public function setPanierCourant(Panier $panier, Utilisateur $utilisateur){
+	    $insertionOK=false;
 	    $this->creerConnexion();
-	    $requete = $this->connection->prepare("INSERT INTO PANIERS ");
-	    $articleTrouve=$requete->execute(array(':PRIX'=>$prix));
+	    $requete = $this->connection->prepare("INSERT INTO PANIERS VALUES()");    	    	
+	    $insertionOK = $requete->execute();
+	    try{
+	       $panier->setId($this->connection->lastInsertId());
+	    }catch(PanierException $pe){
+	        $insertionOK=false;
+	    }
+	    $idPanier = $panier->getId();
+	    for($i=0; $i<$panier->getNbLignes(); $i++){
+            $idArticleDeLaLigne = $this->getArticle($panier->getLignePanier($i)->getArticle()->getDenomination())->getId();
+            $quantiteDeLArticleDeLaLigne = $panier->getLignePanier($i)->getQuantite();
+            $requete = $this->connection->prepare("INSERT INTO LIGNES_PANIER(QUANTITE, ID_PANIER, ID_ARTICLE)
+                                                   VALUES(:QUANTITE, :ID_PANIER, :ID_ARTICLE)");
+            $insertionOK = $requete->execute(array( 'QUANTITE'=>$quantiteDeLArticleDeLaLigne,
+                            	                    'ID_PANIER'=>$idPanier,
+                            	                    'ID_ARTICLE'=>$idArticleDeLaLigne));
+	    }
+	    $requete = $this->connection->prepare("INSERT INTO COMMANDES (DATE_COMMANDE, ID_UTILISATEUR, ID_PANIER)
+	                                           VALUES(:DATE_COMMANDE, :ID_UTILISATEUR, :ID_PANIER)");
+	    $insertionOK = $requete->execute(array( 'DATE_COMMANDE'=>date('Y-m-d', strtotime('+3 days')),
+                                	            'ID_UTILISATEUR'=>$utilisateur->getId(),
+                                	            'ID_PANIER'=>$idPanier));
+	    return $insertionOK;
+	}
+	/**
+	 * Recherche dans la base de données toutes les commandes.
+	 * @return array  Les commandes.
+	 */
+	public function trouveCommandes(){
+	    $commandes = array();
+	    $commandesTrouvees=false;
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare(" SELECT *
+												FROM COMMANDES C INNER JOIN UTILISATEURS U 
+	                                               ON C.ID_UTILISATEUR=U.ID_UTILISATEUR
+	                                                         INNER JOIN PANIERS P 
+	                                               ON C.ID_PANIER=P.ID_PANIER ");
+	    $commandesTrouvees=$requete->execute();
+	    $ligneBDD = $requete->fetchAll();
+	    foreach ($ligneBDD as $ligne){
+	        $utilisateur = new Utilisateur($ligne["PRENOM"], $ligne["NOM"], $ligne["PSEUDO"], 
+        										$ligne["PASS"], $ligne["ADRESSE_MAIL"],
+        										$ligne["ADRESSE_PHYSIQUE"], $ligne["CODE_POSTAL"], $ligne["LOCALITE"], 
+        										new DateTime("NOW"), $ligne["IP_CONNEXION"]);
+        	$utilisateur->setId($ligne["ID_UTILISATEUR"]);
+            $panier = $this->trouvePanier($ligne["ID_PANIER"]);
+            $panier->setId($ligne["ID_PANIER"]);
+	        $commande =  new Commande($ligne["DATE_COMMANDE"], $utilisateur, $panier);
+	        $commande->setId($ligne["ID_COMMANDE"]);	
+	        array_push($commandes, $commande);
+	    }
+	    $requete->closeCursor();
+	    return  $commandes;	     
+	}
+	/**
+	 * Recherche dans la base de données les lignes de paniers associées à un panier.
+	 * @param int $idPanier l'identifiant du panier.
+	 * @return Panier Le panier.
+	 */
+	public function trouvePanier($idPanier){
+	    $panier = new Panier();
+	    $panier->setId($idPanier);
+	    $lignesTrouvees=false;
+	    $this->creerConnexion();
+	    $requete = $this->connection->prepare(" SELECT QUANTITE, DENOMINATION
+												FROM LIGNES_PANIER LP 
+	                                               INNER JOIN ARTICLES A ON LP.ID_ARTICLE=A.ID_ARTICLE
+	                                               INNER JOIN RAYONS R ON A.ID_RAYON=R.ID_RAYON
+	                                            WHERE ID_PANIER=:ID_PANIER");
+	    $lignesTrouvees=$requete->execute(array( 'ID_PANIER'=> $idPanier));
+	    $ligneBDD = $requete->fetchAll();
+	    $i=0;
+	    foreach ($ligneBDD as $ligne){
+	        $lignePanier = new LignePanier($this->getArticle($ligne["DENOMINATION"]), $ligne["QUANTITE"]);
+	        $lignePanier->setId($i++);
+	        $panier->ajouterLigne($lignePanier);
+	    }
+	    $requete->closeCursor();
+	    return  $panier;
 	}
 }
 

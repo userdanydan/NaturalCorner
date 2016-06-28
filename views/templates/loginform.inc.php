@@ -40,5 +40,16 @@
 	  </a> 
 	</form>
 	<div class="col-xs-1 col-sm-3 col-md-4 col-lg-4"></div>
+</div>	
+<div class=row>
+	</br>
+	<adresse class="lead text-center col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4  col-sm-offset-3 col-sm-6  col-xs-offset-1 col-xs-10 ">
+		<small>Du Lundi au Samedi de 10h à 20h</br>
+		Le Dimanche et les jours fériés de 11h à 19h</small>
+	</adresse>	
 </div>
-
+<div class=row>
+	<adresse class="lead text-center col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4  col-sm-offset-3 col-sm-6  col-xs-offset-1 col-xs-10 "><small>Rue de l'escalier 1, 1000 Bruxelles
+	+32.(0)2.513.30.13 -</small>
+					<a class="lead" href="mailto:info@naturalcorner.be">info@naturalcorner.be</a></adresse>	
+</div>

@@ -26,7 +26,7 @@ class UpdateUserAction extends Action
 		}else{ 
 			$this->setView(getViewByName("UpdateUser"));
 			$this->getView()->setUser($this->getUser());
-			
+			$this->getView()->setPanier($this->getPanier());
 		}
 	}
 }

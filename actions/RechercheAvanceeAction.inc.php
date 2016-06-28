@@ -17,6 +17,7 @@ class RechercheAvanceeAction extends Action
 	        $resultats = $this->chercherArticle($chaine);
 	        $this->setView(getViewByName("ResultatsRecherche"));
 	        $this->getView()->setRecherche($resultats);
+	        $this->getView()->setPanier($this->getPanier());
 	    }
 	}
 }

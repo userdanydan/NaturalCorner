@@ -1,8 +1,8 @@
 <?php
 include_once(__DIR__.'/../actions/Action.inc.php');
 /**
- * @author Daniel
  * Contrôleur de la recherche.
+ * @author Daniel
  */
 trait CtrlRecherche{
     /**

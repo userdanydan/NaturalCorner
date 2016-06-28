@@ -13,6 +13,7 @@ class DefaultAction extends Action
 	{
 		
 		$this->setView(getViewByName("Default"));
+		$this->getView()->setPanier($this->getPanier());
 	}
 }
 ?>

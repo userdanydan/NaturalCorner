@@ -1,6 +1,6 @@
 <section class="row">
-	<form class="col-md-offset-1 col-md-6" role="form"  action="/Panier" method="post">
-    	<table class="table table-responsive table-bordered table-hover">
+	<form class="col-md-12" role="form"  action="/Panier" method="post">
+    	<table class=" table-responsive table-bordered table-hover">
         <thead>
           <tr>
           	<th></th>

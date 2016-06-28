@@ -107,7 +107,7 @@
 			</br>
         	<footer  class="row">   	
         		<div class="col-lg-4 col-sm-offset-1 col-sm-3 col-md-4 col-xs-10"> 
-        			<?php /*if($this->login!=null){
+        			<?php if($this->login!=null){
         				echo '<div class="fb-like" 
 						data-href="http://www.your-domain.com/your-page.html" 
 						data-layout="standard" 
@@ -115,7 +115,7 @@
 						data-show-faces="true"
 						data-width="1000">
 						</div>';
-        			}*/?>
+        			}?>
 			        		
 				</div>
         	</footer>
@@ -127,6 +127,7 @@
 
 
         <script src="stylesheets/js/main.js"></script>
+        
 <!-- Latest compiled and minified JavaScript -->
 <!-- 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"  -->
 <!-- 		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"  -->

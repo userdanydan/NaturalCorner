@@ -28,8 +28,8 @@ class Panier{
         $id = ( int ) $id;
         if ($id >= 0)
             $this->_id = $id;
-            else
-                throw new PanierException("<strong>id invalide : " . $id . "</strong>");
+        else
+            throw new PanierException("<strong>id invalide : " . $id . "</strong>");
     }
     
     /**
@@ -72,9 +72,10 @@ class Panier{
      * Recalculer le nombre d'article d'une ligne du panier.
      * @param int $nbLigne Le numéro de la ligne.
      * @param int $quantite la quantité d'article.
+     * @throws PanierException si le numéro de la ligne est invalide.
      */
     public function recalculer($nbLigne, $quantite) {
-        if($nbLigne>=0 AND $nbLigne< $this->_nbLignes){
+        if($nbLigne>=0 AND $nbLigne <= $this->_nbLignes){
             $this->_lignes[$nbLigne]->setQuantite($quantite);
         }else
             throw new PanierException("Numéro de ligne invalide.");
@@ -93,8 +94,14 @@ class Panier{
     /**
      * Ajouter une ligne au panier.
      * @param LignePanier $ligne
+     * @throws PanierException si l'id de la ligne introduite existe déjà.
      */
     public function ajouterLigne(LignePanier $ligne) {
+        foreach ($this->_lignes as $l){
+            if($ligne->getId()===$l->getId()){
+                throw new PanierException("Id Ligne déjà existant");
+            }
+        }
         array_push($this->_lignes, $ligne);
         $this->_nbLignes++;
     }
@@ -112,11 +119,9 @@ class Panier{
      */
     public function retirerLigne($nbLigne) {
         $nbLigne=(int)$nbLigne;
-        if($nbLigne>=0 AND $nbLigne< $this->_nbLignes){
-            unset($this->_lignes[$nbLigne]);
-            $this->_lignes = array_values($this->_lignes);
-        }else 
-            throw new PanierException("Numéro de ligne invalide.");
+        array_splice($this->_lignes, $nbLigne);
+        if($this->_nbLignes>0)
+            $this->_nbLignes--;
     }
     /**
      * @return string : retourne une représentation JSON d'un panier.

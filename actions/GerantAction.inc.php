@@ -10,6 +10,11 @@ class GerantAction extends Action
      * @var array Articles : tous les articles de la database.
      */
     private $_articles;
+    /**
+     * 
+     * @var array Commandes : toutes les commandes de la database.
+     */
+    private $_commandes;
 	/**
 	 * @see Action::run()
 	 */
@@ -19,7 +24,9 @@ class GerantAction extends Action
     		$this->setUtilisateurs($this->database->getAllUsers());
     		$this->getView()->setUtilisateurs($this->getUtilisateurs());
     		$this->setArticles($this->database->trouveArticles(""));
-    		$this->getView()->setArticles($this->getArticles());				
+    		$this->getView()->setArticles($this->getArticles());
+    		$this->setCommandes($this->database->trouveCommandes());
+    		$this->getView()->setCommandes($this->getCommandes());
 	}
 	/**
 	 *     Mutateur de la variable d'instance $utilisateurs.
@@ -48,6 +55,20 @@ class GerantAction extends Action
 	 */
 	public function getArticles(){
 	    return $this->_articles;
+	}
+	/**
+	 *     Accesseur de la variable d'instance $_commandes.
+	 *     @return array Commandes
+	 */
+	public function getCommandes(){
+	    return $this->_commandes;
+	}
+	/**
+	 *     Mutateur de la variable d'instance $_commandes.
+	 *     @param array Commmandes
+	 */
+	public function setCommandes($commandes){
+	    $this->_commandes = $commandes;
 	}
 }
 ?>

@@ -9,6 +9,7 @@ class DefaultAction extends Action
 	public function run()
 	{
 		$this->setView(getViewByName("Accueil"));
+		$this->getView()->setPanier($this->getPanier());
 	}
 }
 ?>

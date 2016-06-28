@@ -34,9 +34,10 @@ abstract class Action {
 	 */
 	public function getUser() {
 		if (isset($_SESSION['user'])) {
-			$user = $_SESSION['user'];
-		} else $user = null;
-		return $user;
+			$this->utilisateurSession = $_SESSION['user'];
+		} else 
+		    $this->utilisateurSession = null;
+		return $this->utilisateurSession;
 	}	
 	/**
 	 * Fixe l'utilisateur qui doit être affiché par le contrôleur.
@@ -53,7 +54,11 @@ abstract class Action {
 	 * @return Panier panier qui doit être affiché par le contrôleur.
 	 */
 	public function getPanier() {
-	    return $panier;
+	    if (isset($_SESSION['panier'])) {
+	        $this->panier = $_SESSION['panier'];
+	    } else 
+	        $this->panier = null;
+	    return $this->panier;
 	}	
 	/**
 	* Fixe le panier qui doit être affiché par le contrôleur.

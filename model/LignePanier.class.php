@@ -28,8 +28,8 @@ class LignePanier{
         $id = ( int ) $id;
         if ($id >= 0)
             $this->_id = $id;
-            else
-                throw new PanierException("<strong>id invalide : " . $id . "</strong>");
+        else
+            throw new PanierException("<strong>id invalide : " . $id . "</strong>");
     }
     
     /**
@@ -60,6 +60,7 @@ class LignePanier{
         if($quantite>1000)
             throw new LignePanierException("quantité supérieure à 1000");
         $this->_quantite=$quantite;
+        //echo $this->_quantite;
     }
     /**
      * @return int : le montant de la ligne du panier.
@@ -84,7 +85,7 @@ class LignePanier{
      * @return string : l'article (JSON).
      */
     public function __toString() {
-        return $this->getJsonData();
+        return json_encode($this->getJsonData());
     }
     /**
      * Destructeur de l'objet.

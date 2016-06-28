@@ -7,7 +7,7 @@ abstract class View {
 	protected $login = null;
 	protected $user=null;
 	protected $resultatsRecherche=array();
-	protected $panier;
+	protected $panier=null;
 	/**
 	 * Génère la page à afficher au client.
 	 */

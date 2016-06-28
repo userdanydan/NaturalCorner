@@ -11,7 +11,7 @@ class VoirCompteAction extends Action
 	{
 		$this->setView(getViewByName("VoirCompte"));
 		$this->getView()->setUser($this->getUser());
-		
+		$this->getView()->setPanier($this->getPanier());
 	}
 
 

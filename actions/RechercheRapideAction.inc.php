@@ -21,10 +21,12 @@ class RechercheRapideAction extends Action
 		        $this->setMessageView("Aucun article ne correspond à votre recherche", "alert-danger");
 		    }else{
     		    $this->setView(getViewByName("RechercheRapide"));
+    		    $this->getView()->setPanier($this->getPanier());
     		    $this->getView()->setRecherche($this->getRecherchesArticles());	
 		    }
 		}else{
-	       $this->setView(getViewByName("RechercheRapide"));		    
+	       $this->setView(getViewByName("RechercheRapide"));	
+	       $this->getView()->setPanier($this->getPanier());
 		}
 	}
 	/**

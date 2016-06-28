@@ -73,22 +73,23 @@ class LoginAction extends Action {
                     $this->setUser($this->database->getUser($_POST ['email']));
                     $this->setSessionLogin("chef");
                     $this->setPanier(new Panier());
+                    $_SESSION['id_ligne']=0;
                     $this->setView(getViewByName("Gerant"));
                     $this->setView(getViewByName("ResultatsRecherche"));
                     $this->getView()->setRecherche($this->database->trouveArticles(""));
                 }elseif ($this->database->checkPassword($_POST ['email'], $_POST ['password'])) {
-                    $this->setUser($this->database->getUser($_POST ['email']));                    
-                    if ($this->utilisateurSession->getPseudo() != null) {
+                    $this->setUser($this->database->getUser($_POST ['email']));
+                    $this->setPanier(new Panier());
+                    $_SESSION['id_ligne']=0;
+                    if ($this->getUser()->getPseudo() != null) {
                         $this->setSessionLogin($this->getUser()->getPseudo());
-                        $this->setPanier(new Panier());
                     } elseif ($this->getUser()->getNom() != null && $this->getUser()->getPrenom() != null) {
                         $this->setSessionLogin($this->getUser()->getPrenom() . " " . $this->getUser()->getNom());
-                        $this->setPanier(new Panier());
                     } else {
                         $this->setSessionLogin($this->getUser()->getAdresseMail());
-                        $this->setPanier(new Panier());
                     }
                     $this->setView(getViewByName("ResultatsRecherche"));
+                    $this->getView()->setPanier($this->getPanier());
                     $this->getView()->setRecherche($this->database->trouveArticles(""));
                 } else {
                     $this->setView(getViewByName("Message"));

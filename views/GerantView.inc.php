@@ -7,6 +7,11 @@ class GerantView extends View {
      */
     private $_utilisateurs;
     /**
+     * 
+     * @var array Commandes : toutes les commandes de la database.
+     */
+    private $_commandes;
+    /**
      * Affiche une page avec le header et le footer.
      *
      * @see View::displayBody()
@@ -40,6 +45,20 @@ class GerantView extends View {
      */
     public function getArticles(){
         return $this->_articles;
+    }
+    /**
+     *     Renvoie les commandes pour la vue.
+     *     @return array Article
+     */
+    public function getCommandes(){
+        return $this->_commandes;
+    }
+    /**
+     *     Fixe les commandes pour la vue.
+     *     @param array Commmandes
+     */
+    public function setCommandes($commandes){
+        $this->_commandes = $commandes;
     }
 }
 ?>

@@ -1,5 +1,15 @@
 <?php	
-	include __DIR__.'/model/Utilisateur.class.php';
+	include_once __DIR__.'/model/Utilisateur.class.php';
+	include_once __DIR__.'/model/Panier.class.php';
+	include_once __DIR__.'/model/LignePanier.class.php';
+	include_once __DIR__.'/model/Article.class.php';
+	include_once __DIR__.'/model/Adresse.class.php';
+	include_once __DIR__.'/model/Rayon.class.php';
+	include_once __DIR__.'/model/Categorie.class.php';
+	include_once __DIR__.'/model/Commande.class.php';
+	include_once __DIR__.'/model/Vendeur.class.php';
+	
+	
 	date_default_timezone_set('Europe/Brussels');
     header('Content-Type: text/html; charset=utf-8');	
 	session_start();
@@ -30,7 +40,7 @@
 	                     'Enregistrement', 'Accueil', 'UpdateUser', 
 	                     'VoirCompte','UserJSON', 'RechercheRapide', 
 	                     'RechercheAvancee', 'Panier', 'Catalogue', 
-	                     'Gerant', 'ModifierArticle', 'Commande');
+	                     'Gerant', 'ModifierArticle', 'Commander');
 	    
 	    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 	    $path = ltrim($path, '/');
